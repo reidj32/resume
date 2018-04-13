@@ -22,17 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-body,
-html {
-  height: 100%;
-}
-
 .bg {
-  height: 100%;
-  background-image: url('../img/background.jpg');
+  background: url('../img/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 .bg p,
@@ -61,6 +56,10 @@ html {
   background-color: black;
   opacity: 0.9;
   filter: alpha(opacity=90);
+}
+
+.footer {
+  padding-bottom: 1rem;
 }
 
 .footer hr {
