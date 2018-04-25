@@ -1,4 +1,4 @@
-# Jim Reid _Software Engineer and Architect_
+# Jim Reid _Software Engineer_
 
 Welcome to my resume. When figuring out a good way to describe the technologies I have learned, and utilized, over my career; I determined the best way to showcase my skills was with a personal website. This website will host several implementations of my resume, each built with a different technology. If you wish to see the final product, [feel free to take a look here](https://techreid.net/). (**This site is not yet ready**)
 
