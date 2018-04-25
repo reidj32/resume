@@ -28,11 +28,508 @@ SOFTWARE.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <!-- Bootstrap CDN -->
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Google Material Icons -->
+
+    <!--[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]-->
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-precomposed.png">
+    <link rel="icon" href="img/favicon.png">
+    <link rel="stylesheet" href="css/site.css">
+
     <title>HTML5</title>
 </head>
 
 <body>
+    <div class="pt-4"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="display-1">Jim Reid</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <p class="lead">Software Engineer</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2 id="bio">Bio</h2>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h2 id="technical-skills">Technical Skills</h2>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h2 id="experience">Experience</h2>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col">
+                <ul id="experience-tabs" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a id="guaranty-bank-tab" href="#guaranty-bank" class="nav-link active" data-toggle="tab"
+                            role="tab" aria-controls="guaranty-bank" aria-selected="true">Guaranty Bank</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="advicent-tab" href="#advicent" class="nav-link" data-toggle="tab" role="tab"
+                            aria-controls="advicent" aria-selected="false">Advicent Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="uwplatt-pal-tab" href="#uwplatt-pal" class="nav-link" data-toggle="tab" role="tab"
+                            aria-controls="uwplatt-pal" aria-selected="false">U.W. Platteville (2)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="uwplatt-grader-tab" href="#uwplatt-grader" class="nav-link" data-toggle="tab"
+                            role="tab" aria-controls="uwplatt-grader" aria-selected="false">U.W. Platteville (1)</a>
+                    </li>
+                </ul>
+                <div id="experience-content" class="tab-content">
+                    <div class="pt-3"></div>
+                    <div id="guaranty-bank" class="tab-pane fade show active" role="tabpanel" aria-labelledby="guaranty-bank-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Senior Software Engineer</strong>
+                                <small>(July 2015 - Present)</small>
+                                <address>
+                                    5610 N Bayshore Dr Glendale, WI 53217 | (800) 235-4636 |
+                                    <a href="https://www.guarantybank.com/" target="_blank">www.guarantybank.com</a>
+                                </address>
+                            </div>
+                            <div class="col-12">
 
+                            </div>
+                        </div>
+                    </div>
+                    <div id="advicent" class="tab-pane fade" role="tabpanel" aria-labelledby="advicent-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Software Developer</strong>
+                                <small>(January 2013 - July 2015)</small>
+                                <address>
+                                    10700 Research Dr #1 Milwaukee, WI 53226 | (855) 885-7526 |
+                                    <a href="https://www.advicentsolutions.com/" target="_blank">www.advicentsolutions.com</a>
+                                </address>
+                            </div>
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="uwplatt-pal" class="tab-pane fade" role="tabpanel" aria-labelledby="uwplatt-pal-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Peer Assisted Learner</strong>
+                                <small>(September 2012 - December 2012)</small>
+                                <address>
+                                    1 University Plaza Platteville, WI 53818-3099 | (608) 342-1491 |
+                                    <a href="https://www.uwplatt.edu/" target="_blank">www.uwplatt.edu</a>
+                                </address>
+                            </div>
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="uwplatt-grader" class="tab-pane fade" role="tabpanel" aria-labelledby="uwplatt-grader-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Grader &amp; Lab Assistant</strong>
+                                <small>(February 2010 - May 2012)</small>
+                                <address>
+                                    1 University Plaza Platteville, WI 53818-3099 | (608) 342-1491 |
+                                    <a href="https://www.uwplatt.edu/" target="_blank">www.uwplatt.edu</a>
+                                </address>
+                            </div>
+                            <div class="col-12">
+                                <ul>
+                                    <li>Responsible for grading exams and assignments
+                                        for classes taught by the Computer Science
+                                        &amp; Software Engineering professors.
+                                        <ul>
+                                            <li>Exams were issued using paper copies,
+                                                and online tools.</li>
+                                            <li>The grader would score these systems
+                                                using predefined tools provided by
+                                                the course professor.
+                                            </li>
+                                            <li>After exams and assignments were returned,
+                                                the grader would then help students
+                                                with any questions they may have
+                                                after course hours, or during lab
+                                                assistant hours.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Lab assistant for introductory courses.
+                                        <ul>
+                                            <li>The role of a lab assistant was to help
+                                                those students in several courses
+                                                being taught during the semester.</li>
+                                            <li>If a student found themselves falling
+                                                behind on course work, it was the
+                                                responsibility of the lab assistant
+                                                to aid the student in finishing their
+                                                work on time.</li>
+                                            <li>If a student was having continuing issues
+                                                with the course work, the lab assistant
+                                                worked directly with the professors
+                                                to ensure the student would successfully
+                                                complete the course material.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h2 id="education">Education</h2>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col">
+                <ul id="education-tabs" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a id="undergraduate-tab" href="#undergraduate" class="nav-link active" data-toggle="tab"
+                            role="tab" aria-controls="undergraduate" aria-selected="true">Undergraduate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="pluralsight-tab" href="#pluralsight" class="nav-link" data-toggle="tab" role="tab"
+                            aria-controls="pluralsight" aria-selected="false">Pluralsight</a>
+                    </li>
+                </ul>
+                <div id="education-content" class="tab-content">
+                    <div class="pt-3"></div>
+                    <div id="undergraduate" class="tab-pane fade show active" role="tabpanel" aria-labelledby="undergraduate-tab">
+                        <div class="row justify-content-start">
+                            <div class="col-12 col-lg-4">
+                                <address>
+                                    <strong>University of Wisconsin-Platteville</strong>
+                                    <br> 1 University Plaza
+                                    <br> Platteville, WI 53818-3099
+                                    <br>
+                                    <abbr title="Phone">P:</abbr>
+                                    (608) 342-1491
+                                </address>
+                            </div>
+                            <div class="col-6 col-lg-2">
+                                <strong>Degree</strong>
+                                <p class="mb-1">Bachelor of Science</p>
+                            </div>
+                            <div class="col-6 col-lg-2">
+                                <strong>Major</strong>
+                                <p class="mb-1">Software Engineering</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="pluralsight" class="tab-pane fade" role="tabpanel" aria-labelledby="pluralsight-tab">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Building Your First API with ASP.NET Core
+                                        <a href="https://app.pluralsight.com/library/courses/asp-dotnet-core-api-building-first"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Kevin Dockx</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Building a RESTful API with ASP.NET Core
+                                        <a href="https://app.pluralsight.com/library/courses/asp-dot-net-core-restful-api-building"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Kevin Dockx</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">LINQ Fundamentals with C# 6.0
+                                        <a href="https://app.pluralsight.com/library/courses/linq-fundamentals-csharp-6"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Scott Allen</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">TFS Build 2015: First Look
+                                        <a href="https://app.pluralsight.com/library/courses/tfs-build-2015-first-look" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Esteban Garcia</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Introduction to Bootstrap
+                                        <a href="https://app.pluralsight.com/library/courses/bootstrap-introduction" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Scott Allen</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Simplified .NET Background Tasks with Hangfire
+                                        <a href="https://app.pluralsight.com/library/courses/simplified-dotnet-background-tasks-hangfire"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Rag Dhiman</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Introduction to Git
+                                        <a href="https://app.pluralsight.com/library/courses/introduction-to-git" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Geoffrey Grosenbach</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">How Git Works
+                                        <a href="https://app.pluralsight.com/library/courses/how-git-works" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Paolo Perrotta</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Reactive Programming in Java 8 With RxJava
+                                        <a href="https://app.pluralsight.com/library/courses/reactive-programming-java-8-rxjava"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Russell Elledge</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular Fundamentals
+                                        <a href="https://app.pluralsight.com/library/courses/angular-fundamentals" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Joe Eames and Jim Cooper</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular: Getting Started
+                                        <a href="https://app.pluralsight.com/library/courses/angular-2-getting-started-update"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Deborah Kurata</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular Routing
+                                        <a href="https://app.pluralsight.com/library/courses/angular-routing" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Deborah Kurata</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular Reactive Forms
+                                        <a href="https://app.pluralsight.com/library/courses/angular-2-reactive-forms" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Deborah Kurata</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular Forms
+                                        <a href="https://app.pluralsight.com/library/courses/angular-2-forms" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Mark Zamoyta</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular HTTP Communication
+                                        <a href="https://app.pluralsight.com/library/courses/angular-http-communication"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Brice Wilson</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular Material
+                                        <a href="https://app.pluralsight.com/library/courses/angular-material" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Ajden Towfeek</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Angular CLI
+                                        <a href="https://app.pluralsight.com/library/courses/angular-cli" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">John Papa</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Understanding Android Application Basics
+                                        <a href="https://app.pluralsight.com/library/courses/android-application-basics-understanding"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Jim Wilson</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Working with Android Tools and Testing
+                                        <a href="https://app.pluralsight.com/library/courses/android-tools-testing" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Jim Wilson</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Enhancing the Android Application Experience
+                                        <a href="https://app.pluralsight.com/library/courses/android-enhancing-application-experience"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Jim Wilson</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Managing Android App Data with SQLite
+                                        <a href="https://app.pluralsight.com/library/courses/android-managing-app-data-sqlite"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Jim Wilson</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Getting Started With Ubuntu
+                                        <a href="https://app.pluralsight.com/library/courses/ubuntu-getting-started" target="_blank"
+                                            class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Elton Stoneman</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">What's New in VMware vSphere 6
+                                        <a href="https://app.pluralsight.com/library/courses/vmware-vsphere-6-whats-new"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">David Davis</footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">Getting Started with Laravel - The Basics
+                                        <a href="https://app.pluralsight.com/library/courses/laravel-php-framework-getting-started-the-basics"
+                                            target="_blank" class="text-secondary">
+                                            <i class="material-icons md-18">open_in_new</i>
+                                        </a>
+                                    </p>
+                                    <footer class="blockquote-footer">Max Schwarzmueller</footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap CDN -->
+
+    <!-- anchor-js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+    <script type="text/javascript">
+        anchors.add();
+    </script>
+    <!-- anchor-js -->
 </body>
 
 </html>

@@ -1,0 +1,9 @@
+{
+  "cSpell.words": ["platteville", "pluralsight"],
+  "prettier.printWidth": 80,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "editor.tabSize": 2,
+  "html.format.endWithNewline": true,
+  "html.format.wrapLineLength": 80
+}
