@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["platteville", "pluralsight"],
+  "cSpell.words": [
+    "LINQ",
+    "Laravel",
+    "advicent",
+    "hotfix",
+    "platteville",
+    "pluralsight"
+  ],
   "prettier.printWidth": 80,
   "prettier.tabWidth": 2,
   "prettier.useTabs": false,
