@@ -68,8 +68,72 @@ SOFTWARE.
         <hr>
         <div class="row">
             <div class="col">
-                <h2 id="technical-skills">Technical Skills</h2>
+                <h2 id="skills">Skills</h2>
             </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4 id="language-skills">Languages</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>C</p>
+            </div>
+            <div class="col">
+                <p>C++</p>
+            </div>
+            <div class="col">
+                <p>C#</p>
+            </div>
+            <div class="col">
+                <p>Javascript</p>
+            </div>
+            <div class="col">
+                <p>CSS</p>
+            </div>
+            <div class="col">
+                <p>
+                    HTML
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    JSON
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    XML
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    Java
+                </p>
+            </div>
+            <div class="col">
+                <p>SQL</p>
+            </div>
+            <div class="col">
+                <p>Powershell</p>
+            </div>
+            <div class="col">
+                <p>VB.NET</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4 id="framework-skills">Frameworks</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4 id="tools-skills">Tools</h4>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col"></div>
         </div>
         <hr>
         <div class="row">
@@ -106,7 +170,364 @@ SOFTWARE.
                                 </address>
                             </div>
                             <div class="col-12">
-
+                                <strong>Key Accomplishments</strong>
+                            </div>
+                            <div class="col-12">
+                                <ul>
+                                    <li>Operational Conversion
+                                        <ul>
+                                            <li>As part of Guaranty Bank's purchase by
+                                                First Citizens bank, all customer
+                                                data needed to be exported from our
+                                                systems into those used by First
+                                                Citizens bank.</li>
+                                            <li>After asking our core provider for an
+                                                estimate to have the export done,
+                                                we decided to build a tool to handle
+                                                the export process. This tool extracted
+                                                and converted terabytes of customer
+                                                data from our systems, and prepared
+                                                it for importing into the target
+                                                systems at First Citizens bank. This
+                                                project saved the bank over $250,000
+                                                in a single year.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Credit Builder
+                                        <ul>
+                                            <li>Designed as a website for branch users,
+                                                this application was created to help
+                                                customers increase their credit scores.
+                                                The website was built using ASP.NET
+                                                MVC 5 (Razor syntax), Javascript
+                                                (with jQuery), and Bootstrap 3. Data
+                                                persistence was achieved with Entity
+                                                Framework 6 and SQL Server.
+                                            </li>
+                                            <li>The process was very simple, a customer
+                                                would come into the branch and work
+                                                with a teller through a wizard in
+                                                the web site. At the end of the wizard
+                                                they would immediately find out if
+                                                they were approved to receive the
+                                                product.
+                                            </li>
+                                            <li>During the wizard, the application would
+                                                access our internal TransUnion integration
+                                                (Web API 2) for the customer to see
+                                                his/her current credit score.
+                                            </li>
+                                            <li>As the customer would repay the loan
+                                                effectively taken out, their scores
+                                                would change as we reported successful
+                                                payments to the credit bureaus. Checkups
+                                                were scheduled with customers and
+                                                a custom graph was built into the
+                                                website for the customers to see
+                                                their progress.</li>
+                                        </ul>
+                                    </li>
+                                    <li>DocuSign Integration
+                                        <ul>
+                                            <li>The bank wished to expand its footprint
+                                                and offer online accounts. This presented
+                                                an issue, we still needed to have
+                                                customers sign the required documents
+                                                to complete an account opening.
+                                            </li>
+                                            <li>DocuSign was selected to provided digital
+                                                documents to our customers when they
+                                                opened a new account online. Unfortunately,
+                                                this had to be done manually each
+                                                day. A member of the back office
+                                                would have to create these digital
+                                                documents using template created
+                                                in the DocuSign web portal and send
+                                                them to customers each day. Because
+                                                of all the manual data entry being
+                                                done, errors were very likely, and
+                                                there was no consistency in when
+                                                digital documents would be sent.
+                                            </li>
+                                            <li>Using the
+                                                <a href="https://docs.docusign.com/esign/">DocuSign REST API</a>, we create
+                                                an application (hosted in a Windows
+                                                Service using the
+                                                <a href="https://www.hangfire.io/">Hangfire</a> library) that would
+                                                scan for newly opened online accounts
+                                                each day. If new accounts were found,
+                                                new
+                                                <em>envelopes</em> would be created and
+                                                pre-filled with the proper customer
+                                                data. Checkpoints were created to
+                                                give the back office a chance to
+                                                validate these pre-populated forms
+                                                before sending them to customers
+                                                via email.
+                                            </li>
+                                            <li>A later implementation of the project
+                                                (never deployed to production) aimed
+                                                to use business rules in a web site
+                                                for the back office to define custom
+                                                mappings from our internal data schemas
+                                                to the templates defined in the DocuSign
+                                                web portal. The library selected
+                                                to achieve these business rules was
+                                                <a href="https://codeeffects.com/">Code Effects</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>TransUnion Integration
+                                        <ul>
+                                            <li>As a financial institution, the bank
+                                                had a need to determine a customer's
+                                                FICO score. These scores were used
+                                                by various internal applications,
+                                                and some customer facing applications
+                                                (Credit Builder).
+                                            </li>
+                                            <li>TransUnion (TU) exposed a service we
+                                                were able to consume. This service
+                                                (TUXML API) provided us with valuable
+                                                information to help the bank sell
+                                                other products, and help our customers
+                                                understand the importance of a health
+                                                credit score.</li>
+                                            <li>An internal web site was created to handle
+                                                the integration with TransUnion.
+                                                The website was built using ASP.NET
+                                                Web API and ASP.NET MVC. Once the
+                                                data was retrieved, it was encrypted
+                                                and stored using Microsoft SQL Server
+                                                as the primary data store. To further
+                                                secure the data internally, OAuth2
+                                                (provided by OWIN middleware) was
+                                                used for the Web API internal integration
+                                                to prevent unauthorized users from
+                                                accessing customer data.
+                                            </li>
+                                            <li>Because each request to TransUnion cost
+                                                the bank a fee, storing this data
+                                                offered cost savings when a recent
+                                                credit score wasn't required.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Build Automation
+                                        <ul>
+                                            <li>Originally, the team built all software
+                                                our their local machines and manually
+                                                published these package to development
+                                                servers. This practice proved to
+                                                be cumbersome and error prone. To
+                                                resolve those issues, we experimented
+                                                with the build tools provided by
+                                                Team Foundation Server (TFS).</li>
+                                            <li>Once properly configured, we were able
+                                                to utilize features such as continuous
+                                                integration (CI), gated check-ins,
+                                                and environment based deployments.
+                                                CI increased the team's code quality
+                                                and reduced the bugs we introduced
+                                                to test and production environments.
+                                                Gated check-ins allowed the team
+                                                to be more aware of what changes
+                                                were being made to different applications
+                                                if several developers were working
+                                                on the same project at once.</li>
+                                            <li>Environment based deployments benefited
+                                                the system administrators as well.
+                                                Because the build server handled
+                                                all the configuration for a specific
+                                                environment, they were able to spend
+                                                time on other tasks instead of constantly
+                                                working with the development team
+                                                to get a build properly configured
+                                                each time a new deployment was needed.
+                                                By removing the need to have a system
+                                                administrator manual edit configuration
+                                                file, errors were greatly reduced,
+                                                and productivity was increased.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Data Warehousing
+                                        <ul>
+                                            <li>The bank needed a reliable, low cost
+                                                option for accessing customer data.
+                                                Our core provider offered tools to
+                                                achieve the desired result, but they
+                                                were deemed far too expensive. The
+                                                least expensive option was to received
+                                                all data in a batch format each day.
+                                                Because the batched data wasn't usable
+                                                in its delivered format, it had to
+                                                be stored in some form of data warehouse.</li>
+                                            <li>SQL Server was selected as the primary
+                                                data store and integration was achieved
+                                                using SQL Server Integration Services
+                                                (SSIS).
+                                            </li>
+                                            <li>Warehouse needs evolved over time as
+                                                the back office required more data
+                                                fields. The schema of the database
+                                                would be expanded using T-SQL scripts.
+                                                The DBA would review these scripts
+                                                and work with the developer to ensure
+                                                the best deployments possible.
+                                            </li>
+                                            <li>Due to the size of the database, performance
+                                                was a concern. Regular testing was
+                                                done to ensure table performance
+                                                was fast enough to meet daily scheduling
+                                                deadlines during imports, and for
+                                                reporting. If needed, indexes would
+                                                be tested and added to maintain the
+                                                required performance constraints.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Debt Sales
+                                        <ul>
+                                            <li>When the bank accrued a high number of
+                                                delinquent accounts, they would be
+                                                sold to a debt collector as a means
+                                                for the bank to recoup some lost
+                                                revenue.
+                                            </li>
+                                            <li>To complete the sale of accounts, they
+                                                first had to be processed by our
+                                                core provider to ready them. The
+                                                process involved created a fixed
+                                                width file containing the relevant
+                                                fields needed to adjust the accounts.
+                                                To create this file, a console application
+                                                utilizing command line switches was
+                                                built by the development team. Because
+                                                different fields were added or removed
+                                                from the fixed width output file,
+                                                the Managed Extensibility Framework
+                                                <a href="https://docs.microsoft.com/en-us/dotnet/framework/mef/">(MEF)</a> was used. This provided
+                                                flexibility in which fields were
+                                                injected into the output file with
+                                                each different run.
+                                            </li>
+                                            <li>After accounts were properly prepared
+                                                for the sale, an export of all required
+                                                account documents was needed. Because
+                                                no export tool was provided to aggregate
+                                                these documents, we created a tool
+                                                to handle the task using the existing
+                                                API provided by our imaging and reporting
+                                                systems.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-12">
+                                <strong>Responsibilities</strong>
+                            </div>
+                            <div class="col-12">
+                                <ul>
+                                    <li>Developed and maintained custom bank software.
+                                        <ul>
+                                            <li>Backend tools were created to help realize
+                                                new efficiencies and cost savings
+                                                in places were manual intervention
+                                                was being done. By replacing these
+                                                manual tasks with automated tools,
+                                                we were able to help the bank reduce
+                                                errors in data, reduce risk, and
+                                                free up some time for those team
+                                                members who were performing manual
+                                                tasks. Anther major advantage these
+                                                tools offered was having an audit
+                                                log to help future users reconcile
+                                                what operations may have been performed
+                                                on a given customer record without
+                                                having to contact every person in
+                                                the historical process chain.
+                                            </li>
+                                            <li>To help drive new revenue, web applications
+                                                were created for use in the branches
+                                                and back office. These products offered
+                                                a simple interface, with a robust
+                                                and secure backend to process customer
+                                                data.
+                                            </li>
+                                            <li>Applications were also created to alert
+                                                the bank of potential risks, thus
+                                                lowering the overall operating cost.
+                                                These applications would typically
+                                                provided a web interface for the
+                                                back office, or a simple email alert
+                                                if something required attention from
+                                                a user.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Defined application architecture templates for
+                                        the team to use when developing new projects.
+                                        <ul>
+                                            <li>As a team of many backgrounds, we needed
+                                                some continuity in the way we developed
+                                                our projects. Working together, we
+                                                all agreed upon design patterns that
+                                                best suited the different business
+                                                cases we were responsible for solving.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Gathered requirements from back office business
+                                        users to help create new tools and applications
+                                        for different areas of the bank to utilize.
+                                        <ul>
+                                            <li>Being part of a small team meant we had
+                                                to assume more than one role when
+                                                it was called for.</li>
+                                            <li>Team members were responsible for managing
+                                                their own project boards, and keeping
+                                                them up to date. These project boards
+                                                (TFS Story Boarding) served as a
+                                                transparent method of communication
+                                                progress on a particular project.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Team mentor for technical skills.
+                                        <ul>
+                                            <li>As a small team, we tried to stay current
+                                                with the latest technologies being
+                                                offered. Because the team always
+                                                had a backlog of work, it wasn't
+                                                always easy to continually implement
+                                                <em>best practices</em> when creating
+                                                a new tool or web site.
+                                            </li>
+                                            <li>As a code hobbyist, I found myself reading
+                                                (and testing) new tools and methodologies
+                                                as they became relevant to our team's
+                                                work. If we found that a new tool
+                                                or methodology would benefit the
+                                                team, we would have a
+                                                <em>lunch 'n learn</em> session to determine
+                                                if we could use it in our development
+                                                stack. This approach allowed our
+                                                team to grow together and stay current
+                                                with new technologies.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>On call engineer
+                                        <ul>
+                                            <li>All team members took turns being
+                                                <em>on call.</em> If an issue were to
+                                                arise after standard working hours,
+                                                it was that team members responsibility
+                                                to work with the system administrator
+                                                in an effort to quickly resolve the
+                                                problem.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -121,81 +542,79 @@ SOFTWARE.
                                 </address>
                             </div>
                             <div class="col-12">
+                                <strong>Key Accomplishments</strong>
+                            </div>
+                            <div class="col-12">
                                 <ul>
-                                    <li>Major project accomplishments.
+                                    <li>NaviPlan
                                         <ul>
-                                            <li>NaviPlan
-                                                <ul>
-                                                    <li>
-                                                        This product was the primary focus for the majority of the development team. Being
-                                                        built using C, C++, C#, Java,
-                                                        SQL (IBM DB2, MSSQL Server,
-                                                        and Oracle), HTML5, CSS,
-                                                        Javascript (using the jQuery
-                                                        library); this product required
-                                                        a very diverse skill set
-                                                        to fully understand.
-                                                    </li>
-                                                    <li>Our teams primarily focused on
-                                                        the engine layer of the application
-                                                        (mostly C++), and would help
-                                                        other teams when needed.</li>
-                                                    <li>To learn more about the product,
-                                                        and what we worked on, see
-                                                        the product page.
-                                                        <a href="https://www.advicentsolutions.com/products/naviplan" target="_blank">NaviPlan</a>
-                                                    </li>
-                                                </ul>
+                                            <li>
+                                                This product was the primary focus for the majority of the development team. Being
+                                                built using C, C++, C#, Java, SQL
+                                                (IBM DB2, MSSQL Server, and Oracle),
+                                                HTML5, CSS, Javascript (using the
+                                                jQuery library); this product required
+                                                a very diverse skill set to fully
+                                                understand.
                                             </li>
-                                            <li>Financial Calculators
-                                                <ul>
-                                                    <li>These calculators were created
-                                                        for financial institutions
-                                                        to market their offering
-                                                        to prospective customers.</li>
-                                                    <li>For example, a bank could host
-                                                        these calculators on their
-                                                        public website for prospects
-                                                        to find. After using a calculator,
-                                                        the prospect may engage with
-                                                        the bank, and the bank would
-                                                        then require a larger product
-                                                        offering from Advicent.</li>
-                                                    <li>Example of a calculator created
-                                                        by our team and still in
-                                                        use today.
-                                                        <a href="https://www.retirementsavings.financialoutlook.bmo.com/" target="_blank">BMO Retirement Savings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>Historical Data Warehouse
-                                                <ul>
-                                                    <li>Over time, we learned that more
-                                                        data was needed to accurately
-                                                        predict a person's true monetary
-                                                        needs over time. To do this,
-                                                        we start a project to store
-                                                        such data in a warehouse.</li>
-                                                    <li>MongoDB was selected as the primary
-                                                        data store for the customer
-                                                        data as it served our needs
-                                                        the best. Customer data could
-                                                        already be represented in
-                                                        XML format, so transforming
-                                                        it to JSON (the primary storage
-                                                        media for MongoDB), was very
-                                                        easy.
-                                                    </li>
-                                                    <li>The project never completed during
-                                                        my time with the company.
-                                                        It was a great learning experience
-                                                        about big data in an enterprise
-                                                        scenario.
-                                                    </li>
-                                                </ul>
+                                            <li>Our teams primarily focused on the engine
+                                                layer of the application (mostly
+                                                C++), and would help other teams
+                                                when needed.</li>
+                                            <li>To learn more about the product, and
+                                                what we worked on, see the product
+                                                page.
+                                                <a href="https://www.advicentsolutions.com/products/naviplan" target="_blank">NaviPlan</a>
                                             </li>
                                         </ul>
                                     </li>
+                                    <li>Financial Calculators
+                                        <ul>
+                                            <li>These calculators were created for financial
+                                                institutions to market their offering
+                                                to prospective customers.</li>
+                                            <li>For example, a bank could host these
+                                                calculators on their public website
+                                                for prospects to find. After using
+                                                a calculator, the prospect may engage
+                                                with the bank, and the bank would
+                                                then require a larger product offering
+                                                from Advicent.</li>
+                                            <li>Example of a calculator created by our
+                                                team and still in use today.
+                                                <a href="https://www.retirementsavings.financialoutlook.bmo.com/" target="_blank">BMO Retirement Savings</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Historical Data Warehouse
+                                        <ul>
+                                            <li>Over time, we learned that more data
+                                                was needed to accurately predict
+                                                a person's true monetary needs over
+                                                time. To do this, we start a project
+                                                to store such data in a warehouse.</li>
+                                            <li>MongoDB was selected as the primary data
+                                                store for the customer data as it
+                                                served our needs the best. Customer
+                                                data could already be represented
+                                                in XML format, so transforming it
+                                                to JSON (the primary storage media
+                                                for MongoDB), was very easy.
+                                            </li>
+                                            <li>The project never completed during my
+                                                time with the company. It was a great
+                                                learning experience about big data
+                                                in an enterprise scenario.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-12">
+                                <strong>Responsibilities</strong>
+                            </div>
+                            <div class="col-12">
+                                <ul>
                                     <li>
                                         Served as the lead developer for small project teams.
                                         <ul>
@@ -368,6 +787,9 @@ SOFTWARE.
                                 </address>
                             </div>
                             <div class="col-12">
+                                <strong>Responsibilities</strong>
+                            </div>
+                            <div class="col-12">
                                 <ul>
                                     <li>The
                                         <i>Peer Assisted Learner's (PAL)</i> main role
@@ -419,11 +841,14 @@ SOFTWARE.
                                 <strong>Grader &amp; Lab Assistant</strong>
                                 <small>(February 2010 - May 2012)</small>
                             </div>
+                            <div class="col-12 pt-2">
+                                <strong>Responsibilities</strong>
+                            </div>
                             <div class="col-12">
                                 <ul>
-                                    <li>Responsible for grading exams and assignments
-                                        for classes taught by the Computer Science
-                                        &amp; Software Engineering professors.
+                                    <li>Grading exams and assignments for classes taught
+                                        by the Computer Science &amp; Software Engineering
+                                        professors.
                                         <ul>
                                             <li>Exams were issued using paper copies,
                                                 and online tools.</li>

@@ -25,3 +25,7 @@ SOFTWARE.
 a.anchorjs-link:hover {
   text-decoration: none;
 }
+
+.nav {
+  flex-wrap: nowrap;
+}
