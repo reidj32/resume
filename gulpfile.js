@@ -6,6 +6,7 @@ var uglifycss = require('gulp-uglifycss');
 var htmlmin = require('gulp-htmlmin');
 var sequence = require('gulp-sequence');
 var zip = require('gulp-zip');
+var exec = require('child_process').exec;
 
 gulp.task('default', sequence('clean', 'build'));
 
@@ -60,16 +61,13 @@ gulp.task('build-html5', function() {
     .pipe(gulp.dest('./dist/resumes/html5/'));
 });
 
-gulp.task('build-angular', function() {
-  gulp
-    .src(
-      [
-        './angular/dist/*.html',
-        './angular/dist/*.js',
-        './angular/dist/*.css',
-        './angular/dist/*.txt'
-      ],
-      { allowEmpty: true }
-    )
-    .pipe(gulp.dest('./dist/resumes/angular/'));
+gulp.task('build-angular', function(cb) {
+  exec(
+    'ng build --prod --base-href /resumes/angular/ --deploy-url /resumes/angular/',
+    function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      cb(err);
+    }
+  );
 });
