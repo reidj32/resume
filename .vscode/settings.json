@@ -8,7 +8,9 @@
     "hotfix",
     "overnighted",
     "platteville",
-    "pluralsight"
+    "pluralsight",
+    "uglifycss",
+    "wwwroot"
   ],
   "prettier.printWidth": 80,
   "prettier.tabWidth": 2,
