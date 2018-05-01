@@ -1,4 +1,7 @@
 {
+  "name": "resume",
+  "version": "0.0.0",
+  "license": "MIT",
   "devDependencies": {
     "del": "^3.0.0",
     "gulp": "^3.9.1",
