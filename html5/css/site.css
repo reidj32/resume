@@ -29,3 +29,7 @@ a.anchorjs-link:hover {
 .nav {
   flex-wrap: nowrap;
 }
+
+.icon-link:hover {
+  text-decoration: none;
+}
