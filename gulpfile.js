@@ -11,7 +11,7 @@ var exec = require('child_process').exec;
 gulp.task('default', sequence('clean', 'build'));
 
 gulp.task('clean', function() {
-  del.sync(['./dist', './dist.zip']);
+  del.sync(['./dist']);
 });
 
 gulp.task('build', sequence('build-wwwroot', ['build-html5', 'build-angular']));
@@ -20,7 +20,7 @@ gulp.task('zip', ['build'], function() {
   gulp
     .src('./dist/**/*')
     .pipe(zip('dist.zip'))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('build-wwwroot', function() {
