@@ -75,9 +75,19 @@ SOFTWARE.
 }
 
 .github-link {
-  color: black;
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .github-link:hover {
-  color: darkblue;
+  color: black;
+  text-decoration: none;
+}
+
+.linkedin-link {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.linkedin-link:hover {
+  color: black;
+  text-decoration: none;
 }
