@@ -1,9 +1,8 @@
 # compiled output
-/dist
+**/dist
 /dist-server
 /tmp
 /out-tsc
-dist.zip
 
 # dependencies
 /node_modules

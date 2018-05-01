@@ -6,61 +6,109 @@ var uglifycss = require('gulp-uglifycss');
 var htmlmin = require('gulp-htmlmin');
 var sequence = require('gulp-sequence');
 var zip = require('gulp-zip');
+var webserver = require('gulp-webserver');
 var exec = require('child_process').exec;
 
+/**
+ * Cleans and builds the entire project
+ */
 gulp.task('default', sequence('clean', 'build'));
 
-gulp.task('clean', function() {
-  del.sync(['./dist']);
-});
+/**
+ * Cleans the project output files
+ */
+gulp.task(
+  'clean',
+  ['clean-welcome', 'clean-html5', 'clean-angular'],
+  function() {
+    del.sync(['./dist']);
+  }
+);
 
-gulp.task('build', sequence('build-wwwroot', ['build-html5', 'build-angular']));
+/**
+ * Builds all projects and places them in the dist/ directory
+ */
+gulp.task(
+  'build',
+  ['build-welcome', 'build-html5', 'build-angular'],
+  function() {
+    gulp.src('./welcome/dist/**/*').pipe(gulp.dest('./dist/'));
+    gulp.src('./html5/dist/**/*').pipe(gulp.dest('./dist/resumes/html5/'));
+    gulp.src('./angular/dist/**/*').pipe(gulp.dest('./dist/resumes/angular/'));
+  }
+);
 
-gulp.task('zip', ['build'], function() {
+/**
+ * After building all projects, zips up the dist/ folder for deployment
+ */
+gulp.task('bundle', ['build'], function() {
   gulp
     .src('./dist/**/*')
     .pipe(zip('dist.zip'))
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build-wwwroot', function() {
+/**
+ * Builds the welcome project
+ */
+gulp.task('build-welcome', function() {
   gulp
-    .src('./wwwroot/**/*.html')
+    .src('./welcome/src/**/*.html')
     .pipe(
       htmlmin({
         collapseWhitespace: true,
         removeComments: true
       })
     )
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./welcome/dist/'));
 
   gulp
-    .src('./wwwroot/**/*.css')
+    .src('./welcome/src/**/*.css')
     .pipe(uglifycss())
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./welcome/dist/'));
 
   gulp
-    .src(['./wwwroot/**/*.png', './wwwroot/**/*.jpg', './wwwroot/**/*.ico'])
-    .pipe(gulp.dest('./dist/'));
+    .src(['./welcome/src/**/*.?(png|jpg|ico)'])
+    .pipe(gulp.dest('./welcome/dist/'));
 });
 
+/**
+ * Cleans the welcome project
+ */
+gulp.task('clean-welcome', function() {
+  del.sync('./welcome/dist');
+});
+
+/**
+ * Builds the HTML5 project
+ */
 gulp.task('build-html5', function() {
   gulp
-    .src('./html5/**/*.html')
+    .src('./html5/src/**/*.html')
     .pipe(
       htmlmin({
         collapseWhitespace: true,
         removeComments: true
       })
     )
-    .pipe(gulp.dest('./dist/resumes/html5/'));
+    .pipe(gulp.dest('./html5/dist/'));
 
   gulp
-    .src('./html5/**/*.css')
+    .src('./html5/src/**/*.css')
     .pipe(uglifycss())
-    .pipe(gulp.dest('./dist/resumes/html5/'));
+    .pipe(gulp.dest('./html5/dist/'));
 });
 
+/**
+ * Cleans the HTML5 project
+ */
+gulp.task('clean-html5', function() {
+  del.sync('./html5/dist');
+});
+
+/**
+ * Builds the Angular project
+ */
 gulp.task('build-angular', function(cb) {
   exec(
     'ng build --prod --base-href /resumes/angular/ --deploy-url /resumes/angular/',
@@ -70,4 +118,58 @@ gulp.task('build-angular', function(cb) {
       cb(err);
     }
   );
+});
+
+/**
+ * Cleans the Angular project
+ */
+gulp.task('clean-angular', function() {
+  del.sync('./angular/dist');
+});
+
+/**
+ * Builds and runs all projects in a local webserver
+ */
+gulp.task('run', ['build'], function() {
+  gulp.src('./dist').pipe(
+    webserver({
+      open: true,
+      fallback: 'index.html'
+    })
+  );
+});
+
+/**
+ * Runs the welcome project in a local webserver
+ */
+gulp.task('run-welcome', function() {
+  gulp.src('./welcome').pipe(
+    webserver({
+      open: true,
+      fallback: 'index.html'
+    })
+  );
+});
+
+/**
+ * Runs the HTML5 project in a local webserver
+ */
+gulp.task('run-html5', function() {
+  gulp.src('./html5').pipe(
+    webserver({
+      open: true,
+      fallback: 'index.html'
+    })
+  );
+});
+
+/**
+ * Runs the Angular project in a local webserver
+ */
+gulp.task('run-ng', function() {
+  exec('ng serve', function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
 });
