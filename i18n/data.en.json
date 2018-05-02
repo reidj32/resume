@@ -1,0 +1,250 @@
+{
+  "name": "Jim Reid",
+  "title": "Software Engineer",
+  "about": {
+    "title": "About",
+    "paragraphs": [
+      "Software is hard... I think? Maybe it's the users not knowing what they really want? Maybe it's that software \"people\" just don't make sense to the rest of the world? Well, building great software is a process, and we can all only hope to achieve such lofty aspirations! Obviously it's been done before, we just have to work together and find the method that works for us.",
+      "Building software can be so much fun. Websites, financial calculation engines, mobile phone applications, and so on... You name it, I have probably experimented with it. If not, I'm not trying hard enough to learn new and exciting things! But software is such a small part of all the fun we can have. Taking a camping trip to go fishing is a great way to spend a weekend (and so relaxing if I don't say so myself). Maybe renovating that room in your home that just always seems to be on your list to finish? What about a Guitar Hero contest with your friends? Finding some time (and space) to work on your truck (or car) to add the latest accessory you had overnight shipped because you couldn't wait to have it? The point is, I like to have fun. I like to spend time working with others on various projects around the house, and at work."
+    ]
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "languages": {
+      "title": "Languages",
+      "values": [
+        "C",
+        "C++",
+        "C#",
+        "Javascript",
+        "CSS",
+        "HTML",
+        "JSON",
+        "XML",
+        "Java",
+        "SQL",
+        "Powershell",
+        "VB.NET",
+        "SQL Server Integration Services (SSIS)",
+        "SQL Server Reporting Services (SSRS)"
+      ]
+    },
+    "libraries": {
+      "title": "Libraries & Frameworks",
+      "value": [
+        "ASP.NET MVC",
+        "ASP.NET Web API",
+        "Entity Framework",
+        "Autofac",
+        "AutoMapper",
+        "LINQ",
+        "OWIN",
+        "jQuery",
+        "Bootstrap 3",
+        "REST",
+        "SOAP",
+        "Boost C++",
+        "Standard Template Library (STL)"
+      ]
+    },
+    "applications": {
+      "title": "Tools & Applications",
+      "values": [
+        "Git",
+        "Team Foundation Server",
+        "Visual Studio Code",
+        "Visual Studio Professional",
+        "Eclipse IDE",
+        "VirtualBox",
+        "Microsoft Excel",
+        "Microsoft Access",
+        "Microsoft Visio",
+        "IIS Web Server",
+        "Windows Server 2008 R2",
+        "Windows Server 2012 R2",
+        "SQL Server 2008 R2",
+        "SQL Server Management Studio (SSMS)",
+        "Jira",
+        "Confluence",
+        "ReSharper Ultimate",
+        "Team City",
+        "Redgate SQL Toolbelt"
+      ]
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "history": [
+      {
+        "company": "Guaranty Bank",
+        "contact": {
+          "address": {
+            "street": "5610 N Bayshore Dr",
+            "city": "Glendale",
+            "state": "WI",
+            "zip": "53217"
+          },
+          "phone": "(800) 235-4636",
+          "website": {
+            "link": "https://www.guarantybank.com/",
+            "title": "www.guarantybank.com"
+          }
+        },
+        "positions": [
+          {
+            "title": "Senior Software Engineer",
+            "duration": "(July 2015 - Present)",
+            "accomplishments": [
+              {
+                "description": "",
+                "details": []
+              }
+            ],
+            "responsibilities": [
+              {
+                "description": "",
+                "details": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "company": "Advicent Solutions",
+        "contact": {
+          "address": {
+            "street": "10700 Research Dr #1",
+            "city": "Milwaukee",
+            "state": "WI",
+            "zip": "53226"
+          },
+          "phone": "(855) 885-7526",
+          "website": {
+            "link": "https://www.advicentsolutions.com/",
+            "title": "www.advicentsolutions.com"
+          }
+        },
+        "positions": [
+          {
+            "title": "Software Developer",
+            "duration": "(January 2013 - July 2015)",
+            "accomplishments": [
+              {
+                "description": "",
+                "details": []
+              }
+            ],
+            "responsibilities": [
+              {
+                "description": "",
+                "details": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "company": "U.W. Platteville",
+        "contact": {
+          "address": {
+            "street": "1 University Plaza",
+            "city": "Platteville",
+            "state": "WI",
+            "zip": "53818"
+          },
+          "phone": "(608) 342-1491",
+          "website": {
+            "link": "https://www.uwplatt.edu/",
+            "title": "www.uwplatt.edu"
+          }
+        },
+        "positions": [
+          {
+            "title": "Peer Assisted Learner",
+            "duration": "(September 2012 - December 2012)",
+            "accomplishments": null,
+            "responsibilities": [
+              {
+                "description":
+                  "The Peer Assisted Learner's (PAL) main role was the attend introductory courses for languages such as C, C++, Java, and Visual Basic (VB)",
+                "details": [
+                  "By attending the classes directly, the PAL was able to better understand the course curriculum, providing a better experience for the students in the classroom.",
+                  "As a member of the class, students felt more comfortable working directly with the PAL when seeking out help for an assignment or lab work."
+                ]
+              },
+              {
+                "description":
+                  "Office hours were held by the PAL to provide students with an opportunity to receive help on their assignments and lab work.",
+                "details": [
+                  "If an exam was approaching, this was an opportunity for the students to ensure they were ready by working with the PAL to review any material that may show up on the exam.",
+                  "Because the PAL was a member of the class, he/she may not know all the details of the exam ahead of time. This meant the review sessions with students also taught good study habits since the PAL helped students prepare for the unknown the same way he/she would have.",
+                  "Aside from helping students with their code, the PAL would also assist in the learning of the Integrated Development Environments (IDEs) used for each class. In C, C++, and VB classes, this was Visual Studio. For Java based classes, this was either NetBeans or Eclipse."
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Grader & Lab Assistant",
+            "duration": "(February 2010 - May 2012)",
+            "accomplishments": null,
+            "responsibilities": [
+              {
+                "description":
+                  "Grading exams and assignments for classes taught by the Computer Science & Software Engineering professors.",
+                "details": [
+                  "Exams were issued using paper copies, and online tools.",
+                  "The grader would score these systems using predefined tools provided by the course professor.",
+                  "After exams and assignments were returned, the grader would then help students with any questions they may have after course hours, or during lab assistant hours."
+                ]
+              },
+              {
+                "description": "Lab assistant for introductory courses.",
+                "details": [
+                  "The role of a lab assistant was to help those students in several courses being taught during the semester.",
+                  "If a student found themselves falling behind on course work, it was the responsibility of the lab assistant to aid the student in finishing their work on time.",
+                  "If a student was having continuing issues with the course work, the lab assistant worked directly with the professors to ensure the student would successfully complete the course material."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "education": {
+    "undergraduate": [
+      {
+        "title": "University of Wisconsin-Platteville",
+        "contact": {
+          "address": {
+            "street": "1 University Plaza",
+            "city": "Platteville",
+            "state": "WI",
+            "zip": "53818"
+          },
+          "phone": "(608) 342-1491",
+          "website": {
+            "link": "https://www.uwplatt.edu/",
+            "title": "www.uwplatt.edu"
+          }
+        },
+        "degree": "Bachelor of Science",
+        "major": "Software Engineering",
+        "attendance": "2008 - 2012",
+        "gpa": "3.2"
+      }
+    ],
+    "online": [
+      {
+        "title": "Pluralsight",
+        "courses": [
+          {
+            "title": "",
+            "author": "",
+            "link": ""
+          }
+        ]
+      }
+    ]
+  }
+}
