@@ -5,8 +5,8 @@
   },
   "apps": [
     {
-      "root": "./angular/src",
-      "outDir": "./angular/dist",
+      "root": "./src/angular/src",
+      "outDir": "./src/angular/dist",
       "assets": ["assets"],
       "index": "index.html",
       "main": "main.ts",

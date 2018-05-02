@@ -17,10 +17,7 @@ gulp.task('default', sequence('clean', 'build'));
 /**
  * Cleans the project output files
  */
-gulp.task(
-  'clean',
-  ['clean-welcome', 'clean-html5', 'clean-angular'],
-  function() {
+gulp.task('clean', ['clean-welcome', 'clean-html5', 'clean-angular'], function() {
     del.sync(['./dist']);
   }
 );
@@ -28,13 +25,15 @@ gulp.task(
 /**
  * Builds all projects and places them in the dist/ directory
  */
-gulp.task(
-  'build',
-  ['build-welcome', 'build-html5', 'build-angular'],
-  function() {
-    gulp.src('./welcome/dist/**/*').pipe(gulp.dest('./dist/'));
-    gulp.src('./html5/dist/**/*').pipe(gulp.dest('./dist/resumes/html5/'));
-    gulp.src('./angular/dist/**/*').pipe(gulp.dest('./dist/resumes/angular/'));
+gulp.task('build', ['build-welcome', 'build-html5', 'build-angular'], function() {
+    gulp.src('./src/welcome/dist/**/*')
+        .pipe(gulp.dest('./dist/'));
+
+    gulp.src('./src/html5/dist/**/*')
+        .pipe(gulp.dest('./dist/resumes/html5/'));
+
+    gulp.src('./src/angular/dist/**/*')
+        .pipe(gulp.dest('./dist/resumes/angular/'));
   }
 );
 
@@ -42,125 +41,109 @@ gulp.task(
  * After building all projects, zips up the dist/ folder for deployment
  */
 gulp.task('bundle', ['build'], function() {
-  gulp
-    .src('./dist/**/*')
-    .pipe(zip('dist.zip'))
-    .pipe(gulp.dest('./dist/'));
+  gulp.src('./dist/**/*')
+      .pipe(zip('bundle.zip'))
+      .pipe(gulp.dest('./dist/'));
 });
 
 /**
  * Builds the welcome project
  */
 gulp.task('build-welcome', function() {
-  gulp
-    .src('./welcome/src/**/*.html')
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true
-      })
-    )
-    .pipe(gulp.dest('./welcome/dist/'));
+  gulp.src('./src/welcome/src/**/*.html')
+      .pipe(htmlmin({
+          collapseWhitespace: true,
+          removeComments: true
+      }))
+      .pipe(gulp.dest('./src/welcome/dist/'));
 
-  gulp
-    .src('./welcome/src/**/*.css')
-    .pipe(uglifycss())
-    .pipe(gulp.dest('./welcome/dist/'));
+  gulp.src('./src/welcome/src/**/*.css')
+      .pipe(uglifycss())
+      .pipe(gulp.dest('./src/welcome/dist/'));
 
-  gulp
-    .src(['./welcome/src/**/*.?(png|jpg|ico)'])
-    .pipe(gulp.dest('./welcome/dist/'));
+  gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
+      .pipe(gulp.dest('./src/welcome/dist/'));
 });
 
 /**
  * Cleans the welcome project
  */
 gulp.task('clean-welcome', function() {
-  del.sync('./welcome/dist');
+  del.sync(['./src/welcome/dist']);
 });
 
 /**
  * Builds the HTML5 project
  */
 gulp.task('build-html5', function() {
-  gulp
-    .src('./html5/src/**/*.html')
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true
-      })
-    )
-    .pipe(gulp.dest('./html5/dist/'));
+  gulp.src('./src/html5/src/**/*.html')
+      .pipe(htmlmin({
+          collapseWhitespace: true,
+          removeComments: true
+      }))
+      .pipe(gulp.dest('./src/html5/dist/'));
 
-  gulp
-    .src('./html5/src/**/*.css')
-    .pipe(uglifycss())
-    .pipe(gulp.dest('./html5/dist/'));
+  gulp.src('./src/html5/src/**/*.css')
+      .pipe(uglifycss())
+      .pipe(gulp.dest('./src/html5/dist/'));
 });
 
 /**
  * Cleans the HTML5 project
  */
 gulp.task('clean-html5', function() {
-  del.sync('./html5/dist');
+  del.sync(['./src/html5/dist']);
 });
 
 /**
  * Builds the Angular project
  */
 gulp.task('build-angular', function(cb) {
-  exec(
-    'ng build --prod --base-href /resumes/angular/ --deploy-url /resumes/angular/',
-    function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      cb(err);
-    }
-  );
+  exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
 });
 
 /**
  * Cleans the Angular project
  */
 gulp.task('clean-angular', function() {
-  del.sync('./angular/dist');
+  del.sync(['./src/angular/dist']);
 });
 
 /**
  * Builds and runs all projects in a local webserver
  */
 gulp.task('run', ['build'], function() {
-  gulp.src('./dist').pipe(
-    webserver({
+  gulp.src('./dist')
+    .pipe(webserver({
       open: true,
       fallback: 'index.html'
-    })
-  );
+    }));
 });
 
 /**
  * Runs the welcome project in a local webserver
  */
-gulp.task('run-welcome', function() {
-  gulp.src('./welcome').pipe(
-    webserver({
-      open: true,
-      fallback: 'index.html'
-    })
-  );
+gulp.task('run-welcome', ['build-welcome'], function() {
+  gulp.src('./src/welcome/dist')
+      .pipe(webserver({
+        open: true,
+        fallback: 'index.html'
+      }));
 });
 
 /**
  * Runs the HTML5 project in a local webserver
  */
-gulp.task('run-html5', function() {
-  gulp.src('./html5').pipe(
-    webserver({
-      open: true,
-      fallback: 'index.html'
-    })
-  );
+gulp.task('run-html5', ['build-html5'], function() {
+  gulp.src('./src/html5/dist')
+      .pipe(webserver({
+        open: true,
+        fallback: 'index.html'
+      }));
 });
 
 /**
