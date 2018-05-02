@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var merge = require('merge-stream');
 var del = require('del');
 var uglifycss = require('gulp-uglifycss');
 var htmlmin = require('gulp-htmlmin');
@@ -8,6 +9,8 @@ var sequence = require('gulp-sequence');
 var zip = require('gulp-zip');
 var webserver = require('gulp-webserver');
 var gulpif = require('gulp-if');
+var inject = require('gulp-inject');
+var rename = require('gulp-rename');
 var child_process = require('child_process');
 var yargs = require('yargs');
 
@@ -34,6 +37,25 @@ var htmlminOpts = {
 
 var watchOpts = {
   delay: 100
+};
+
+var injectOpts = {
+  relative: true,
+  ignorePath: ['../dist/']
+};
+
+var bootstrap = {
+  css: [
+    './node_modules/bootstrap/dist/css/bootstrap.css',
+    './node_modules/bootstrap/dist/css/bootstrap.css.map'
+  ],
+  js: [
+    './node_modules/jquery/dist/jquery.slim.js',
+    './node_modules/popper.js/dist/popper.js',
+    './node_modules/popper.js/dist/popper.js.map',
+    './node_modules/bootstrap/dist/js/bootstrap.js',
+    './node_modules/bootstrap/dist/js/bootstrap.js.map'
+  ]
 };
 
 /**
@@ -70,32 +92,33 @@ gulp.task('clean', ['clean:welcome', 'clean:html5', 'clean:angular'], function()
 /**
  * Builds the Welcome project
  */
-gulp.task('build:welcome', ['build:welcome:html', 'build:welcome:styles', 'build:welcome:assets']);
+gulp.task('build:welcome', function() {
+  var bsJsStream = gulp.src(bootstrap.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/js/')));
 
-/**
- * Minify the Welcome html files.
- */
-gulp.task('build:welcome:html', function() {
-  return gulp.src('./src/welcome/src/**/*.html')
+  var bsCssStream = gulp.src(bootstrap.css)
+    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/css/')));
+
+  var htmlStream = gulp.src('./src/welcome/src/**/*.html')
+    .pipe(gulpif(config.development(),
+      inject(gulp.src([
+        './src/welcome/dist/**/jquery*.js?(.map)',
+        './src/welcome/dist/**/popper*.js?(.map)',
+        './src/welcome/dist/**/bootstrap*.?(js|css)?(.map)',
+        './src/welcome/dist/**/site*.css'
+      ], { read: false }), injectOpts)
+    ))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/welcome/dist/'));
-});
 
-/**
- * Minify the Welcome css files.
- */
-gulp.task('build:welcome:styles', function() {
-  return gulp.src('./src/welcome/src/**/*.css')
+  var cssStream = gulp.src('./src/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulp.dest('./src/welcome/dist/'));
-});
 
-/**
- * Copy the Welcome asset files.
- */
-gulp.task('build:welcome:assets', function() {
-  return gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
+  var assetsStream = gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
     .pipe(gulp.dest('./src/welcome/dist/'));
+
+  return merge(bsJsStream, bsCssStream, htmlStream, cssStream, assetsStream);
 });
 
 /**
@@ -116,24 +139,43 @@ gulp.task('clean:welcome', function() {
 /**
  * Builds the HTML5 project
  */
-gulp.task('build:html5', ['build:html5:html', 'build:html5:styles']);
+gulp.task('build:html5', function() {
+  var bsJsStream = gulp.src(bootstrap.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
 
-/**
- * Minify the HTML5 project html files
- */
-gulp.task('build:html5:html', function() {
-  return gulp.src('./src/html5/src/**/*.html')
+  var bsCssStream = gulp.src(bootstrap.css)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
+
+  var anchorJsStream = gulp.src('./node_modules/anchor-js/anchor.js')
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+
+  var faJsStream = gulp.src('./node_modules/@fortawesome/fontawesome/index.js')
+    .pipe(gulpif(config.development(), rename({ basename: 'fontawesome' })))
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+
+  var faCssStream = gulp.src('./node_modules/@fortawesome/fontawesome/styles.css')
+    .pipe(gulpif(config.development(), rename({ basename: 'fontawesome' })))
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
+
+  var htmlStream = gulp.src('./src/html5/src/**/*.html')
+    .pipe(gulpif(config.development(),
+      inject(gulp.src([
+        './src/html5/dist/**/jquery*.js?(.map)',
+        './src/html5/dist/**/popper*.js?(.map)',
+        './src/html5/dist/**/bootstrap*.?(js|css)?(.map)',
+        './src/html5/dist/**/fontawesome*.?(js|css)',
+        './src/html5/dist/**/anchor*.js?(.map)',
+        './src/html5/dist/**/site*.css'
+      ], { read: false }), injectOpts)
+    ))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/html5/dist/'));
-});
 
-/**
- * Minify the HTML5 project css files
- */
-gulp.task('build:html5:styles', function() {
-  return gulp.src('./src/html5/src/**/*.css')
+  var cssStream = gulp.src('./src/html5/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulp.dest('./src/html5/dist/'));
+
+  return merge(bsJsStream, bsCssStream, anchorJsStream, faCssStream, htmlStream, cssStream);
 });
 
 /**
