@@ -6,6 +6,7 @@
     "Storyboarding",
     "advicent",
     "classpath",
+    "crossorigin",
     "gulpfile",
     "hotfix",
     "libpeerconnection",
@@ -13,6 +14,7 @@
     "platteville",
     "pluralsight",
     "polyfills",
+    "precomposed",
     "testem",
     "uglifycss",
     "wwwroot"
