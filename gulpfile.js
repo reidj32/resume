@@ -51,7 +51,7 @@ var bootstrap = {
     './node_modules/bootstrap/dist/css/bootstrap.css.map'
   ],
   js: [
-    './node_modules/jquery/dist/jquery.slim.js',
+    './node_modules/jquery/dist/jquery.js',
     './node_modules/popper.js/dist/popper.js',
     './node_modules/popper.js/dist/popper.js.map',
     './node_modules/bootstrap/dist/js/bootstrap.js',
@@ -62,7 +62,7 @@ var bootstrap = {
       './node_modules/bootstrap/dist/css/bootstrap.min.css'
     ],
     js: [
-      './node_modules/jquery/dist/jquery.slim.min.js',
+      './node_modules/jquery/dist/jquery.min.js',
       './node_modules/popper.js/dist/popper.min.js',
       './node_modules/bootstrap/dist/js/bootstrap.min.js',
     ]
@@ -74,9 +74,9 @@ var bootstrap = {
       cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/css/bootstrap.min.css'
     },
     {
-      file: 'js/jquery.slim?(.min).js',
+      file: 'js/jquery?(.min).js',
       package: 'jquery',
-      cdn: 'https://code.jquery.com/jquery-${version}.slim.min.js'
+      cdn: 'https://code.jquery.com/jquery-${version}.min.js'
     },
     {
       file: 'js/popper?(.min).js',
@@ -168,18 +168,18 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
   return gulp.src('./src/welcome/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/welcome/dist/**/jquery.slim.min.js',
+        './src/welcome/dist/**/jquery.min.js',
         './src/welcome/dist/**/popper.min.js',
         './src/welcome/dist/**/bootstrap.min.?(js|css)',
         './src/welcome/dist/**/fontawesome-all.min.js',
-        './src/welcome/dist/**/site?(.min).css'
+        './src/welcome/dist/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/welcome/dist/**/jquery.slim.js?(.map)',
+        './src/welcome/dist/**/jquery.js?(.map)',
         './src/welcome/dist/**/popper.js?(.map)',
         './src/welcome/dist/**/bootstrap.?(js|css)?(.map)',
         './src/welcome/dist/**/fontawesome-all.js',
-        './src/welcome/dist/**/site?(.min).css'
+        './src/welcome/dist/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
@@ -218,6 +218,10 @@ gulp.task('build:welcome:deps', function() {
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/welcome/dist/')));
 
+  streams.push(gulp.src('./src/welcome/src/**/*.js')
+    .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
+    .pipe(gulp.dest('./src/welcome/dist/')));
+
   streams.push(gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
     .pipe(gulp.dest('./src/welcome/dist/')));
 
@@ -251,20 +255,20 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
   return gulp.src('./src/minimal/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/minimal/dist/**/jquery.slim.min.js',
+        './src/minimal/dist/**/jquery.min.js',
         './src/minimal/dist/**/popper.min.js',
         './src/minimal/dist/**/bootstrap.min.?(js|css)',
         './src/minimal/dist/**/fontawesome-all.min.js',
         './src/minimal/dist/**/anchor.min.js',
-        './src/minimal/dist/**/site?(.min).css'
+        './src/minimal/dist/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/minimal/dist/**/jquery.slim.js?(.map)',
+        './src/minimal/dist/**/jquery.js?(.map)',
         './src/minimal/dist/**/popper.js?(.map)',
         './src/minimal/dist/**/bootstrap.?(js|css)?(.map)',
         './src/minimal/dist/**/fontawesome-all.js',
         './src/minimal/dist/**/anchor.js?(.map)',
-        './src/minimal/dist/**/site?(.min).css'
+        './src/minimal/dist/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
@@ -308,6 +312,13 @@ gulp.task('build:minimal:deps', function() {
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/minimal/dist/')));
+
+  streams.push(gulp.src('./src/minimal/src/**/*.js')
+    .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
+    .pipe(gulp.dest('./src/minimal/dist/')));
+
+  streams.push(gulp.src('./i18n/data.*.json')
+    .pipe(gulp.dest('./src/minimal/dist/i18n/')));
 
   return merge(streams);
 });
