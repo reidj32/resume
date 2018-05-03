@@ -10,6 +10,7 @@ var zip = require('gulp-zip');
 var webserver = require('gulp-webserver');
 var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
+var rename = require('gulp-rename');
 var child_process = require('child_process');
 var yargs = require('yargs');
 
@@ -111,9 +112,11 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
         './src/welcome/dist/**/popper*.js?(.map)',
         './src/welcome/dist/**/bootstrap*.?(js|css)?(.map)',
         './src/welcome/dist/**/fontawesome*.?(js|css)',
-        './src/welcome/dist/**/site*.css'
       ], { read: false }), injectOpts)
     ))
+    .pipe(inject(gulp.src([
+      './src/welcome/dist/**/site?(.min).css'
+    ], { read: false }), injectOpts))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/welcome/dist/'));
 });
@@ -133,6 +136,7 @@ gulp.task('build:welcome:deps', function() {
 
   var cssStream = gulp.src('./src/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
+    .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/welcome/dist/'));
 
   var assetsStream = gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
@@ -167,10 +171,12 @@ gulp.task('build:html5', ['build:html5:deps'], function() {
         './src/html5/dist/**/popper*.js?(.map)',
         './src/html5/dist/**/bootstrap*.?(js|css)?(.map)',
         './src/html5/dist/**/fontawesome*.?(js|css)',
-        './src/html5/dist/**/anchor*.js?(.map)',
-        './src/html5/dist/**/site*.css'
+        './src/html5/dist/**/anchor*.js?(.map)'
       ], { read: false }), injectOpts)
     ))
+    .pipe(inject(gulp.src([
+        './src/html5/dist/**/site?(.min).css'
+    ], { read: false }), injectOpts))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/html5/dist/'));
 });
@@ -193,6 +199,7 @@ gulp.task('build:html5:deps', function() {
 
   var cssStream = gulp.src('./src/html5/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
+    .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/html5/dist/'));
 
   return merge([bsJsStream, bsCssStream, anchorJsStream, cssStream]);
