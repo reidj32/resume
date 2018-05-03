@@ -10,7 +10,6 @@ var zip = require('gulp-zip');
 var webserver = require('gulp-webserver');
 var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
-var rename = require('gulp-rename');
 var child_process = require('child_process');
 var yargs = require('yargs');
 
@@ -58,6 +57,18 @@ var bootstrap = {
   ]
 };
 
+var fontawesome = {
+  js: [
+    './lib/fontawesome/fontawesome-all.js'
+  ]
+};
+
+var anchor = {
+  js: [
+    './node_modules/anchor-js/anchor.js'
+  ]
+};
+
 /**
  * Cleans and builds the entire project
  */
@@ -92,24 +103,33 @@ gulp.task('clean', ['clean:welcome', 'clean:html5', 'clean:angular'], function()
 /**
  * Builds the Welcome project
  */
-gulp.task('build:welcome', function() {
+gulp.task('build:welcome', ['build:welcome:deps'], function() {
+  return gulp.src('./src/welcome/src/**/*.html')
+    .pipe(gulpif(config.development(),
+      inject(gulp.src([
+        './src/welcome/dist/**/jquery*.js?(.map)',
+        './src/welcome/dist/**/popper*.js?(.map)',
+        './src/welcome/dist/**/bootstrap*.?(js|css)?(.map)',
+        './src/welcome/dist/**/fontawesome*.?(js|css)',
+        './src/welcome/dist/**/site*.css'
+      ], { read: false }), injectOpts)
+    ))
+    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
+    .pipe(gulp.dest('./src/welcome/dist/'));
+});
+
+/**
+ * Copies the Welcome project dependencies to the output folder
+ */
+gulp.task('build:welcome:deps', function() {
   var bsJsStream = gulp.src(bootstrap.js)
     .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/js/')));
 
   var bsCssStream = gulp.src(bootstrap.css)
     .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/css/')));
 
-  var htmlStream = gulp.src('./src/welcome/src/**/*.html')
-    .pipe(gulpif(config.development(),
-      inject(gulp.src([
-        './src/welcome/dist/**/jquery*.js?(.map)',
-        './src/welcome/dist/**/popper*.js?(.map)',
-        './src/welcome/dist/**/bootstrap*.?(js|css)?(.map)',
-        './src/welcome/dist/**/site*.css'
-      ], { read: false }), injectOpts)
-    ))
-    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/welcome/dist/'));
+  var faJsStream = gulp.src(fontawesome.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/js/')));
 
   var cssStream = gulp.src('./src/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
@@ -118,7 +138,7 @@ gulp.task('build:welcome', function() {
   var assetsStream = gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
     .pipe(gulp.dest('./src/welcome/dist/'));
 
-  return merge(bsJsStream, bsCssStream, htmlStream, cssStream, assetsStream);
+  return merge([bsJsStream, bsCssStream, faJsStream, cssStream, assetsStream]);
 });
 
 /**
@@ -139,25 +159,8 @@ gulp.task('clean:welcome', function() {
 /**
  * Builds the HTML5 project
  */
-gulp.task('build:html5', function() {
-  var bsJsStream = gulp.src(bootstrap.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
-
-  var bsCssStream = gulp.src(bootstrap.css)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
-
-  var anchorJsStream = gulp.src('./node_modules/anchor-js/anchor.js')
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
-
-  var faJsStream = gulp.src('./node_modules/@fortawesome/fontawesome/index.js')
-    .pipe(gulpif(config.development(), rename({ basename: 'fontawesome' })))
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
-
-  var faCssStream = gulp.src('./node_modules/@fortawesome/fontawesome/styles.css')
-    .pipe(gulpif(config.development(), rename({ basename: 'fontawesome' })))
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
-
-  var htmlStream = gulp.src('./src/html5/src/**/*.html')
+gulp.task('build:html5', ['build:html5:deps'], function() {
+  return gulp.src('./src/html5/src/**/*.html')
     .pipe(gulpif(config.development(),
       inject(gulp.src([
         './src/html5/dist/**/jquery*.js?(.map)',
@@ -170,12 +173,29 @@ gulp.task('build:html5', function() {
     ))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/html5/dist/'));
+});
+
+/**
+ * Copies the HTML5 project dependencies to the output folder
+ */
+gulp.task('build:html5:deps', function() {
+  var bsJsStream = gulp.src(bootstrap.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+
+  var bsCssStream = gulp.src(bootstrap.css)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
+
+  var anchorJsStream = gulp.src(anchor.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+
+  var faJsStream = gulp.src(fontawesome.js)
+    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
 
   var cssStream = gulp.src('./src/html5/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulp.dest('./src/html5/dist/'));
 
-  return merge(bsJsStream, bsCssStream, anchorJsStream, faCssStream, htmlStream, cssStream);
+  return merge([bsJsStream, bsCssStream, anchorJsStream, cssStream]);
 });
 
 /**
