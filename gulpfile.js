@@ -11,6 +11,7 @@ var webserver = require('gulp-webserver');
 var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
 var rename = require('gulp-rename');
+var cdnizer = require('gulp-cdnizer');
 var child_process = require('child_process');
 var yargs = require('yargs');
 
@@ -55,18 +56,73 @@ var bootstrap = {
     './node_modules/popper.js/dist/popper.js.map',
     './node_modules/bootstrap/dist/js/bootstrap.js',
     './node_modules/bootstrap/dist/js/bootstrap.js.map'
+  ],
+  min: {
+    css: [
+      './node_modules/bootstrap/dist/css/bootstrap.min.css'
+    ],
+    js: [
+      './node_modules/jquery/dist/jquery.slim.min.js',
+      './node_modules/popper.js/dist/popper.min.js',
+      './node_modules/bootstrap/dist/js/bootstrap.min.js',
+    ]
+  },
+  cdn: [
+    {
+      file: 'css/bootstrap?(.min).css',
+      package: 'bootstrap',
+      cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/css/bootstrap.min.css'
+    },
+    {
+      file: 'js/jquery.slim?(.min).js',
+      package: 'jquery',
+      cdn: 'https://code.jquery.com/jquery-${version}.slim.min.js'
+    },
+    {
+      file: 'js/popper?(.min).js',
+      package: 'popper.js',
+      cdn: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/${version}/umd/popper.min.js'
+    },
+    {
+      file: 'js/bootstrap?(.min).js',
+      package: 'bootstrap',
+      cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/js/bootstrap.min.js'
+    }
   ]
 };
 
 var fontawesome = {
   js: [
     './lib/fontawesome/fontawesome-all.js'
+  ],
+  min: {
+    js: [
+      './lib/fontawesome/fontawesome-all.min.js'
+    ]
+  },
+  cdn: [
+    {
+      file: 'js/fontawesome-all?(.min).js',
+      cdn: 'https://use.fontawesome.com/releases/v5.0.10/js/all.js'
+    }
   ]
 };
 
 var anchor = {
   js: [
     './node_modules/anchor-js/anchor.js'
+  ],
+  min: {
+    js: [
+      './node_modules/anchor-js/anchor.min.js'
+    ]
+  },
+  cdn: [
+    {
+      file: 'js/anchor?(.min).js',
+      package: 'anchor-js',
+      cdn: 'https://cdnjs.cloudflare.com/ajax/libs/anchor-js/${version}/anchor.min.js'
+    }
   ]
 };
 
@@ -105,18 +161,28 @@ gulp.task('clean', ['clean:welcome', 'clean:minimal', 'clean:angular'], function
  * Builds the Welcome project
  */
 gulp.task('build:welcome', ['build:welcome:deps'], function() {
+  var cdn = [];
+  cdn = cdn.concat(bootstrap.cdn);
+  cdn = cdn.concat(fontawesome.cdn);
+
   return gulp.src('./src/welcome/src/**/*.html')
-    .pipe(gulpif(config.development(),
+    .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/welcome/dist/**/jquery*.js?(.map)',
-        './src/welcome/dist/**/popper*.js?(.map)',
-        './src/welcome/dist/**/bootstrap*.?(js|css)?(.map)',
-        './src/welcome/dist/**/fontawesome*.?(js|css)',
+        './src/welcome/dist/**/jquery.slim.min.js',
+        './src/welcome/dist/**/popper.min.js',
+        './src/welcome/dist/**/bootstrap.min.?(js|css)',
+        './src/welcome/dist/**/fontawesome-all.min.js',
+        './src/welcome/dist/**/site?(.min).css'
+      ], { read: false }), injectOpts),
+      inject(gulp.src([
+        './src/welcome/dist/**/jquery.slim.js?(.map)',
+        './src/welcome/dist/**/popper.js?(.map)',
+        './src/welcome/dist/**/bootstrap.?(js|css)?(.map)',
+        './src/welcome/dist/**/fontawesome-all.js',
+        './src/welcome/dist/**/site?(.min).css'
       ], { read: false }), injectOpts)
     ))
-    .pipe(inject(gulp.src([
-      './src/welcome/dist/**/site?(.min).css'
-    ], { read: false }), injectOpts))
+    .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/welcome/dist/'));
 });
@@ -125,24 +191,37 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
  * Copies the Welcome project dependencies to the output folder
  */
 gulp.task('build:welcome:deps', function() {
-  var bsJsStream = gulp.src(bootstrap.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/js/')));
+  var streams = [];
 
-  var bsCssStream = gulp.src(bootstrap.css)
-    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/css/')));
+  if (config.production()) {
+    streams.push(gulp.src(bootstrap.min.js)
+      .pipe(gulp.dest('./src/welcome/dist/js/')));
 
-  var faJsStream = gulp.src(fontawesome.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/welcome/dist/js/')));
+    streams.push(gulp.src(bootstrap.min.css)
+      .pipe(gulp.dest('./src/welcome/dist/css/')));
 
-  var cssStream = gulp.src('./src/welcome/src/**/*.css')
+    streams.push(gulp.src(fontawesome.min.js)
+      .pipe(gulp.dest('./src/welcome/dist/js/')));
+  } else {
+    streams.push(gulp.src(bootstrap.js)
+      .pipe(gulp.dest('./src/welcome/dist/js/')));
+
+    streams.push(gulp.src(bootstrap.css)
+      .pipe(gulp.dest('./src/welcome/dist/css/')));
+
+    streams.push(gulp.src(fontawesome.js)
+      .pipe(gulp.dest('./src/welcome/dist/js/')));
+  }
+
+  streams.push(gulp.src('./src/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/welcome/dist/'));
+    .pipe(gulp.dest('./src/welcome/dist/')));
 
-  var assetsStream = gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
-    .pipe(gulp.dest('./src/welcome/dist/'));
+  streams.push(gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
+    .pipe(gulp.dest('./src/welcome/dist/')));
 
-  return merge([bsJsStream, bsCssStream, faJsStream, cssStream, assetsStream]);
+  return merge(streams);
 });
 
 /**
@@ -164,19 +243,31 @@ gulp.task('clean:welcome', function() {
  * Builds the Minimal project
  */
 gulp.task('build:minimal', ['build:minimal:deps'], function() {
+  var cdn = [];
+  cdn = cdn.concat(bootstrap.cdn);
+  cdn = cdn.concat(fontawesome.cdn);
+  cdn = cdn.concat(anchor.cdn);
+
   return gulp.src('./src/minimal/src/**/*.html')
-    .pipe(gulpif(config.development(),
+    .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/minimal/dist/**/jquery*.js?(.map)',
-        './src/minimal/dist/**/popper*.js?(.map)',
-        './src/minimal/dist/**/bootstrap*.?(js|css)?(.map)',
-        './src/minimal/dist/**/fontawesome*.?(js|css)',
-        './src/minimal/dist/**/anchor*.js?(.map)'
+        './src/minimal/dist/**/jquery.slim.min.js',
+        './src/minimal/dist/**/popper.min.js',
+        './src/minimal/dist/**/bootstrap.min.?(js|css)',
+        './src/minimal/dist/**/fontawesome-all.min.js',
+        './src/minimal/dist/**/anchor.min.js',
+        './src/minimal/dist/**/site?(.min).css'
+      ], { read: false }), injectOpts),
+      inject(gulp.src([
+        './src/minimal/dist/**/jquery.slim.js?(.map)',
+        './src/minimal/dist/**/popper.js?(.map)',
+        './src/minimal/dist/**/bootstrap.?(js|css)?(.map)',
+        './src/minimal/dist/**/fontawesome-all.js',
+        './src/minimal/dist/**/anchor.js?(.map)',
+        './src/minimal/dist/**/site?(.min).css'
       ], { read: false }), injectOpts)
     ))
-    .pipe(inject(gulp.src([
-        './src/minimal/dist/**/site?(.min).css'
-    ], { read: false }), injectOpts))
+    .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./src/minimal/dist/'));
 });
@@ -185,24 +276,40 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
  * Copies the Minimal project dependencies to the output folder
  */
 gulp.task('build:minimal:deps', function() {
-  var bsJsStream = gulp.src(bootstrap.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
+  var streams = [];
 
-  var bsCssStream = gulp.src(bootstrap.css)
-    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/css/')));
+  if (config.production()){
+    streams.push(gulp.src(bootstrap.min.js)
+      .pipe(gulp.dest('./src/minimal/dist/js/')));
 
-  var anchorJsStream = gulp.src(anchor.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
+    streams.push(gulp.src(bootstrap.min.css)
+      .pipe(gulp.dest('./src/minimal/dist/css/')));
 
-  var faJsStream = gulp.src(fontawesome.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
+    streams.push(gulp.src(anchor.min.js)
+      .pipe( gulp.dest('./src/minimal/dist/js/')));
 
-  var cssStream = gulp.src('./src/minimal/src/**/*.css')
+    streams.push(gulp.src(fontawesome.min.js)
+      .pipe(gulp.dest('./src/minimal/dist/js/')));
+  } else {
+    streams.push(gulp.src(bootstrap.js)
+      .pipe(gulp.dest('./src/minimal/dist/js/')));
+
+    streams.push(gulp.src(bootstrap.css)
+      .pipe(gulp.dest('./src/minimal/dist/css/')));
+
+    streams.push(gulp.src(anchor.js)
+      .pipe(gulp.dest('./src/minimal/dist/js/')));
+
+    streams.push(gulp.src(fontawesome.js)
+      .pipe(gulp.dest('./src/minimal/dist/js/')));
+  }
+
+  streams.push(gulp.src('./src/minimal/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/minimal/dist/'));
+    .pipe(gulp.dest('./src/minimal/dist/')));
 
-  return merge([bsJsStream, bsCssStream, anchorJsStream, cssStream]);
+  return merge(streams);
 });
 
 /**
