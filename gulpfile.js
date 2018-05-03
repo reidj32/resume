@@ -250,7 +250,7 @@ gulp.task('clean:angular', function() {
 /**
  * Builds and runs all projects in a local webserver
  */
-gulp.task('run', ['build'], function() {
+gulp.task('run', ['package'], function() {
   return gulp.src('./dist')
     .pipe(webserver(webserverOpts))
     .pipe(gulp.watch('./src/?(welcome|html5|angular)/src/**/*', watchOpts, ['build']));
