@@ -35,6 +35,7 @@
     "gulp-inject": "^4.3.2",
     "gulp-rename": "^1.2.2",
     "gulp-sequence": "^1.0.0",
+    "gulp-uglify": "^3.0.0",
     "gulp-uglifycss": "^1.0.9",
     "gulp-webserver": "^0.9.1",
     "gulp-zip": "^4.1.0",

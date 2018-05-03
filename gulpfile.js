@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var merge = require('merge-stream');
 var del = require('del');
+var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
 var htmlmin = require('gulp-htmlmin');
 var sequence = require('gulp-sequence');
@@ -219,6 +220,7 @@ gulp.task('build:welcome:deps', function() {
     .pipe(gulp.dest('./src/welcome/dist/')));
 
   streams.push(gulp.src('./src/welcome/src/**/*.js')
+    .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
     .pipe(gulp.dest('./src/welcome/dist/')));
 
@@ -314,6 +316,7 @@ gulp.task('build:minimal:deps', function() {
     .pipe(gulp.dest('./src/minimal/dist/')));
 
   streams.push(gulp.src('./src/minimal/src/**/*.js')
+    .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
     .pipe(gulp.dest('./src/minimal/dist/')));
 
