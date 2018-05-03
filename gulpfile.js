@@ -37,7 +37,7 @@ var htmlminOpts = {
 };
 
 var watchOpts = {
-  delay: 100
+  delay: 10
 };
 
 var injectOpts = {
@@ -330,18 +330,18 @@ gulp.task('clean:minimal', function() {
 /**
  * Builds the Angular project
  */
-gulp.task('build:angular', function(cb) {
+gulp.task('build:angular', function(done) {
   if (config.development()) {
     child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
-      cb(err);
+      done(err);
     });
   } else if (config.production()) {
     child_process.exec('ng build --prod --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
-      cb(err);
+      done(err);
     });
   }
 });
@@ -367,25 +367,24 @@ gulp.task('clean:angular', function() {
 gulp.task('run', ['package'], function() {
   return gulp.src('./dist')
     .pipe(webserver(webserverOpts))
-    .pipe(gulp.watch('./src/?(welcome|minimal|angular)/src/**/*', watchOpts, ['build']));
 });
 
 /**
  * Runs the Welcome project in a local webserver
  */
-gulp.task('run:welcome', ['build:welcome'], function() {
-  return gulp.src('./src/welcome/dist')
-    .pipe(webserver(webserverOpts))
-    .pipe(gulp.watch('./src/welcome/src/**/*', watchOpts, ['build:welcome']));
+gulp.task('run:welcome', ['build:welcome'], function(done) {
+  gulp.src('./src/welcome/dist').pipe(webserver(webserverOpts));
+  gulp.watch('./src/welcome/src/**/*', watchOpts, ['build:welcome']);
+  done();
 });
 
 /**
  * Runs the Minimal project in a local webserver
  */
-gulp.task('run:minimal', ['build:minimal'], function() {
-  return gulp.src('./src/minimal/dist')
-    .pipe(webserver(webserverOpts))
-    .pipe(gulp.watch('./src/minimal/src/**/*', watchOpts, ['build:minimal']));
+gulp.task('run:minimal', ['build:minimal'], function(done) {
+  gulp.src('./src/minimal/dist').pipe(webserver(webserverOpts));
+  gulp.watch('./src/minimal/src/**/*', watchOpts, ['build:minimal']);
+  done();
 });
 
 /**
