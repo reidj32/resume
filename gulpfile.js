@@ -1,8 +1,10 @@
 'use strict';
 
 var gulp = require('gulp');
-var merge = require('merge-stream');
 var del = require('del');
+var yargs = require('yargs');
+var merge = require('merge-stream');
+var child_process = require('child_process');
 var uglify = require('gulp-uglify');
 var uglifycss = require('gulp-uglifycss');
 var htmlmin = require('gulp-htmlmin');
@@ -13,8 +15,7 @@ var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
 var rename = require('gulp-rename');
 var cdnizer = require('gulp-cdnizer');
-var child_process = require('child_process');
-var yargs = require('yargs');
+var jsonminify = require('gulp-jsonminify');
 
 var config = {
   environment: yargs.argv.env || 'development',
@@ -321,6 +322,7 @@ gulp.task('build:minimal:deps', function() {
     .pipe(gulp.dest('./src/minimal/dist/')));
 
   streams.push(gulp.src('./i18n/data.*.json')
+    .pipe(gulpif(config.production(), jsonminify()))
     .pipe(gulp.dest('./src/minimal/dist/i18n/')));
 
   return merge(streams);

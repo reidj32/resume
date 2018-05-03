@@ -407,7 +407,7 @@ jQuery.noConflict();
 
     $.ajax({
       type: 'GET',
-      url: '/i18n/data.' + lang + '.json',
+      url: 'i18n/data.' + lang + '.json',
       success: function(data) {
         populateDocument(data);
         anchors.add();
