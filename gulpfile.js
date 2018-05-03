@@ -87,17 +87,17 @@ gulp.task('bundle', ['package'], function() {
 /**
  * Builds all projects
  */
-gulp.task('build', sequence('clean', ['build:welcome', 'build:html5', 'build:angular']));
+gulp.task('build', sequence('clean', ['build:welcome', 'build:minimal', 'build:angular']));
 
 /**
  * Packages all files and place them in the ./dist/ directory
  */
-gulp.task('package', sequence('clean', ['package:welcome', 'package:html5', 'package:angular']));
+gulp.task('package', sequence('clean', ['package:welcome', 'package:minimal', 'package:angular']));
 
 /**
 * Cleans the project output files
 */
-gulp.task('clean', ['clean:welcome', 'clean:html5', 'clean:angular'], function() {
+gulp.task('clean', ['clean:welcome', 'clean:minimal', 'clean:angular'], function() {
    del.sync(['./dist']);
 });
 
@@ -161,63 +161,63 @@ gulp.task('clean:welcome', function() {
 });
 
 /**
- * Builds the HTML5 project
+ * Builds the Minimal project
  */
-gulp.task('build:html5', ['build:html5:deps'], function() {
-  return gulp.src('./src/html5/src/**/*.html')
+gulp.task('build:minimal', ['build:minimal:deps'], function() {
+  return gulp.src('./src/minimal/src/**/*.html')
     .pipe(gulpif(config.development(),
       inject(gulp.src([
-        './src/html5/dist/**/jquery*.js?(.map)',
-        './src/html5/dist/**/popper*.js?(.map)',
-        './src/html5/dist/**/bootstrap*.?(js|css)?(.map)',
-        './src/html5/dist/**/fontawesome*.?(js|css)',
-        './src/html5/dist/**/anchor*.js?(.map)'
+        './src/minimal/dist/**/jquery*.js?(.map)',
+        './src/minimal/dist/**/popper*.js?(.map)',
+        './src/minimal/dist/**/bootstrap*.?(js|css)?(.map)',
+        './src/minimal/dist/**/fontawesome*.?(js|css)',
+        './src/minimal/dist/**/anchor*.js?(.map)'
       ], { read: false }), injectOpts)
     ))
     .pipe(inject(gulp.src([
-        './src/html5/dist/**/site?(.min).css'
+        './src/minimal/dist/**/site?(.min).css'
     ], { read: false }), injectOpts))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/html5/dist/'));
+    .pipe(gulp.dest('./src/minimal/dist/'));
 });
 
 /**
- * Copies the HTML5 project dependencies to the output folder
+ * Copies the Minimal project dependencies to the output folder
  */
-gulp.task('build:html5:deps', function() {
+gulp.task('build:minimal:deps', function() {
   var bsJsStream = gulp.src(bootstrap.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
 
   var bsCssStream = gulp.src(bootstrap.css)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/css/')));
+    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/css/')));
 
   var anchorJsStream = gulp.src(anchor.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
 
   var faJsStream = gulp.src(fontawesome.js)
-    .pipe(gulpif(config.development(), gulp.dest('./src/html5/dist/js/')));
+    .pipe(gulpif(config.development(), gulp.dest('./src/minimal/dist/js/')));
 
-  var cssStream = gulp.src('./src/html5/src/**/*.css')
+  var cssStream = gulp.src('./src/minimal/src/**/*.css')
     .pipe(gulpif(config.production(), uglifycss()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/html5/dist/'));
+    .pipe(gulp.dest('./src/minimal/dist/'));
 
   return merge([bsJsStream, bsCssStream, anchorJsStream, cssStream]);
 });
 
 /**
- * Packages the HTML5 build
+ * Packages the Minimal build
  */
-gulp.task('package:html5', ['build:html5'], function() {
-  return gulp.src('./src/html5/dist/**/*')
-    .pipe(gulp.dest('./dist/resumes/html5/'));
+gulp.task('package:minimal', ['build:minimal'], function() {
+  return gulp.src('./src/minimal/dist/**/*')
+    .pipe(gulp.dest('./dist/resumes/minimal/'));
 });
 
 /**
- * Cleans the HTML5 project
+ * Cleans the Minimal project
  */
-gulp.task('clean:html5', function() {
-  del.sync(['./src/html5/dist']);
+gulp.task('clean:minimal', function() {
+  del.sync(['./src/minimal/dist']);
 });
 
 /**
@@ -260,11 +260,11 @@ gulp.task('clean:angular', function() {
 gulp.task('run', ['package'], function() {
   return gulp.src('./dist')
     .pipe(webserver(webserverOpts))
-    .pipe(gulp.watch('./src/?(welcome|html5|angular)/src/**/*', watchOpts, ['build']));
+    .pipe(gulp.watch('./src/?(welcome|minimal|angular)/src/**/*', watchOpts, ['build']));
 });
 
 /**
- * Runs the welcome project in a local webserver
+ * Runs the Welcome project in a local webserver
  */
 gulp.task('run:welcome', ['build:welcome'], function() {
   return gulp.src('./src/welcome/dist')
@@ -273,12 +273,12 @@ gulp.task('run:welcome', ['build:welcome'], function() {
 });
 
 /**
- * Runs the HTML5 project in a local webserver
+ * Runs the Minimal project in a local webserver
  */
-gulp.task('run:html5', ['build:html5'], function() {
-  return gulp.src('./src/html5/dist')
+gulp.task('run:minimal', ['build:minimal'], function() {
+  return gulp.src('./src/minimal/dist')
     .pipe(webserver(webserverOpts))
-    .pipe(gulp.watch('./src/html5/src/**/*', watchOpts, ['build:html5']));
+    .pipe(gulp.watch('./src/minimal/src/**/*', watchOpts, ['build:minimal']));
 });
 
 /**
