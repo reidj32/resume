@@ -6,8 +6,9 @@ var yargs = require('yargs');
 var merge = require('merge-stream');
 var child_process = require('child_process');
 var uglify = require('gulp-uglify');
-var uglifycss = require('gulp-uglifycss');
+var minify = require('gulp-clean-css');
 var htmlmin = require('gulp-htmlmin');
+var jsonminify = require('gulp-jsonminify');
 var sequence = require('gulp-sequence');
 var zip = require('gulp-zip');
 var webserver = require('gulp-webserver');
@@ -15,7 +16,6 @@ var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
 var rename = require('gulp-rename');
 var cdnizer = require('gulp-cdnizer');
-var jsonminify = require('gulp-jsonminify');
 
 var config = {
   environment: yargs.argv.env || 'development',
@@ -216,7 +216,7 @@ gulp.task('build:welcome:deps', function() {
   }
 
   streams.push(gulp.src('./src/welcome/src/**/*.css')
-    .pipe(gulpif(config.production(), uglifycss()))
+    .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/welcome/dist/')));
 
@@ -312,7 +312,7 @@ gulp.task('build:minimal:deps', function() {
   }
 
   streams.push(gulp.src('./src/minimal/src/**/*.css')
-    .pipe(gulpif(config.production(), uglifycss()))
+    .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./src/minimal/dist/')));
 
