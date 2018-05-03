@@ -4,7 +4,7 @@
   "about": {
     "title": "About",
     "paragraphs": [
-      "Software is hard... I think? Maybe it's the users not knowing what they really want? Maybe it's that software \"people\" just don't make sense to the rest of the world? Well, building great software is a process, and we can all only hope to achieve such lofty aspirations! Obviously it has been done before, we just have to work together and find the method that works for us.",
+      "Software is hard... I think? Maybe it's the users not knowing what they really want? Maybe it's that software \"people\" just don't make sense to the rest of the world? Maybe it's that everything around us always seems to be changing? Well, building great software is a process, and we can all only hope to achieve such lofty aspirations! Obviously it has been done before, we just have to work together and find the method that works for us.",
       "Building software can be so much fun. Websites, financial calculation engines, mobile phone applications, and so on... You name it, I have probably experimented with it. If not, I'm not trying hard enough to learn new and exciting things! But software is such a small part of the fun we can have. Taking a camping trip to go fishing is a great way to spend the weekend (and so relaxing if I don't say so myself). Perhaps renovating that room that has been on your personal todo list for ages? What about a Guitar Hero contest with your friends? Finding some time (and space) to work on your truck (or car) to add the latest accessory you had overnighted because you couldn't wait to have it? The point is, I like to have fun. I like to spend time working with others on various projects around the house, and at work."
     ]
   },
@@ -13,18 +13,18 @@
     "languages": {
       "title": "Languages",
       "values": [
+        "C#",
+        "Java",
+        "VB.NET",
+        "HTML",
+        "CSS",
+        "Javascript",
         "C",
         "C++",
-        "C#",
-        "Javascript",
-        "CSS",
-        "HTML",
         "JSON",
         "XML",
-        "Java",
         "SQL",
         "Powershell",
-        "VB.NET",
         "SQL Server Integration Services (SSIS)",
         "SQL Server Reporting Services (SSRS)"
       ]
@@ -52,6 +52,8 @@
       "title": "Tools & Applications",
       "values": [
         "Git",
+        "ReSharper Ultimate",
+        "Redgate SQL Toolbelt",
         "Team Foundation Server",
         "Visual Studio Code",
         "Visual Studio Professional",
@@ -67,9 +69,7 @@
         "SQL Server Management Studio (SSMS)",
         "Jira",
         "Confluence",
-        "ReSharper Ultimate",
-        "Team City",
-        "Redgate SQL Toolbelt"
+        "Team City"
       ]
     }
   },
