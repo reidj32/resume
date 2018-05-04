@@ -346,7 +346,7 @@ gulp.task('clean:minimal', function() {
 /**
  * Builds the Angular project
  */
-gulp.task('build:angular', function(done) {
+gulp.task('build:angular', ['build:angular:deps'], function(done) {
   if (config.development()) {
     child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
       console.log(stdout);
@@ -362,6 +362,11 @@ gulp.task('build:angular', function(done) {
   }
 });
 
+gulp.task('build:angular:deps', function() {
+  return gulp.src('./i18n/data.*.json')
+    .pipe(gulp.dest('./src/angular/src/assets/i18n/'));
+});
+
 /**
  * Packages the Angular build
  */
@@ -374,7 +379,7 @@ gulp.task('package:angular', ['build:angular'], function() {
  * Cleans the Angular project
  */
 gulp.task('clean:angular', function() {
-  del.sync(['./src/angular/dist']);
+  del.sync(['./src/angular/dist', './src/angular/src/assets/i18n']);
 });
 
 /**
@@ -406,7 +411,7 @@ gulp.task('run:minimal', ['build:minimal'], function(done) {
 /**
  * Runs the Angular project in a local webserver
  */
-gulp.task('run:angular', function() {
+gulp.task('run:angular', ['build:angular:deps'], function() {
   child_process.execSync('ng serve --open', function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);

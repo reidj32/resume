@@ -1,0 +1,8 @@
+<mat-card class="card" *ngIf="about">
+  <mat-card-title>
+    <h2>{{about.title}}</h2>
+  </mat-card-title>
+  <mat-card-content>
+    <p *ngFor="let paragraph of about.paragraphs">{{paragraph}}</p>
+  </mat-card-content>
+</mat-card>

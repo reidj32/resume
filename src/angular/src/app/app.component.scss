@@ -1,0 +1,68 @@
+@import '../styles.scss';
+
+$icon-size: 64px;
+
+.nav mat-icon {
+  @include md-icon-size($icon-size);
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
+
+.flex-horizontal {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+
+  .flex-item {
+    flex: 1 auto;
+
+    &.fill {
+      flex: 2 100%;
+    }
+  }
+}
+
+.flex-vertical {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+  align-items: stretch;
+
+  .flex-item {
+    flex: 1 auto;
+
+    &.fill {
+      flex: 2 100%;
+    }
+  }
+}
+
+.title {
+  font-size: 5rem;
+  font-weight: 100;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 100;
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.main-content {
+  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.footer {
+  text-align: center;
+  padding-bottom: 1rem;
+}
