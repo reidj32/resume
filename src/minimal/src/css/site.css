@@ -32,3 +32,62 @@ a.anchorjs-link:hover {
 .icon-link:hover {
   text-decoration: none;
 }
+
+.fa-circle-notch-centered {
+  width: 9rem;
+  height: 9rem;
+  font-size: 9rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -7rem;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: -4.5rem;
+  z-index: -1;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.loading span {
+  margin: 0;
+  padding: 0;
+  animation: blink 1.4s infinite both;
+  -o-animation: blink 1.4s infinite both;
+  -moz-animation: blink 1.4s infinite both;
+  -webkit-animation: blink 1.4s infinite both;
+}
+
+.loading span:nth-child(2) {
+  animation-delay: 0.2s;
+  -o-animation-delay: 0.2s;
+  -moz-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+}
+
+.loading span:nth-child(3) {
+  animation-delay: 0.4s;
+  -o-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  -webkit-animation-delay: 0.4s;
+}

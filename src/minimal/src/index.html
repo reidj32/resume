@@ -38,12 +38,21 @@ SOFTWARE.
   <link rel="stylesheet" href="css/site.css">
   <!-- endinject -->
 
-  <title>Simple</title>
+  <title>Minimal</title>
 </head>
 
 <body>
-  <div class="pt-4"></div>
-  <div class="container-fluid px-4">
+  <div id="spinner">
+    <div class="fa-circle-notch-centered">
+      <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
+    <p class="centered loading">Loading
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
+    </p>
+  </div>
+  <div id="content" class="container-fluid px-4 pt-4 d-none">
     <div class="row">
       <div class="col text-center">
         <h1 id="name.xs" class="display-3 d-block d-sm-none"></h1>

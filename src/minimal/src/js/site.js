@@ -410,7 +410,16 @@ jQuery.noConflict();
       url: 'i18n/data.' + lang + '.json',
       success: function(data) {
         populateDocument(data);
+
         anchors.add();
+
+        $('#content')
+          .hide()
+          .removeClass('d-none');
+
+        $('#spinner').fadeOut(500, function() {
+          $('#content').fadeIn(500);
+        });
       }
     });
   });
