@@ -192,7 +192,7 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
 /**
  * Copies the Welcome project dependencies to the output folder
  */
-gulp.task('build:welcome:deps', function() {
+gulp.task('build:welcome:deps', ['clean:welcome'], function() {
   var streams = [];
 
   if (config.production()) {
@@ -282,7 +282,7 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
 /**
  * Copies the Minimal project dependencies to the output folder
  */
-gulp.task('build:minimal:deps', function() {
+gulp.task('build:minimal:deps', ['clean:minimal'], function() {
   var streams = [];
 
   if (config.production()){
