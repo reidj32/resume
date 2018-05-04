@@ -284,7 +284,7 @@ jQuery.noConflict();
                     .attr('title', 'Phone')
                     .text('P:')
                 )
-                .append(program.contact.phone)
+                .append(' ' + program.contact.phone)
             )
         )
         .append(
