@@ -150,7 +150,16 @@ gulp.task('build', sequence('clean', ['build:welcome', 'build:minimal', 'build:a
 /**
  * Packages all files and place them in the ./dist/ directory
  */
-gulp.task('package', sequence('clean', ['package:welcome', 'package:minimal', 'package:angular']));
+gulp.task('package', sequence('clean', ['package:i18n', 'package:welcome', 'package:minimal', 'package:angular']));
+
+/**
+ * Package the i18n files in the ./dist/ directory
+ */
+gulp.task('package:i18n', function() {
+  return gulp.src('./i18n/*.json')
+    .pipe(gulpif(config.production(), jsonminify()))
+    .pipe(gulp.dest('./dist/i18n/'));
+});
 
 /**
 * Cleans the project output files
@@ -332,6 +341,8 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
  * Packages the Minimal build
  */
 gulp.task('package:minimal', ['build:minimal'], function() {
+  del.sync('./src/minimal/dist/i18n');
+
   return gulp.src('./src/minimal/dist/**/*')
     .pipe(gulp.dest('./dist/resumes/minimal/'));
 });
@@ -362,8 +373,8 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
   }
 });
 
-gulp.task('build:angular:deps', function() {
-  return gulp.src('./i18n/data.*.json')
+gulp.task('build:angular:deps', ['clean:angular'], function() {
+    return gulp.src('./i18n/data.*.json')
     .pipe(gulp.dest('./src/angular/src/assets/i18n/'));
 });
 
@@ -371,6 +382,8 @@ gulp.task('build:angular:deps', function() {
  * Packages the Angular build
  */
 gulp.task('package:angular', ['build:angular'], function() {
+  del.sync('./src/angular/dist/assets');
+
   return gulp.src('./src/angular/dist/**/*')
     .pipe(gulp.dest('./dist/resumes/angular/'));
 });

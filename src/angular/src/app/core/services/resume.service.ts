@@ -28,9 +28,11 @@ export class ResumeService {
       return Observable.of(this.resume.value);
     }
 
-    const path = this.location.prepareExternalUrl(
-      `${environment.dataPath}data.${lang}.json`
-    );
+    let path = `${environment.dataPath}data.${lang}.json`;
+
+    if (!environment.production) {
+      path = this.location.prepareExternalUrl(path);
+    }
 
     return this.http.get<Resume>(path).pipe(
       tap(resume => {

@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Resume } from './core/models/resume';
-import { ActivePageService } from './core/services/active-page.service';
 import { ResumeService } from './core/services/resume.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
-    private activePageService: ActivePageService,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
@@ -43,14 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this.mobileQueryListener);
-  }
-
-  next(): void {
-    this.activePageService.next();
-  }
-
-  previous(): void {
-    this.activePageService.previous();
   }
 
   navigateHome(): void {
