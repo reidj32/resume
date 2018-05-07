@@ -1,17 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { ResumeService } from './core/services/resume.service';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Resume } from './core/models/resume';
-import { About } from './core/models/about';
+import { ActivePageService } from './core/services/active-page.service';
+import { ResumeService } from './core/services/resume.service';
 
 @Component({
   selector: 'jpr-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   resume: Resume;
+  loading = true;
+  mobileQuery: MediaQueryList;
 
-  constructor(private resumeService: ResumeService) {}
+  private mobileQueryListener: () => void;
+
+  constructor(
+    private resumeService: ResumeService,
+    private activePageService: ActivePageService,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
+  ) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this.mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this.mobileQueryListener);
+  }
 
   ngOnInit(): void {
     this.resumeService.getResume('en').subscribe(resume => {
@@ -19,7 +36,24 @@ export class AppComponent implements OnInit {
         console.log(resume);
       } else {
         this.resume = resume;
+        this.loading = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this.mobileQueryListener);
+  }
+
+  next(): void {
+    this.activePageService.next();
+  }
+
+  previous(): void {
+    this.activePageService.previous();
+  }
+
+  navigateHome(): void {
+    this.router.navigateByUrl('/');
   }
 }

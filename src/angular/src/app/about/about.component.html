@@ -1,4 +1,7 @@
-<mat-card class="card" *ngIf="about">
+<div class="spinner" *ngIf="!about">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card *ngIf="about">
   <mat-card-title>
     <h2>{{about.title}}</h2>
   </mat-card-title>

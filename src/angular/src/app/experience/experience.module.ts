@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { MaterialModule } from '../shared/material.module';
+import { SharedModule } from '../shared/shared.module';
 import { ExperienceRoutingModule } from './/experience-routing.module';
 import { ExperienceComponent } from './experience.component';
+import { PositionComponent } from './position/position.component';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, ExperienceRoutingModule],
-  declarations: [ExperienceComponent]
+  imports: [SharedModule, ExperienceRoutingModule],
+  declarations: [ExperienceComponent, PositionComponent]
 })
 export class ExperienceModule {}

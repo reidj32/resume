@@ -4,6 +4,6 @@ import { Responsibility } from './responsibility';
 export class Position {
   title: string;
   duration: string;
-  accomplishments: Accomplishment[] = [];
-  responsibilities: Responsibility[] = [];
+  accomplishments: Accomplishment;
+  responsibilities: Responsibility;
 }

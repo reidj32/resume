@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon class="position-icon" color="primary">person_pin</mat-icon>
+    </div>
+    <mat-card-title>{{position.title}}</mat-card-title>
+    <mat-card-subtitle>{{position.duration}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="position.accomplishments">
+      <b>{{position.accomplishments.title}}</b>
+      <ul>
+        <li *ngFor="let accomplishment of position.accomplishments.values">
+          {{accomplishment.description}}
+          <ul *ngIf="accomplishment.details && accomplishment.details.length > 0">
+            <li *ngFor="let detail of accomplishment.details">{{detail}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="position.responsibilities">
+      <b>{{position.responsibilities.title}}</b>
+      <ul>
+        <li *ngFor="let responsibility of position.responsibilities.values">
+          {{responsibility.description}}
+          <ul *ngIf="responsibility.details && responsibility.details.length > 0">
+            <li *ngFor="let detail of responsibility.details">{{detail}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,31 +1,40 @@
-<div class="flex-horizontal" *ngIf="resume">
-  <div class="flex-item">
-    <div class="flex-vertical">
-      <button class="flex-item nav" mat-raised-button>
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div class="flex-item fill">
-    <div class="flex-vertical">
-      <div class="flex-item title">{{resume.name}}</div>
-      <div class="flex-item subtitle">{{resume.title}}</div>
-      <div class="flex-item main-content">
-        <router-outlet></router-outlet>
-      </div>
-      <div class="flex-item fill"></div>
-      <div class="flex-item footer">
-        <button mat-icon-button>
-          <mat-icon>home</mat-icon>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="flex-item">
-    <div class="flex-vertical">
-      <button class="flex-item nav" mat-raised-button>
-        <mat-icon>chevron_right</mat-icon>
-      </button>
-    </div>
-  </div>
+<div class="spinner" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container" [class.is-mobile]="mobileQuery.matches" *ngIf="!loading">
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="name">{{resume.name}}</h1> |
+    <h2 class="title">{{resume.title}}</h2>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56" opened="!mobileQuery.matches">
+      <mat-nav-list>
+        <a mat-list-item routerLink="about">
+          <mat-icon mat-list-icon>info_outline</mat-icon>
+          <p>{{resume.about.title}}</p>
+        </a>
+        <a mat-list-item routerLink="skills">
+          <mat-icon mat-list-icon>computer</mat-icon>
+          <p>{{resume.skills.title}}</p>
+        </a>
+        <a mat-list-item routerLink="experience">
+          <mat-icon mat-list-icon>group</mat-icon>
+          <p>{{resume.experience.title}}</p>
+        </a>
+        <a mat-list-item routerLink="education">
+          <mat-icon mat-list-icon>school</mat-icon>
+          <p>{{resume.education.title}}</p>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

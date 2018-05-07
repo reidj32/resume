@@ -1,3 +1,20 @@
-<p>
-  experience works!
-</p>
+<div class="spinner" *ngIf="!experience">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card *ngIf="experience">
+  <mat-card-title>
+    <h2>{{experience.title}}</h2>
+  </mat-card-title>
+  <mat-card-content>
+    <mat-tab-group>
+      <mat-tab *ngFor="let history of experience.history" label="{{history.company}}">
+        <div class="contact-info">
+          <jpr-contact [contact]="history.contact"></jpr-contact>
+        </div>
+        <div class="positions">
+          <jpr-position *ngFor="let position of history.positions" [position]="position"></jpr-position>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

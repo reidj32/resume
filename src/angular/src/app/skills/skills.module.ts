@@ -1,12 +1,11 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { MaterialModule } from '../shared/material.module';
+import { SharedModule } from '../shared/shared.module';
 import { SkillsRoutingModule } from './skills-routing.module';
 import { SkillsComponent } from './skills.component';
 
 @NgModule({
-  imports: [CommonModule, MaterialModule, SkillsRoutingModule],
+  imports: [SharedModule, SkillsRoutingModule],
   declarations: [SkillsComponent]
 })
 export class SkillsModule {}

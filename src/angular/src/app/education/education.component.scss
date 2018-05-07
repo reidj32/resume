@@ -1,0 +1,10 @@
+@import '../../styles.scss';
+
+.degree,
+.major {
+  padding: 0.5rem;
+}
+
+.undergrad-icon {
+  @include md-icon-size(36px);
+}
