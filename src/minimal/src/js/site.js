@@ -41,36 +41,32 @@ jQuery.noConflict();
   function populateSkills(skills) {
     $('#skills').text(skills.title);
 
-    $('#skills\\.languages\\.title').text(skills.languages.title);
+    skills.sections.forEach(function(section) {
+      var $sections = $('#skills\\.content');
 
-    skills.languages.values.forEach(function(value) {
-      $('#skills\\.languages\\.values').append(
+      $sections.append(
         $('<div>')
-          .addClass('flex-fill shadow-sm rounded bg-light')
-          .addClass('px-2 py-1 mx-2 my-1 text-center')
-          .text(value)
+          .addClass('col-12 pt-2')
+          .append($('<strong>').text(section.title))
       );
-    });
 
-    $('#skills\\.libraries\\.title').text(skills.libraries.title);
-
-    skills.libraries.values.forEach(function(value) {
-      $('#skills\\.libraries\\.values').append(
-        $('<div>')
-          .addClass('flex-fill shadow-sm rounded bg-light')
-          .addClass('px-2 py-1 mx-2 my-1 text-center')
-          .text(value)
+      var $values = $('<div>').addClass(
+        'd-flex flex-wrap mt-2 justify-content-center justify-content-lg-start'
       );
-    });
 
-    $('#skills\\.applications\\.title').text(skills.applications.title);
+      section.values.forEach(function(value) {
+        $values.append(
+          $('<div>')
+            .addClass('flex-fill shadow-sm rounded bg-light')
+            .addClass('px-2 py-1 mx-2 my-1 text-center')
+            .text(value)
+        );
+      });
 
-    skills.applications.values.forEach(function(value) {
-      $('#skills\\.applications\\.values').append(
+      $sections.append(
         $('<div>')
-          .addClass('flex-fill shadow-sm rounded bg-light')
-          .addClass('px-2 py-1 mx-2 my-1 text-center')
-          .text(value)
+          .addClass('col-12')
+          .append($values)
       );
     });
   }
@@ -125,79 +121,36 @@ jQuery.noConflict();
     );
   }
 
-  function populatePositionAccomplishments(accomplishments, $page) {
-    $page.append(
-      $('<div>')
-        .addClass('col-12')
-        .append($('<strong>').text(accomplishments.title))
-    );
-
+  function populatePositionSections(sections, $page) {
     var first = true;
-    var $accomplishments = $('<ul>');
 
-    accomplishments.values.forEach(function(accomplishment) {
-      var $accomplishment = $('<li>').text(accomplishment.description);
+    var $wrapper = $('<div>').addClass('');
+
+    sections.forEach(function(section) {
+      var $section = $('<p>').text(section.title);
 
       if (!first) {
-        $accomplishment.addClass('pt-3');
+        $section.addClass('mt-3');
       }
 
-      if (accomplishment.details) {
-        var $details = $('<ul>');
+      if (section.values) {
+        var $values = $('<ul>');
 
-        accomplishment.details.forEach(function(detail) {
-          $details.append($('<li>').text(detail));
+        section.values.forEach(function(value) {
+          $values.append($('<li>').text(value));
         });
 
-        $accomplishment.append($details);
+        $section.append($values);
       }
 
-      $accomplishments.append($accomplishment);
+      $wrapper.append($section);
       first = false;
     });
 
     $page.append(
       $('<div>')
         .addClass('col-12')
-        .append($accomplishments)
-    );
-  }
-
-  function populatePositionResponsibilities(responsibilities, $page) {
-    $page.append(
-      $('<div>')
-        .addClass('col-12')
-        .append($('<strong>').text(responsibilities.title))
-    );
-
-    var first = true;
-    var $responsibilities = $('<ul>');
-
-    responsibilities.values.forEach(function(responsibility) {
-      var $responsibility = $('<li>').text(responsibility.description);
-
-      if (!first) {
-        $responsibility.addClass('pt-3');
-      }
-
-      if (responsibility.details) {
-        var $details = $('<ul>');
-
-        responsibility.details.forEach(function(detail) {
-          $details.append($('<li>').text(detail));
-        });
-
-        $responsibility.append($details);
-      }
-
-      $responsibilities.append($responsibility);
-      first = false;
-    });
-
-    $page.append(
-      $('<div>')
-        .addClass('col-12')
-        .append($responsibilities)
+        .append($wrapper)
     );
   }
 
@@ -218,12 +171,8 @@ jQuery.noConflict();
           )
       );
 
-      if (position.accomplishments) {
-        populatePositionAccomplishments(position.accomplishments, $page);
-      }
-
-      if (position.responsibilities) {
-        populatePositionResponsibilities(position.responsibilities, $page);
+      if (position.sections) {
+        populatePositionSections(position.sections, $page);
       }
     });
 

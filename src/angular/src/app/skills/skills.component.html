@@ -7,30 +7,12 @@
   </mat-card-title>
   <mat-card-content>
     <mat-accordion>
-      <mat-expansion-panel>
+      <mat-expansion-panel *ngFor="let section of skills.sections">
         <mat-expansion-panel-header>
-          <mat-panel-title>{{skills.languages.title}}</mat-panel-title>
+          <mat-panel-title>{{section.title}}</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-chip-list>
-          <mat-chip color="primary" selected="true" *ngFor="let lang of skills.languages.values">{{lang}}</mat-chip>
-        </mat-chip-list>
-      </mat-expansion-panel>
-
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>{{skills.libraries.title}}</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-chip-list>
-          <mat-chip color="primary" selected="true" *ngFor="let lib of skills.libraries.values">{{lib}}</mat-chip>
-        </mat-chip-list>
-      </mat-expansion-panel>
-
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>{{skills.applications.title}}</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-chip-list>
-          <mat-chip color="primary" selected="true" *ngFor="let app of skills.applications.values">{{app}}</mat-chip>
+          <mat-chip color="primary" selected="true" *ngFor="let value of section.values">{{value}}</mat-chip>
         </mat-chip-list>
       </mat-expansion-panel>
     </mat-accordion>

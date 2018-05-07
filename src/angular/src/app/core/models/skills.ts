@@ -1,8 +1,6 @@
-import { SkillSection } from './skill-section';
+import { Section } from './section';
 
 export class Skills {
   title: string;
-  languages: SkillSection;
-  libraries: SkillSection;
-  applications: SkillSection;
+  sections: Section[] = [];
 }

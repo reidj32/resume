@@ -1,4 +1,4 @@
-export class SkillSection {
+export class Section {
   title: string;
   values: string[] = [];
 }

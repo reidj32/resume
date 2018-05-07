@@ -10,68 +10,70 @@
   },
   "skills": {
     "title": "Technical Skills",
-    "languages": {
-      "title": "Languages",
-      "values": [
-        "C#",
-        "Java",
-        "VB.NET",
-        "HTML",
-        "CSS",
-        "Javascript",
-        "C",
-        "C++",
-        "JSON",
-        "XML",
-        "SQL",
-        "Powershell",
-        "SQL Server Integration Services (SSIS)",
-        "SQL Server Reporting Services (SSRS)"
-      ]
-    },
-    "libraries": {
-      "title": "Libraries & Frameworks",
-      "values": [
-        "ASP.NET MVC",
-        "ASP.NET Web API",
-        "Entity Framework",
-        "Autofac",
-        "AutoMapper",
-        "LINQ",
-        "OWIN",
-        "jQuery",
-        "AJAX",
-        "Bootstrap 3",
-        "REST",
-        "SOAP",
-        "Boost C++",
-        "Standard Template Library (STL)"
-      ]
-    },
-    "applications": {
-      "title": "Applications & Tools",
-      "values": [
-        "Git",
-        "ReSharper Ultimate",
-        "Redgate SQL Toolbelt",
-        "Team Foundation Server",
-        "Visual Studio Code",
-        "Visual Studio Professional",
-        "Eclipse IDE",
-        "VirtualBox",
-        "Microsoft Excel",
-        "Microsoft Access",
-        "Microsoft Visio",
-        "IIS Web Server",
-        "Windows Server 2008 R2",
-        "Windows Server 2012 R2",
-        "SQL Server 2008 R2",
-        "SQL Server Management Studio (SSMS)",
-        "Jira",
-        "Confluence",
-        "Team City"
-      ]
-    }
+    "sections": [
+      {
+        "title": "Languages",
+        "values": [
+          "C#",
+          "Java",
+          "VB.NET",
+          "HTML",
+          "CSS",
+          "Javascript",
+          "C",
+          "C++",
+          "JSON",
+          "XML",
+          "SQL",
+          "Powershell",
+          "SQL Server Integration Services (SSIS)",
+          "SQL Server Reporting Services (SSRS)"
+        ]
+      },
+      {
+        "title": "Libraries & Frameworks",
+        "values": [
+          "ASP.NET MVC",
+          "ASP.NET Web API",
+          "Entity Framework",
+          "Autofac",
+          "AutoMapper",
+          "LINQ",
+          "OWIN",
+          "jQuery",
+          "AJAX",
+          "Bootstrap 3",
+          "REST",
+          "SOAP",
+          "Boost C++",
+          "Standard Template Library (STL)"
+        ]
+      },
+      {
+        "title": "Applications & Tools",
+        "values": [
+          "Git",
+          "ReSharper Ultimate",
+          "Redgate SQL Toolbelt",
+          "Team Foundation Server",
+          "Visual Studio Code",
+          "Visual Studio Professional",
+          "Eclipse IDE",
+          "VirtualBox",
+          "Microsoft Excel",
+          "Microsoft Access",
+          "Microsoft Visio",
+          "IIS Web Server",
+          "Windows Server 2008 R2",
+          "Windows Server 2012 R2",
+          "SQL Server 2008 R2",
+          "SQL Server Management Studio (SSMS)",
+          "Jira",
+          "Confluence",
+          "Team City"
+        ]
+      }
+    ]
   },
   "experience": {
     "title": "Experience",
@@ -96,112 +98,103 @@
           {
             "title": "Senior Software Engineer",
             "duration": "(July 2015 - Present)",
-            "accomplishments": {
-              "title": "Key Accomplishments",
-              "values": [
-                {
-                  "description": "Operational Conversion",
-                  "details": [
-                    "As part of Guaranty Bank's purchase by First Citizens bank, all customer data needed to be exported from our systems into those used by First Citizens bank.",
-                    "After asking our core provider for an estimate to have the export done, we decided to build a tool that would handle the export process. This tool extracted and converted terabytes of customer data from our systems, and prepared it for importing into the target systems at First Citizens bank. This project saved the bank over $250,000 in a single year."
-                  ]
-                },
-                {
-                  "description": "Credit Builder",
-                  "details": [
-                    "Designed as a website for branch users, this application was created to help customers increase their credit scores. The website was built using ASP.NET MVC 5 (Razor syntax), Javascript (with jQuery), and Bootstrap 3. Data persistence was achieved with Entity Framework 6 and SQL Server.",
-                    "The process was very simple, a customer would walk into the branch and work with a teller through a wizard in the web site. At the end of the wizard the customer would immediately find out if they were approved to receive the product.",
-                    "During the wizard, the application would access our internal TransUnion integration (Web API 2) for the customer to see his/her current credit score.",
-                    "As the customer would repay the loan effectively taken out, their scores would change as we reported successful (or missed) payments to the credit bureaus. Checkups were scheduled with customers and a custom graph was built for the website allowing customers to see their progress."
-                  ]
-                },
-                {
-                  "description": "DocuSign Integration",
-                  "details": [
-                    "The bank wished to expand its footprint and offer online accounts. This presented an issue, we still needed to have customers sign the required documents to complete an account opening.",
-                    "DocuSign was selected to provided digital documents to our customers when they opened a new account online. Unfortunately, this had to be done manually each day. A member of the back office would have to create these digital documents using a template created in the DocuSign web portal and send them to new customers each day. Because of all the manual data entry being done, errors were very likely, and there was no consistency for when digital documents would be sent.",
-                    "Using the DocuSign REST API, we created an application (hosted in a Windows Service using the Hangfire library) that would scan for newly opened online accounts each day. If new accounts were found, new envelopes would be created and pre-filled with the proper customer data. Checkpoints were created to give the back office a chance to validate these pre-populated forms before sending them to customers via email.",
-                    "A later implementation of the project (never deployed to production) aimed to use business rules in a web site for the back office to define custom mappings from our internal data schemas to the templates defined in the DocuSign web portal. The library selected to achieve these business rules was Code Effects."
-                  ]
-                },
-                {
-                  "description": "TransUnion Integration",
-                  "details": [
-                    "As a financial institution, the bank had a need to determine a customer's FICO score. These scores were used by various internal applications, and some customer facing applications (Credit Builder).",
-                    "TransUnion exposed a service we were able to consume. This service (TUXML API) provided us with valuable information to help the bank sell other products, and help our customers understand the importance of a healthy credit score.",
-                    "An internal web site was created to handle the integration with TransUnion. The website was built using ASP.NET Web API and ASP.NET MVC. Once the data was retrieved, it was encrypted and stored using Microsoft SQL Server as the primary data store. To further secure the data internally, OAuth2 (provided by OWIN middleware) was used for the Web API internal integration to prevent unauthorized users from accessing customer data.",
-                    "Because each request to TransUnion cost the bank a fee, storing this data offered a significant cost savings when a recent credit score wasn't required."
-                  ]
-                },
-                {
-                  "description": "Build Automation",
-                  "details": [
-                    "Originally, the team built all software our their local machines and manually published these package to development servers. This practice proved to be cumbersome and error prone. To resolve those issues, we experimented with the build tools provided by Team Foundation Server (TFS).",
-                    "Once properly configured, we were able to utilize features such as continuous integration (CI), gated check-ins, and environment based deployments. CI increased the team's code quality and reduced the bugs we introduced to test and production environments. Gated check-ins allowed the team to be more aware of what changes were being made to different applications if several developers were working on the same project at once.",
-                    "Environment based deployments benefited the system administrators as well. Because the build server handled all the configuration for a specific environment, they were able to spend time on other tasks instead of constantly working with the development team to get a build properly configured each time a new deployment was needed. By removing the need to have a system administrator manual edit configuration files, errors were greatly reduced, and productivity was increased."
-                  ]
-                },
-                {
-                  "description": "Data Warehousing",
-                  "details": [
-                    "The bank needed a reliable, low cost option for accessing customer data. Our core provider offered tools to achieve the desired result, but they were deemed far too expensive. The least expensive option was to received all data in a batch format each day. Because the batched data wasn't usable in its delivered format, it had to be stored in some form of data warehouse.",
-                    "SQL Server was selected as the primary data store and integration was achieved using SQL Server Integration Services (SSIS).",
-                    "Warehouse needs evolved over time as the back office required more data fields. The schema of the database was expanded using T-SQL scripts. The DBA would review these scripts and work with the developer to ensure the best deployments possible.",
-                    "Due to the size of the database, performance was a concern. Regular testing was done to ensure table performance was fast enough to meet daily scheduling deadlines during imports, and for reporting after the loads were completed. If needed, indexes would be tested and added to maintain the required performance constraints."
-                  ]
-                },
-                {
-                  "description": "Debt Sales",
-                  "details": [
-                    "When the bank accrued a high number of delinquent accounts, they would be sold to a debt collector as a means for the bank to recoup some lost revenue.",
-                    "To complete the sale of accounts, they first had to be processed by our core provider to ready them. The process involved created a fixed width file containing the relevant fields needed to adjust the accounts. To create this file, a console application utilizing command line switches was built by the development team. Because different fields were added or removed from the fixed width output file, the Managed Extensibility Framework (MEF) was used. This provided flexibility in which fields were injected into the output file with each different run.",
-                    "After accounts were properly prepared for the sale, exports of all required account documents were needed. Because no export tool was provided to aggregate these documents, we created a tool to handle the task using the existing API provided by our imaging and reporting systems."
-                  ]
-                }
-              ]
-            },
-            "responsibilities": {
-              "title": "Responsibilities",
-              "values": [
-                {
-                  "description":
-                    "Developed and maintained custom bank software.",
-                  "details": [
-                    "Backend tools were created to help realize new efficiencies and cost savings in places were manual intervention was being done. By replacing these manual tasks with automated tools, we were able to help the bank reduce errors in data, reduce risk, and free up some time for those team members who were performing manual tasks. Another major advantage these tools offered was having an audit log to help future users reconcile what operations may have been performed on a given customer record without having to contact every person in the historical process chain.",
-                    "To help drive new revenue, web applications were created for use in the branches and back office. These products offered a simple interface, with a robust and secure backend to process customer data.",
-                    "Applications were also created to alert the bank of potential risks, thus lowering the overall operating cost. These applications would typically provided a web interface for the back office, or a simple email alert if something required attention from a user."
-                  ]
-                },
-                {
-                  "description":
-                    "Defined application architecture templates for the team to use when developing new projects.",
-                  "details": [
-                    "As a team of many backgrounds, we needed some continuity in the way we developed our projects. Working together, we all agreed upon design patterns that best suited the different business cases we were responsible for solving."
-                  ]
-                },
-                {
-                  "description":
-                    "Gathered requirements from back office business users to help create new tools and applications for different areas of the bank to utilize.",
-                  "details": [
-                    "Being part of a small team meant we had to assume more than one role when it was called for.",
-                    "Team members were responsible for managing their own project boards, and keeping them up to date. These project boards (TFS Storyboarding) served as a transparent method of communicating progress on a particular project."
-                  ]
-                },
-                {
-                  "description": "Team mentor for technical skills.",
-                  "details": [
-                    "As a small team, we tried to stay current with the latest technologies being offered. Because the team always had a backlog of work, it wasn't always easy to continually implement best practices when creating a new tool or web site.",
-                    "As a code hobbyist, I found myself reading (and testing) new tools and methodologies as they became relevant to our team's work. If we found that a new tool or methodology would benefit the team, we would have a lunch 'n learn session to determine if we could use it in our development stack. This approach allowed our team to grow together and stay current with new technologies."
-                  ]
-                },
-                {
-                  "description": "On call engineer.",
-                  "details": [
-                    "All team members took turns being on call. If an issue were to arise after standard office hours, it was that team member’s responsibility to work with the system administrator in an effort to quickly resolve the problem."
-                  ]
-                }
-              ]
-            }
+            "sections": [
+              {
+                "title": "Operational Conversion",
+                "values": [
+                  "As part of Guaranty Bank's purchase by First Citizens bank, all customer data needed to be exported from our systems into those used by First Citizens bank.",
+                  "After asking our core provider for an estimate to have the export done, we decided to build a tool that would handle the export process. This tool extracted and converted terabytes of customer data from our systems, and prepared it for importing into the target systems at First Citizens bank. This project saved the bank over $250,000 in a single year."
+                ]
+              },
+              {
+                "title": "Credit Builder",
+                "values": [
+                  "Designed as a website for branch users, this application was created to help customers increase their credit scores. The website was built using ASP.NET MVC 5 (Razor syntax), Javascript (with jQuery), and Bootstrap 3. Data persistence was achieved with Entity Framework 6 and SQL Server.",
+                  "The process was very simple, a customer would walk into the branch and work with a teller through a wizard in the web site. At the end of the wizard the customer would immediately find out if they were approved to receive the product.",
+                  "During the wizard, the application would access our internal TransUnion integration (Web API 2) for the customer to see his/her current credit score.",
+                  "As the customer would repay the loan effectively taken out, their scores would change as we reported successful (or missed) payments to the credit bureaus. Checkups were scheduled with customers and a custom graph was built for the website allowing customers to see their progress."
+                ]
+              },
+              {
+                "title": "DocuSign Integration",
+                "values": [
+                  "The bank wished to expand its footprint and offer online accounts. This presented an issue, we still needed to have customers sign the required documents to complete an account opening.",
+                  "DocuSign was selected to provided digital documents to our customers when they opened a new account online. Unfortunately, this had to be done manually each day. A member of the back office would have to create these digital documents using a template created in the DocuSign web portal and send them to new customers each day. Because of all the manual data entry being done, errors were very likely, and there was no consistency for when digital documents would be sent.",
+                  "Using the DocuSign REST API, we created an application (hosted in a Windows Service using the Hangfire library) that would scan for newly opened online accounts each day. If new accounts were found, new envelopes would be created and pre-filled with the proper customer data. Checkpoints were created to give the back office a chance to validate these pre-populated forms before sending them to customers via email.",
+                  "A later implementation of the project (never deployed to production) aimed to use business rules in a web site for the back office to define custom mappings from our internal data schemas to the templates defined in the DocuSign web portal. The library selected to achieve these business rules was Code Effects."
+                ]
+              },
+              {
+                "title": "TransUnion Integration",
+                "values": [
+                  "As a financial institution, the bank had a need to determine a customer's FICO score. These scores were used by various internal applications, and some customer facing applications (Credit Builder).",
+                  "TransUnion exposed a service we were able to consume. This service (TUXML API) provided us with valuable information to help the bank sell other products, and help our customers understand the importance of a healthy credit score.",
+                  "An internal web site was created to handle the integration with TransUnion. The website was built using ASP.NET Web API and ASP.NET MVC. Once the data was retrieved, it was encrypted and stored using Microsoft SQL Server as the primary data store. To further secure the data internally, OAuth2 (provided by OWIN middleware) was used for the Web API internal integration to prevent unauthorized users from accessing customer data.",
+                  "Because each request to TransUnion cost the bank a fee, storing this data offered a significant cost savings when a recent credit score wasn't required."
+                ]
+              },
+              {
+                "title": "Build Automation",
+                "values": [
+                  "Originally, the team built all software our their local machines and manually published these package to development servers. This practice proved to be cumbersome and error prone. To resolve those issues, we experimented with the build tools provided by Team Foundation Server (TFS).",
+                  "Once properly configured, we were able to utilize features such as continuous integration (CI), gated check-ins, and environment based deployments. CI increased the team's code quality and reduced the bugs we introduced to test and production environments. Gated check-ins allowed the team to be more aware of what changes were being made to different applications if several developers were working on the same project at once.",
+                  "Environment based deployments benefited the system administrators as well. Because the build server handled all the configuration for a specific environment, they were able to spend time on other tasks instead of constantly working with the development team to get a build properly configured each time a new deployment was needed. By removing the need to have a system administrator manual edit configuration files, errors were greatly reduced, and productivity was increased."
+                ]
+              },
+              {
+                "title": "Data Warehousing",
+                "values": [
+                  "The bank needed a reliable, low cost option for accessing customer data. Our core provider offered tools to achieve the desired result, but they were deemed far too expensive. The least expensive option was to received all data in a batch format each day. Because the batched data wasn't usable in its delivered format, it had to be stored in some form of data warehouse.",
+                  "SQL Server was selected as the primary data store and integration was achieved using SQL Server Integration Services (SSIS).",
+                  "Warehouse needs evolved over time as the back office required more data fields. The schema of the database was expanded using T-SQL scripts. The DBA would review these scripts and work with the developer to ensure the best deployments possible.",
+                  "Due to the size of the database, performance was a concern. Regular testing was done to ensure table performance was fast enough to meet daily scheduling deadlines during imports, and for reporting after the loads were completed. If needed, indexes would be tested and added to maintain the required performance constraints."
+                ]
+              },
+              {
+                "title": "Debt Sales",
+                "values": [
+                  "When the bank accrued a high number of delinquent accounts, they would be sold to a debt collector as a means for the bank to recoup some lost revenue.",
+                  "To complete the sale of accounts, they first had to be processed by our core provider to ready them. The process involved created a fixed width file containing the relevant fields needed to adjust the accounts. To create this file, a console application utilizing command line switches was built by the development team. Because different fields were added or removed from the fixed width output file, the Managed Extensibility Framework (MEF) was used. This provided flexibility in which fields were injected into the output file with each different run.",
+                  "After accounts were properly prepared for the sale, exports of all required account documents were needed. Because no export tool was provided to aggregate these documents, we created a tool to handle the task using the existing API provided by our imaging and reporting systems."
+                ]
+              },
+              {
+                "title": "Developed and maintained custom bank software.",
+                "values": [
+                  "Backend tools were created to help realize new efficiencies and cost savings in places were manual intervention was being done. By replacing these manual tasks with automated tools, we were able to help the bank reduce errors in data, reduce risk, and free up some time for those team members who were performing manual tasks. Another major advantage these tools offered was having an audit log to help future users reconcile what operations may have been performed on a given customer record without having to contact every person in the historical process chain.",
+                  "To help drive new revenue, web applications were created for use in the branches and back office. These products offered a simple interface, with a robust and secure backend to process customer data.",
+                  "Applications were also created to alert the bank of potential risks, thus lowering the overall operating cost. These applications would typically provided a web interface for the back office, or a simple email alert if something required attention from a user."
+                ]
+              },
+              {
+                "title":
+                  "Defined application architecture templates for the team to use when developing new projects.",
+                "values": [
+                  "As a team of many backgrounds, we needed some continuity in the way we developed our projects. Working together, we all agreed upon design patterns that best suited the different business cases we were responsible for solving."
+                ]
+              },
+              {
+                "title":
+                  "Gathered requirements from back office business users to help create new tools and applications for different areas of the bank to utilize.",
+                "values": [
+                  "Being part of a small team meant we had to assume more than one role when it was called for.",
+                  "Team members were responsible for managing their own project boards, and keeping them up to date. These project boards (TFS Storyboarding) served as a transparent method of communicating progress on a particular project."
+                ]
+              },
+              {
+                "title": "Team mentor for technical skills.",
+                "values": [
+                  "As a small team, we tried to stay current with the latest technologies being offered. Because the team always had a backlog of work, it wasn't always easy to continually implement best practices when creating a new tool or web site.",
+                  "As a code hobbyist, I found myself reading (and testing) new tools and methodologies as they became relevant to our team's work. If we found that a new tool or methodology would benefit the team, we would have a lunch 'n learn session to determine if we could use it in our development stack. This approach allowed our team to grow together and stay current with new technologies."
+                ]
+              },
+              {
+                "title": "On call engineer.",
+                "values": [
+                  "All team members took turns being on call. If an issue were to arise after standard office hours, it was that team member’s responsibility to work with the system administrator in an effort to quickly resolve the problem."
+                ]
+              }
+            ]
           }
         ]
       },
@@ -225,96 +218,88 @@
           {
             "title": "Software Developer",
             "duration": "(January 2013 - July 2015)",
-            "accomplishments": {
-              "title": "Key Accomplishments",
-              "values": [
-                {
-                  "description": "NaviPlan",
-                  "details": [
-                    "This product was the primary focus for the majority of the development team. Being built using C, C++, C#, Java, SQL (IBM DB2, MSSQL Server, and Oracle), HTML5, CSS, Javascript (using the jQuery library); this product required a very diverse skill set to fully understand.",
-                    "Our teams primarily focused on the engine layer of the application (mostly C++), and would help other teams when needed."
-                  ]
-                },
-                {
-                  "description": "Financial Calculators",
-                  "details": [
-                    "These calculators were created for financial institutions to market their offering to prospective customers.",
-                    "For example, a bank could host these calculators on their public website for prospects to find. After using a calculator, the prospect may engage with the bank, and the bank would then require a larger product offering from Advicent."
-                  ]
-                },
-                {
-                  "description": "Historical Data Warehouse",
-                  "details": [
-                    "Over time, we learned that more data was needed to accurately predict a person's true monetary needs over time. To do this, we started a project to store such information in a \"big data\" warehouse.",
-                    "MongoDB was selected as the primary data store for the customer data as it served our needs the best. Customer data could already be represented in XML format, so transforming it to JSON (the primary storage media for MongoDB), was very easy.",
-                    "The project never completed during my time with the company. It was a great learning experience about big data in an enterprise scenario."
-                  ]
-                }
-              ]
-            },
-            "responsibilities": {
-              "title": "Responsibilities",
-              "values": [
-                {
-                  "description":
-                    "Served as the lead developer for small project teams.",
-                  "details": [
-                    "Responsible for splitting projects into small chunks using the Agile development methodology. These project epics would be split into stories, and eventually into itemized development tasks for the team to completed.",
-                    "Participated in the design process for new features, and new products.",
-                    "The lead would help the team understand their roles, and work together ensuring all tasks were always completed by the previously planned completion date.",
-                    "Team sizes typically consisted of 3-4 developers (including the lead), 1 quality assurance analyst, 1 business analyst, and 1 project manager. This small team worked together with other teams of similar sizing to complete major application milestones over several months, or even years."
-                  ]
-                },
-                {
-                  "description":
-                    "Built and maintained in-house software to be used as tools for departments needing them.",
-                  "details": [
-                    "Some primary examples of tools built were Quality Assurance (QA) automation tools, and customer branding.",
-                    "The QA tools were created to help the team deploy new application builds to different environments quickly. This allowed the team to test different builds of a product much more efficiently without the need to get the development team, or the system administration team involved.",
-                    "The customer branding tool was designed for the sales team to customize the interface of the application quickly with a few simple clicks through a XAML based Windows desktop application. The tool allowed for custom application coloring, custom fonts, and company images to be applied to our primary product. After all choices were made by the user, a definition file was exported and assigned to the customer who requested the branding changes. This product saved the development and sales team a great deal of time since there was no longer a need to work back and forth with a customer on the outside making little changes when they didn't like how the final product appeared."
-                  ]
-                },
-                {
-                  "description":
-                    "Handled escalated issues from customers on an as needed basis. If the product support team was unable to resolve a customer’s issue, it would be sent to development and taken from a support queue.",
-                  "details": [
-                    "Issues regarding application support and understanding how the product functioned represented a small portion of these calls. If the product support team was unable to describe a piece of functionality to the customer's liking, a member of the development would work with a business analyst to ensure the customer received an acceptable answer.",
-                    "Bug reports were among the most common issues reported. Bugs would first have to be reproduced, and then assessed. If the bug was a small edge case and a workaround was present, it could be deferred to a later product update. However, if a bug caused incorrect calculations in the primary financial product, a hotfix would be implemented quickly and communicated to the customer."
-                  ]
-                },
-                {
-                  "description":
-                    "Worked directly with business analysts and product managers to help define the product road-map, and the features that were most desired by customers.",
-                  "details": [
-                    "Working closely with business analysts helped the development team understand the product we were building. This lead to us making better decisions about how a feature or bug should be implemented/resolved."
-                  ]
-                },
-                {
-                  "description":
-                    "Contributed to the documentation of the products we sold.",
-                  "details": [
-                    "By providing details to the help documentation and How-Tos, we created an easier application for all users to understand.",
-                    "This documentation also served as an entry point for new team members to learn about the product we built."
-                  ]
-                },
-                {
-                  "description":
-                    "Participated in code reviews with peers prior to the check-in of any source code changes.",
-                  "details": [
-                    "These reviews were intended as a means to ensure high quality code.",
-                    "A major benefit of doing the reviews with other teams members was the exposure given to the team as a whole. If more team members were exposed to the changes being made, it would aid in the learning of the application, and speed up future development since those people exposed already knew why certain changes were made.",
-                    "By having multiple developers review changes, the product was less likely to suffer from conflicting changes since others were aware of what changes were happening to the entire code base. The communication enabled by this practice helped to prevent breaking changes in future projects."
-                  ]
-                },
-                {
-                  "description":
-                    "Trained new developers and quality assurance analysts as the joined our team.",
-                  "details": [
-                    "By onboarding new team members quickly, and in a shared capacity, the development team was able to work much more efficiently. We were also given the opportunity to get to know new team members right away and establish good communication early on."
-                  ]
-                }
-              ]
-            }
+            "sections": [
+              {
+                "title": "NaviPlan",
+                "values": [
+                  "This product was the primary focus for the majority of the development team. Being built using C, C++, C#, Java, SQL (IBM DB2, MSSQL Server, and Oracle), HTML5, CSS, Javascript (using the jQuery library); this product required a very diverse skill set to fully understand.",
+                  "Our teams primarily focused on the engine layer of the application (mostly C++), and would help other teams when needed."
+                ]
+              },
+              {
+                "title": "Financial Calculators",
+                "values": [
+                  "These calculators were created for financial institutions to market their offering to prospective customers.",
+                  "For example, a bank could host these calculators on their public website for prospects to find. After using a calculator, the prospect may engage with the bank, and the bank would then require a larger product offering from Advicent."
+                ]
+              },
+              {
+                "title": "Historical Data Warehouse",
+                "values": [
+                  "Over time, we learned that more data was needed to accurately predict a person's true monetary needs over time. To do this, we started a project to store such information in a \"big data\" warehouse.",
+                  "MongoDB was selected as the primary data store for the customer data as it served our needs the best. Customer data could already be represented in XML format, so transforming it to JSON (the primary storage media for MongoDB), was very easy.",
+                  "The project never completed during my time with the company. It was a great learning experience about big data in an enterprise scenario."
+                ]
+              },
+              {
+                "title":
+                  "Served as the lead developer for small project teams.",
+                "values": [
+                  "Responsible for splitting projects into small chunks using the Agile development methodology. These project epics would be split into stories, and eventually into itemized development tasks for the team to completed.",
+                  "Participated in the design process for new features, and new products.",
+                  "The lead would help the team understand their roles, and work together ensuring all tasks were always completed by the previously planned completion date.",
+                  "Team sizes typically consisted of 3-4 developers (including the lead), 1 quality assurance analyst, 1 business analyst, and 1 project manager. This small team worked together with other teams of similar sizing to complete major application milestones over several months, or even years."
+                ]
+              },
+              {
+                "title":
+                  "Built and maintained in-house software to be used as tools for departments needing them.",
+                "values": [
+                  "Some primary examples of tools built were Quality Assurance (QA) automation tools, and customer branding.",
+                  "The QA tools were created to help the team deploy new application builds to different environments quickly. This allowed the team to test different builds of a product much more efficiently without the need to get the development team, or the system administration team involved.",
+                  "The customer branding tool was designed for the sales team to customize the interface of the application quickly with a few simple clicks through a XAML based Windows desktop application. The tool allowed for custom application coloring, custom fonts, and company images to be applied to our primary product. After all choices were made by the user, a definition file was exported and assigned to the customer who requested the branding changes. This product saved the development and sales team a great deal of time since there was no longer a need to work back and forth with a customer on the outside making little changes when they didn't like how the final product appeared."
+                ]
+              },
+              {
+                "title":
+                  "Handled escalated issues from customers on an as needed basis. If the product support team was unable to resolve a customer’s issue, it would be sent to development and taken from a support queue.",
+                "values": [
+                  "Issues regarding application support and understanding how the product functioned represented a small portion of these calls. If the product support team was unable to describe a piece of functionality to the customer's liking, a member of the development would work with a business analyst to ensure the customer received an acceptable answer.",
+                  "Bug reports were among the most common issues reported. Bugs would first have to be reproduced, and then assessed. If the bug was a small edge case and a workaround was present, it could be deferred to a later product update. However, if a bug caused incorrect calculations in the primary financial product, a hotfix would be implemented quickly and communicated to the customer."
+                ]
+              },
+              {
+                "title":
+                  "Worked directly with business analysts and product managers to help define the product road-map, and the features that were most desired by customers.",
+                "values": [
+                  "Working closely with business analysts helped the development team understand the product we were building. This lead to us making better decisions about how a feature or bug should be implemented/resolved."
+                ]
+              },
+              {
+                "title":
+                  "Contributed to the documentation of the products we sold.",
+                "values": [
+                  "By providing details to the help documentation and How-Tos, we created an easier application for all users to understand.",
+                  "This documentation also served as an entry point for new team members to learn about the product we built."
+                ]
+              },
+              {
+                "title":
+                  "Participated in code reviews with peers prior to the check-in of any source code changes.",
+                "values": [
+                  "These reviews were intended as a means to ensure high quality code.",
+                  "A major benefit of doing the reviews with other teams members was the exposure given to the team as a whole. If more team members were exposed to the changes being made, it would aid in the learning of the application, and speed up future development since those people exposed already knew why certain changes were made.",
+                  "By having multiple developers review changes, the product was less likely to suffer from conflicting changes since others were aware of what changes were happening to the entire code base. The communication enabled by this practice helped to prevent breaking changes in future projects."
+                ]
+              },
+              {
+                "title":
+                  "Trained new developers and quality assurance analysts as the joined our team.",
+                "values": [
+                  "By onboarding new team members quickly, and in a shared capacity, the development team was able to work much more efficiently. We were also given the opportunity to get to know new team members right away and establish good communication early on."
+                ]
+              }
+            ]
           }
         ]
       },
@@ -338,56 +323,48 @@
           {
             "title": "Peer Assisted Learner",
             "duration": "(September 2012 - December 2012)",
-            "accomplishments": null,
-            "responsibilities": {
-              "title": "Responsibilities",
-              "values": [
-                {
-                  "description":
-                    "The Peer Assisted Learner's (PAL) main role was the attend introductory courses for languages such as C, C++, Java, and Visual Basic (VB)",
-                  "details": [
-                    "By attending the classes directly, the PAL was able to better understand the course curriculum, providing a better experience for the students in the classroom.",
-                    "As a member of the class, students felt more comfortable working directly with the PAL when seeking out help for an assignment or lab work."
-                  ]
-                },
-                {
-                  "description":
-                    "Office hours were held by the PAL to provide students with an opportunity to receive help on their assignments and lab work.",
-                  "details": [
-                    "If an exam was approaching, this was an opportunity for the students to ensure they were ready by working with the PAL to review any material that may show up on the exam.",
-                    "Because the PAL was a member of the class, he/she may not know all the details of the exam ahead of time. This meant the review sessions with students also taught good study habits since the PAL helped students prepare for the unknown the same way he/she would have.",
-                    "Aside from helping students with their code, the PAL would also assist in the learning of the Integrated Development Environments (IDEs) used for each class. In C, C++, and VB classes, this was Visual Studio. For Java based classes, this was either NetBeans or Eclipse."
-                  ]
-                }
-              ]
-            }
+            "sections": [
+              {
+                "title":
+                  "The Peer Assisted Learner's (PAL) main role was the attend introductory courses for languages such as C, C++, Java, and Visual Basic (VB)",
+                "values": [
+                  "By attending the classes directly, the PAL was able to better understand the course curriculum, providing a better experience for the students in the classroom.",
+                  "As a member of the class, students felt more comfortable working directly with the PAL when seeking out help for an assignment or lab work."
+                ]
+              },
+              {
+                "title":
+                  "Office hours were held by the PAL to provide students with an opportunity to receive help on their assignments and lab work.",
+                "values": [
+                  "If an exam was approaching, this was an opportunity for the students to ensure they were ready by working with the PAL to review any material that may show up on the exam.",
+                  "Because the PAL was a member of the class, he/she may not know all the details of the exam ahead of time. This meant the review sessions with students also taught good study habits since the PAL helped students prepare for the unknown the same way he/she would have.",
+                  "Aside from helping students with their code, the PAL would also assist in the learning of the Integrated Development Environments (IDEs) used for each class. In C, C++, and VB classes, this was Visual Studio. For Java based classes, this was either NetBeans or Eclipse."
+                ]
+              }
+            ]
           },
           {
             "title": "Grader & Lab Assistant",
             "duration": "(February 2010 - May 2012)",
-            "accomplishments": null,
-            "responsibilities": {
-              "title": "Responsibilities",
-              "values": [
-                {
-                  "description":
-                    "Grading exams and assignments for classes taught by the Computer Science & Software Engineering professors.",
-                  "details": [
-                    "Exams were issued using paper copies, and online tools.",
-                    "The grader would score these systems using predefined tools provided by the course professor.",
-                    "After exams and assignments were returned, the grader would then help students with any questions they may have after course hours, or during lab assistant hours."
-                  ]
-                },
-                {
-                  "description": "Lab assistant for introductory courses.",
-                  "details": [
-                    "The role of a lab assistant was to help those students in several courses being taught during the semester.",
-                    "If a student found themselves falling behind on course work, it was the responsibility of the lab assistant to aid the student in finishing their work on time.",
-                    "If a student was having continuing issues with the course work, the lab assistant worked directly with the professors to ensure the student would successfully complete the course material."
-                  ]
-                }
-              ]
-            }
+            "sections": [
+              {
+                "title":
+                  "Grading exams and assignments for classes taught by the Computer Science & Software Engineering professors.",
+                "values": [
+                  "Exams were issued using paper copies, and online tools.",
+                  "The grader would score these systems using predefined tools provided by the course professor.",
+                  "After exams and assignments were returned, the grader would then help students with any questions they may have after course hours, or during lab assistant hours."
+                ]
+              },
+              {
+                "title": "Lab assistant for introductory courses.",
+                "values": [
+                  "The role of a lab assistant was to help those students in several courses being taught during the semester.",
+                  "If a student found themselves falling behind on course work, it was the responsibility of the lab assistant to aid the student in finishing their work on time.",
+                  "If a student was having continuing issues with the course work, the lab assistant worked directly with the professors to ensure the student would successfully complete the course material."
+                ]
+              }
+            ]
           }
         ]
       }

@@ -7,26 +7,10 @@
     <mat-card-subtitle>{{position.duration}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="position.accomplishments">
-      <b>{{position.accomplishments.title}}</b>
+    <div *ngFor="let section of position.sections">
+      <h4>{{section.title}}</h4>
       <ul>
-        <li *ngFor="let accomplishment of position.accomplishments.values">
-          {{accomplishment.description}}
-          <ul *ngIf="accomplishment.details && accomplishment.details.length > 0">
-            <li *ngFor="let detail of accomplishment.details">{{detail}}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div *ngIf="position.responsibilities">
-      <b>{{position.responsibilities.title}}</b>
-      <ul>
-        <li *ngFor="let responsibility of position.responsibilities.values">
-          {{responsibility.description}}
-          <ul *ngIf="responsibility.details && responsibility.details.length > 0">
-            <li *ngFor="let detail of responsibility.details">{{detail}}</li>
-          </ul>
-        </li>
+        <li *ngFor="let value of section.values">{{value}}</li>
       </ul>
     </div>
   </mat-card-content>

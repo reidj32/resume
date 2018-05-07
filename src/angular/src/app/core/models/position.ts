@@ -1,9 +1,7 @@
-import { Accomplishment } from './accomplishment';
-import { Responsibility } from './responsibility';
+import { Section } from './section';
 
 export class Position {
   title: string;
   duration: string;
-  accomplishments: Accomplishment;
-  responsibilities: Responsibility;
+  sections: Section[] = [];
 }
