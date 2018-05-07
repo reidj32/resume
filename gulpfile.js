@@ -374,7 +374,7 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
 });
 
 gulp.task('build:angular:deps', ['clean:angular'], function() {
-    return gulp.src('./i18n/data.*.json')
+  return gulp.src('./i18n/data.*.json')
     .pipe(gulp.dest('./src/angular/src/assets/i18n/'));
 });
 
@@ -382,7 +382,7 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  * Packages the Angular build
  */
 gulp.task('package:angular', ['build:angular'], function() {
-  del.sync('./src/angular/dist/assets');
+  del.sync('./src/angular/dist/assets/i18n');
 
   return gulp.src('./src/angular/dist/**/*')
     .pipe(gulp.dest('./dist/resumes/angular/'));

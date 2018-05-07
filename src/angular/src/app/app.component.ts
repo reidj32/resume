@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 
 import { Resume } from './core/models/resume';
 import { ResumeService } from './core/services/resume.service';
+import { environment } from '../environments/environment.prod';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'jpr-root',
@@ -21,11 +24,23 @@ export class AppComponent implements OnInit, OnDestroy {
     private resumeService: ResumeService,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this.mobileQueryListener);
+
+    iconRegistry.addSvgIcon(
+      'github',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
+    );
+
+    iconRegistry.addSvgIcon(
+      'linkedin',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/linkedin.svg')
+    );
   }
 
   ngOnInit(): void {
@@ -44,6 +59,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   navigateHome(): void {
-    this.router.navigateByUrl('/');
+    window.location.href = '/';
+  }
+
+  openGitHub(): void {
+    window.location.href = this.resume.github;
+  }
+
+  openLinkedIn(): void {
+    window.location.href = this.resume.linkedin;
   }
 }

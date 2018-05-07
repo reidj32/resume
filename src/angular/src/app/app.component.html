@@ -6,8 +6,17 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="name">{{resume.name}}</h1> |
-    <h2 class="title">{{resume.title}}</h2>
+    <span>{{resume.name}} | {{resume.title}}</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="navigateHome()" matTooltip="Return to home page">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-button (click)="openGitHub()">
+      <mat-icon svgIcon="github" class="button-icon"></mat-icon> Github
+    </button>
+    <button mat-button (click)="openLinkedIn()">
+      <mat-icon svgIcon="linkedin" class="button-icon"></mat-icon> LinkedIn
+    </button>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
@@ -33,7 +42,7 @@
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content class="main-content">
+    <mat-sidenav-content class="main-content mat-typography">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
