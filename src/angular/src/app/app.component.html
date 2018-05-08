@@ -33,9 +33,9 @@
     <!-- Mobile Buttons -->
   </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container mat-elevation-z10" [style.marginTop.px]="isMobileScreen() ? 56 : 0">
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="isMobileScreen() ? 56 : 0">
     <mat-sidenav #sidenav [mode]="isMobileScreen() ? 'over' : 'side'" [fixedInViewport]="isMobileScreen()"
-      fixedTopGap="56" [opened]="!isMobileScreen()">
+      fixedTopGap="56" [opened]="!isMobileScreen()" class="mat-elevation-z8">
       <mat-nav-list>
         <a mat-list-item routerLink="about">
           <mat-icon mat-list-icon>info_outline</mat-icon>
