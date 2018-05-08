@@ -333,6 +333,9 @@ jQuery.noConflict();
     populateSkills(data.skills);
     populateExperience(data.experience);
     populateEducation(data.education);
+
+    $('#github-link').attr('href', data.github);
+    $('#linkedin-link').attr('href', data.linkedin);
   }
 
   function getQueryParameterByName(name, url) {
