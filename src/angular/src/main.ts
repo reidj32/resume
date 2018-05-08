@@ -6,6 +6,16 @@ import { environment } from './environments/environment';
 
 import 'hammerjs';
 
+const materialIconLink = document.createElement('link');
+materialIconLink.rel = 'stylesheet';
+materialIconLink.href = environment.materialIconFont;
+document.head.appendChild(materialIconLink);
+
+const robotoFontLink = document.createElement('link');
+robotoFontLink.rel = 'stylesheet';
+robotoFontLink.href = environment.robotoIconFont;
+document.head.appendChild(robotoFontLink);
+
 if (environment.production) {
   enableProdMode();
 }
