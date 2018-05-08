@@ -11,7 +11,8 @@
         <mat-card *ngFor="let program of education.undergraduate.programs">
           <mat-card-header>
             <div mat-card-avatar>
-              <mat-icon class="undergrad-icon" color="primary">location_city</mat-icon>
+              <!-- location_city -->
+              <mat-icon class="undergrad-icon" color="primary">&#xE7F1;</mat-icon>
             </div>
             <mat-card-title>{{program.title}}</mat-card-title>
             <mat-card-subtitle>{{program.class.value}}</mat-card-subtitle>
@@ -34,7 +35,8 @@
       <mat-tab label="{{education.pluralsight.title}}">
         <mat-nav-list>
           <a mat-list-item [href]="course.link" target="_blank" *ngFor="let course of education.pluralsight.courses">
-            <mat-icon mat-list-icon color="accent">open_in_new</mat-icon>
+            <!-- open_in_new -->
+            <mat-icon mat-list-icon color="accent">&#xE89E;</mat-icon>
             <h4 mat-line>{{course.title}}</h4>
             <p mat-line>{{course.author}}</p>
           </a>

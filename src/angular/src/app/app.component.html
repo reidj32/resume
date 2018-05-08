@@ -4,14 +4,16 @@
 <div class="container" [class.is-mobile]="isMobileScreen()" *ngIf="!loading">
   <mat-toolbar color="primary" class="toolbar">
     <button #sidenavMenuButton mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
+      <!-- menu -->
+      <mat-icon>&#xE5D2;</mat-icon>
     </button>
     <span *ngIf="!isMobileScreen()">{{resume.name}}&nbsp;|&nbsp;{{resume.title}}</span>
     <button mat-button *ngIf="isMobileScreen()" (click)="navigateHome()">{{resume.name}}</button>
     <span class="spacer"></span>
 
     <button mat-icon-button (click)="navigateHome()" *ngIf="!isMobileScreen()" matTooltip="Return to home page">
-      <mat-icon>home</mat-icon>
+      <!-- home -->
+      <mat-icon>&#xE88A;</mat-icon>
     </button>
 
     <!-- Standard Buttons -->
@@ -38,19 +40,23 @@
       fixedTopGap="56" [opened]="!isMobileScreen()" class="mat-elevation-z8">
       <mat-nav-list>
         <a mat-list-item routerLink="about">
-          <mat-icon mat-list-icon>info_outline</mat-icon>
+          <!-- info_outline -->
+          <mat-icon mat-list-icon>&#xE88F;</mat-icon>
           <p>{{resume.about.title}}</p>
         </a>
         <a mat-list-item routerLink="skills">
-          <mat-icon mat-list-icon>computer</mat-icon>
+          <!-- computer -->
+          <mat-icon mat-list-icon>&#xE30A;</mat-icon>
           <p>{{resume.skills.title}}</p>
         </a>
         <a mat-list-item routerLink="experience">
-          <mat-icon mat-list-icon>group</mat-icon>
+          <!-- group -->
+          <mat-icon mat-list-icon>&#xE7EF;</mat-icon>
           <p>{{resume.experience.title}}</p>
         </a>
         <a mat-list-item routerLink="education">
-          <mat-icon mat-list-icon>school</mat-icon>
+          <!-- school -->
+          <mat-icon mat-list-icon>&#xE80C;</mat-icon>
           <p>{{resume.education.title}}</p>
         </a>
       </mat-nav-list>
