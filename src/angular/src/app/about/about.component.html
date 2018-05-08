@@ -3,9 +3,9 @@
 </div>
 <mat-card *ngIf="about">
   <mat-card-title>
-    <h2>{{about.title}}</h2>
+    <h1 class="mat-headline">{{about.title}}</h1>
   </mat-card-title>
   <mat-card-content>
-    <p *ngFor="let paragraph of about.paragraphs">{{paragraph}}</p>
+    <p class="mat-body-1" *ngFor="let paragraph of about.paragraphs">{{paragraph}}</p>
   </mat-card-content>
 </mat-card>

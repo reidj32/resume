@@ -8,9 +8,9 @@
   </mat-card-header>
   <mat-card-content>
     <div *ngFor="let section of position.sections">
-      <h4>{{section.title}}</h4>
+      <h3 class="mat-subheading-2">{{section.title}}</h3>
       <ul>
-        <li *ngFor="let value of section.values">{{value}}</li>
+        <li class="mat-body-1" *ngFor="let value of section.values">{{value}}</li>
       </ul>
     </div>
   </mat-card-content>
