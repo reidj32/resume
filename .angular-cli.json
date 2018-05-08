@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src/angular/src",
-      "outDir": "src/angular/dist",
+      "outDir": "src/angular/build",
       "assets": ["assets"],
       "index": "index.html",
       "main": "main.ts",

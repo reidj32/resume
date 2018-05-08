@@ -358,6 +358,12 @@ ansi-gray@^0.1.1:
   dependencies:
     ansi-wrap "0.1.0"
 
+ansi-green@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/ansi-green/-/ansi-green-0.1.1.tgz#8a5d9a979e458d57c40e33580b37390b8e10d0f7"
+  dependencies:
+    ansi-wrap "0.1.0"
+
 ansi-html@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ansi-html/-/ansi-html-0.0.7.tgz#813584021962a9e9e6fd039f940d12f56ca7859e"
@@ -1966,6 +1972,14 @@ delayed-stream@~1.0.0:
 delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
+
+delete-empty@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/delete-empty/-/delete-empty-2.0.0.tgz#dcf7c4f93a98445119acd57b137d13e7af78fa39"
+  dependencies:
+    log-ok "^0.1.1"
+    relative "^3.0.2"
+    rimraf "^2.6.2"
 
 denodeify@^1.2.1:
   version "1.2.1"
@@ -4770,6 +4784,13 @@ lodash@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-1.0.2.tgz#8f57560c83b59fc270bd3d561b690043430e2551"
 
+log-ok@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/log-ok/-/log-ok-0.1.1.tgz#bea3dd36acd0b8a7240d78736b5b97c65444a334"
+  dependencies:
+    ansi-green "^0.1.1"
+    success-symbol "^0.1.0"
+
 log4js@^2.3.9:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/log4js/-/log4js-2.5.3.tgz#38bb7bde5e9c1c181bd75e8bc128c5cd0409caf1"
@@ -6657,6 +6678,12 @@ relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
 
+relative@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/relative/-/relative-3.0.2.tgz#0dcd8ec54a5d35a3c15e104503d65375b5a5367f"
+  dependencies:
+    isobject "^2.0.0"
+
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
@@ -7636,6 +7663,10 @@ stylus@^0.54.5:
     mkdirp "0.5.x"
     sax "0.5.x"
     source-map "0.1.x"
+
+success-symbol@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/success-symbol/-/success-symbol-0.1.0.tgz#24022e486f3bf1cdca094283b769c472d3b72897"
 
 supports-color@^0.2.0:
   version "0.2.0"

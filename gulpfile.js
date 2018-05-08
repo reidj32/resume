@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var del = require('del');
+var delete_empty = require('delete-empty');
 var yargs = require('yargs');
 var merge = require('merge-stream');
 var child_process = require('child_process');
@@ -49,7 +50,7 @@ var watchOpts = {
 
 var injectOpts = {
   relative: true,
-  ignorePath: ['../dist/']
+  ignorePath: ['../build/']
 };
 
 var bootstrap = {
@@ -163,7 +164,11 @@ gulp.task('package', sequence('clean', ['package:assets', 'package:welcome', 'pa
 gulp.task('package:assets', function() {
   var streams = [];
 
-  streams.push(gulp.src('./assets/fonts/*')
+  streams.push(gulp.src('./assets/fonts/*!(.css)')
+    .pipe(gulp.dest('./dist/fonts/')));
+
+  streams.push(gulp.src('./assets/fonts/*.css')
+    .pipe(gulpif(config.production(), minify()))
     .pipe(gulp.dest('./dist/fonts/')));
 
   streams.push(gulp.src('./assets/i18n/*.json')
@@ -194,23 +199,23 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
   return gulp.src('./src/welcome/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/welcome/dist/**/jquery.min.js',
-        './src/welcome/dist/**/popper.min.js',
-        './src/welcome/dist/**/bootstrap.min.?(js|css)',
-        './src/welcome/dist/**/fontawesome-all.min.js',
-        './src/welcome/dist/**/site?(.min).?(js|css)'
+        './src/welcome/build/**/jquery.min.js',
+        './src/welcome/build/**/popper.min.js',
+        './src/welcome/build/**/bootstrap.min.?(js|css)',
+        './src/welcome/build/**/fontawesome-all.min.js',
+        './src/welcome/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/welcome/dist/**/jquery.js?(.map)',
-        './src/welcome/dist/**/popper.js?(.map)',
-        './src/welcome/dist/**/bootstrap.?(js|css)?(.map)',
-        './src/welcome/dist/**/fontawesome-all.js',
-        './src/welcome/dist/**/site?(.min).?(js|css)'
+        './src/welcome/build/**/jquery.js?(.map)',
+        './src/welcome/build/**/popper.js?(.map)',
+        './src/welcome/build/**/bootstrap.?(js|css)?(.map)',
+        './src/welcome/build/**/fontawesome-all.js',
+        './src/welcome/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/welcome/dist/'));
+    .pipe(gulp.dest('./src/welcome/build/'));
 });
 
 /**
@@ -221,39 +226,39 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
 
   if (config.production()) {
     streams.push(gulp.src(bootstrap.min.js)
-      .pipe(gulp.dest('./src/welcome/dist/js/')));
+      .pipe(gulp.dest('./src/welcome/build/js/')));
 
     streams.push(gulp.src(bootstrap.min.css)
-      .pipe(gulp.dest('./src/welcome/dist/css/')));
+      .pipe(gulp.dest('./src/welcome/build/css/')));
 
     streams.push(gulp.src(fontawesome.min.js)
-      .pipe(gulp.dest('./src/welcome/dist/js/')));
+      .pipe(gulp.dest('./src/welcome/build/js/')));
   } else {
     streams.push(gulp.src(bootstrap.js)
-      .pipe(gulp.dest('./src/welcome/dist/js/')));
+      .pipe(gulp.dest('./src/welcome/build/js/')));
 
     streams.push(gulp.src(bootstrap.css)
-      .pipe(gulp.dest('./src/welcome/dist/css/')));
+      .pipe(gulp.dest('./src/welcome/build/css/')));
 
     streams.push(gulp.src(fontawesome.js)
-      .pipe(gulp.dest('./src/welcome/dist/js/')));
+      .pipe(gulp.dest('./src/welcome/build/js/')));
 
     streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./src/welcome/dist/')));
+      .pipe(gulp.dest('./src/welcome/build/')));
   }
 
   streams.push(gulp.src('./src/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/welcome/dist/')));
+    .pipe(gulp.dest('./src/welcome/build/')));
 
   streams.push(gulp.src('./src/welcome/src/**/*.js')
     .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
-    .pipe(gulp.dest('./src/welcome/dist/')));
+    .pipe(gulp.dest('./src/welcome/build/')));
 
   streams.push(gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
-    .pipe(gulp.dest('./src/welcome/dist/')));
+    .pipe(gulp.dest('./src/welcome/build/')));
 
   return merge(streams);
 });
@@ -262,15 +267,31 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
  * Packages the Welcome build
  */
 gulp.task('package:welcome', ['build:welcome'], function() {
-  return gulp.src('./src/welcome/dist/**/*')
-    .pipe(gulp.dest('./dist/'));
+  var streams = [];
+
+  if (config.production()) {
+    del.sync([
+      './src/welcome/build/css/!(site)*.min.css',
+      './src/welcome/build/js/!(site)*.min.js'
+    ]);
+
+    delete_empty.sync('./src/welcome/build/');
+
+    streams.push(gulp.src(faviconArray)
+      .pipe(gulp.dest('./dist/')));
+  }
+
+  streams.push(gulp.src('./src/welcome/build/**/*')
+    .pipe(gulp.dest('./dist/')));
+
+  return merge(streams);
 });
 
 /**
  * Cleans the Welcome project
  */
 gulp.task('clean:welcome', function() {
-  del.sync(['./src/welcome/dist']);
+  del.sync(['./src/welcome/build']);
 });
 
 /**
@@ -285,25 +306,25 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
   return gulp.src('./src/minimal/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/minimal/dist/**/jquery.min.js',
-        './src/minimal/dist/**/popper.min.js',
-        './src/minimal/dist/**/bootstrap.min.?(js|css)',
-        './src/minimal/dist/**/fontawesome-all.min.js',
-        './src/minimal/dist/**/anchor.min.js',
-        './src/minimal/dist/**/site?(.min).?(js|css)'
+        './src/minimal/build/**/jquery.min.js',
+        './src/minimal/build/**/popper.min.js',
+        './src/minimal/build/**/bootstrap.min.?(js|css)',
+        './src/minimal/build/**/fontawesome-all.min.js',
+        './src/minimal/build/**/anchor.min.js',
+        './src/minimal/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/minimal/dist/**/jquery.js?(.map)',
-        './src/minimal/dist/**/popper.js?(.map)',
-        './src/minimal/dist/**/bootstrap.?(js|css)?(.map)',
-        './src/minimal/dist/**/fontawesome-all.js',
-        './src/minimal/dist/**/anchor.js?(.map)',
-        './src/minimal/dist/**/site?(.min).?(js|css)'
+        './src/minimal/build/**/jquery.js?(.map)',
+        './src/minimal/build/**/popper.js?(.map)',
+        './src/minimal/build/**/bootstrap.?(js|css)?(.map)',
+        './src/minimal/build/**/fontawesome-all.js',
+        './src/minimal/build/**/anchor.js?(.map)',
+        './src/minimal/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/minimal/dist/'));
+    .pipe(gulp.dest('./src/minimal/build/'));
 });
 
 /**
@@ -314,46 +335,46 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
 
   if (config.production()){
     streams.push(gulp.src(bootstrap.min.js)
-      .pipe(gulp.dest('./src/minimal/dist/js/')));
+      .pipe(gulp.dest('./src/minimal/build/js/')));
 
     streams.push(gulp.src(bootstrap.min.css)
-      .pipe(gulp.dest('./src/minimal/dist/css/')));
+      .pipe(gulp.dest('./src/minimal/build/css/')));
 
     streams.push(gulp.src(anchor.min.js)
-      .pipe( gulp.dest('./src/minimal/dist/js/')));
+      .pipe( gulp.dest('./src/minimal/build/js/')));
 
     streams.push(gulp.src(fontawesome.min.js)
-      .pipe(gulp.dest('./src/minimal/dist/js/')));
+      .pipe(gulp.dest('./src/minimal/build/js/')));
   } else {
     streams.push(gulp.src(bootstrap.js)
-      .pipe(gulp.dest('./src/minimal/dist/js/')));
+      .pipe(gulp.dest('./src/minimal/build/js/')));
 
     streams.push(gulp.src(bootstrap.css)
-      .pipe(gulp.dest('./src/minimal/dist/css/')));
+      .pipe(gulp.dest('./src/minimal/build/css/')));
 
     streams.push(gulp.src(anchor.js)
-      .pipe(gulp.dest('./src/minimal/dist/js/')));
+      .pipe(gulp.dest('./src/minimal/build/js/')));
 
     streams.push(gulp.src(fontawesome.js)
-      .pipe(gulp.dest('./src/minimal/dist/js/')));
+      .pipe(gulp.dest('./src/minimal/build/js/')));
 
     streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./src/minimal/dist/')));
+      .pipe(gulp.dest('./src/minimal/build/')));
   }
 
   streams.push(gulp.src('./src/minimal/src/**/*.css')
     .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/minimal/dist/')));
+    .pipe(gulp.dest('./src/minimal/build/')));
 
   streams.push(gulp.src('./src/minimal/src/**/*.js')
     .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
-    .pipe(gulp.dest('./src/minimal/dist/')));
+    .pipe(gulp.dest('./src/minimal/build/')));
 
   streams.push(gulp.src('./assets/i18n/data.*.json')
     .pipe(gulpif(config.production(), jsonminify()))
-    .pipe(gulp.dest('./src/minimal/dist/i18n/')));
+    .pipe(gulp.dest('./src/minimal/build/i18n/')));
 
   return merge(streams);
 });
@@ -362,20 +383,36 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
  * Packages the Minimal build
  */
 gulp.task('package:minimal', ['build:minimal'], function() {
+  var streams = [];
+
   del.sync([
-    './src/minimal/dist/i18n',
-    './src/minimal/dist/?(favicon.*|apple-touch-icon-precomposed.png)'
+    './src/minimal/build/i18n',
+    './src/minimal/build/?(favicon.*|apple-touch-icon-precomposed.png)'
   ]);
 
-  return gulp.src('./src/minimal/dist/**/*')
-    .pipe(gulp.dest('./dist/resumes/minimal/'));
+  if (config.production()) {
+    del.sync([
+      './src/minimal/build/css/!(site)*.min.css',
+      './src/minimal/build/js/!(site)*.min.js'
+    ]);
+
+    delete_empty.sync('./src/minimal/build/');
+
+    streams.push(gulp.src(faviconArray)
+      .pipe(gulp.dest('./dist/')));
+  }
+
+  streams.push(gulp.src('./src/minimal/build/**/*')
+    .pipe(gulp.dest('./dist/resumes/minimal/')));
+
+  return merge(streams);
 });
 
 /**
  * Cleans the Minimal project
  */
 gulp.task('clean:minimal', function() {
-  del.sync(['./src/minimal/dist']);
+  del.sync(['./src/minimal/build']);
 });
 
 /**
@@ -420,10 +457,10 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  */
 gulp.task('package:angular', ['build:angular'], function() {
   if (config.production()) {
-    del.sync(['./src/angular/dist/assets/!(.gitkeep)']);
+    del.sync(['./src/angular/build/assets']);
   }
 
-  return gulp.src('./src/angular/dist/**/*')
+  return gulp.src('./src/angular/build/**/*')
     .pipe(gulp.dest('./dist/resumes/angular/'));
 });
 
@@ -432,8 +469,8 @@ gulp.task('package:angular', ['build:angular'], function() {
  */
 gulp.task('clean:angular', function() {
   del.sync([
-    './src/angular/dist',
-    './src/angular/src/assets/*!(.gitkeep)'
+    './src/angular/build',
+    './src/angular/src/assets'
   ]);
 });
 
@@ -451,7 +488,7 @@ gulp.task('run', ['package'], function() {
  * Runs the Welcome project in a local webserver
  */
 gulp.task('run:welcome', ['build:welcome'], function(done) {
-  gulp.src('./src/welcome/dist').pipe(webserver(webserverOpts));
+  gulp.src('./src/welcome/build').pipe(webserver(webserverOpts));
   gulp.watch('./src/welcome/src/**/*', watchOpts, ['build:welcome']);
   done();
 });
@@ -460,7 +497,7 @@ gulp.task('run:welcome', ['build:welcome'], function(done) {
  * Runs the Minimal project in a local webserver
  */
 gulp.task('run:minimal', ['build:minimal'], function(done) {
-  gulp.src('./src/minimal/dist').pipe(webserver(webserverOpts));
+  gulp.src('./src/minimal/build').pipe(webserver(webserverOpts));
   gulp.watch('./src/minimal/src/**/*', watchOpts, ['build:minimal']);
   done();
 });
@@ -469,8 +506,15 @@ gulp.task('run:minimal', ['build:minimal'], function(done) {
  * Runs the Angular project in a local webserver
  */
 gulp.task('run:angular', ['build:angular:deps'], function() {
-  child_process.execSync('ng serve --open', function(err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
-  });
+  if (config.development()) {
+      child_process.execSync('ng serve --open', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+    });
+  } else if (config.production()) {
+    child_process.execSync('ng serve --open --prod', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+    });
+  }
 });
