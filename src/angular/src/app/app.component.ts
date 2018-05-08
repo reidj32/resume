@@ -1,49 +1,46 @@
-import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { Resume } from './core/models/resume';
 import { ResumeService } from './core/services/resume.service';
-import { environment } from '../environments/environment.prod';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'jpr-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
+  @ViewChild(MatSidenav) sidenav: MatSidenav;
+  @ViewChild(MatButton) sidenavMenuButton: MatButton;
+
   resume: Resume;
   loading = true;
-  mobileQuery: MediaQueryList;
 
-  private mobileQueryListener: () => void;
+  private mobileQuery: MediaQueryList = matchMedia('(max-width: 600px)');
 
   constructor(
-    private resumeService: ResumeService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
+    zone: NgZone,
+    sanitizer: DomSanitizer,
     iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
+    private router: Router,
+    private resumeService: ResumeService
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this.mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this.mobileQueryListener);
-
-    iconRegistry.addSvgIcon(
-      'github',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
+    this.mobileQuery.addListener(mql =>
+      zone.run(() => (this.mobileQuery = mql))
     );
-
-    iconRegistry.addSvgIcon(
-      'linkedin',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/linkedin.svg')
-    );
+    this.registerMaterialIcons(iconRegistry, sanitizer);
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      if (this.isMobileScreen() && this.sidenav) {
+        this.sidenav.close();
+        this.sidenavMenuButton._elementRef.nativeElement.blur();
+      }
+    });
+
     this.resumeService.getResume('en').subscribe(resume => {
       if (typeof resume === 'string') {
         console.log(resume);
@@ -54,8 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this.mobileQueryListener);
+  isMobileScreen(): boolean {
+    return this.mobileQuery.matches;
   }
 
   navigateHome(): void {
@@ -68,5 +65,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openLinkedIn(): void {
     window.location.href = this.resume.linkedin;
+  }
+
+  private registerMaterialIcons(
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ): void {
+    iconRegistry.addSvgIcon(
+      'github',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
+    );
+
+    iconRegistry.addSvgIcon(
+      'linkedin',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/linkedin.svg')
+    );
   }
 }
