@@ -1,10 +1,11 @@
+import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { constants } from './core/constants';
 import { Resume } from './core/models/resume';
+import { ResponsiveComponent } from './core/responsive-component';
 import { ResumeService } from './core/services/resume.service';
 
 @Component({
@@ -12,27 +13,22 @@ import { ResumeService } from './core/services/resume.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent extends ResponsiveComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav: MatSidenav;
   @ViewChild(MatButton) sidenavMenuButton: MatButton;
 
   resume: Resume;
   loading = true;
 
-  private mobileQuery: MediaQueryList = matchMedia(
-    `(max-width: ${constants.mobileWidth}px)`
-  );
-
   constructor(
     zone: NgZone,
+    mediaMatcher: MediaMatcher,
     sanitizer: DomSanitizer,
     iconRegistry: MatIconRegistry,
     private router: Router,
     private resumeService: ResumeService
   ) {
-    this.mobileQuery.addListener(mql =>
-      zone.run(() => (this.mobileQuery = mql))
-    );
+    super(zone, mediaMatcher);
     this.registerMaterialIcons(iconRegistry, sanitizer);
   }
 
@@ -52,10 +48,6 @@ export class AppComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  isMobileScreen(): boolean {
-    return this.mobileQuery.matches;
   }
 
   navigateHome(): void {

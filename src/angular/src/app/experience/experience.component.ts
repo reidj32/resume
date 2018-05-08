@@ -1,24 +1,23 @@
+import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, NgZone, OnInit } from '@angular/core';
 
-import { constants } from '../core/constants';
 import { Experience } from '../core/models/experience';
+import { ResponsiveComponent } from '../core/responsive-component';
 import { ResumeService } from '../core/services/resume.service';
 
 @Component({
   templateUrl: './experience.component.html',
   styleUrls: ['./experience.component.scss']
 })
-export class ExperienceComponent implements OnInit {
+export class ExperienceComponent extends ResponsiveComponent implements OnInit {
   experience: Experience;
 
-  private mobileQuery: MediaQueryList = matchMedia(
-    `(max-width: ${constants.mobileWidth}px)`
-  );
-
-  constructor(zone: NgZone, private resumeService: ResumeService) {
-    this.mobileQuery.addListener(mql =>
-      zone.run(() => (this.mobileQuery = mql))
-    );
+  constructor(
+    zone: NgZone,
+    mediaMatcher: MediaMatcher,
+    private resumeService: ResumeService
+  ) {
+    super(zone, mediaMatcher);
   }
 
   ngOnInit(): void {
@@ -29,9 +28,5 @@ export class ExperienceComponent implements OnInit {
         this.experience = resume.experience;
       }
     });
-  }
-
-  isMobileScreen(): boolean {
-    return this.mobileQuery.matches;
   }
 }
