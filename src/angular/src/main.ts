@@ -6,6 +6,12 @@ import { environment } from './environments/environment';
 
 import 'hammerjs';
 
+const faviconLink = document.createElement('link');
+faviconLink.rel = 'icon';
+faviconLink.type = 'image/x-icon';
+faviconLink.href = environment.faviconLink;
+document.head.appendChild(faviconLink);
+
 const materialIconLink = document.createElement('link');
 materialIconLink.rel = 'stylesheet';
 materialIconLink.href = environment.materialIconFont;

@@ -4,6 +4,7 @@ import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { environment } from '../environments/environment';
 import { Resume } from './core/models/resume';
 import { ResponsiveComponent } from './core/responsive-component';
 import { ResumeService } from './core/services/resume.service';
@@ -68,12 +69,16 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
   ): void {
     iconRegistry.addSvgIcon(
       'github',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/github.svg')
+      sanitizer.bypassSecurityTrustResourceUrl(
+        `${environment.iconPath}github.svg`
+      )
     );
 
     iconRegistry.addSvgIcon(
       'linkedin',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/linkedin.svg')
+      sanitizer.bypassSecurityTrustResourceUrl(
+        `${environment.iconPath}linkedin.svg`
+      )
     );
   }
 }

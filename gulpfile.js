@@ -27,6 +27,12 @@ var config = {
   }
 };
 
+var faviconArray = [
+  './assets/icons/apple-touch-icon-precomposed.png',
+  './assets/icons/favicon.png',
+  './assets/icons/favicon.ico'
+];
+
 var webserverOpts = {
   open: true,
   livereload: true
@@ -149,15 +155,25 @@ gulp.task('build', sequence('clean', ['build:welcome', 'build:minimal', 'build:a
 /**
  * Packages all files and place them in the ./dist/ directory
  */
-gulp.task('package', sequence('clean', ['package:i18n', 'package:welcome', 'package:minimal', 'package:angular']));
+gulp.task('package', sequence('clean', ['package:assets', 'package:welcome', 'package:minimal', 'package:angular']));
 
 /**
- * Package the i18n files in the ./dist/ directory
+ * Package the asset files in the ./dist/ directory
  */
-gulp.task('package:i18n', function() {
-  return gulp.src('./i18n/*.json')
+gulp.task('package:assets', function() {
+  var streams = [];
+
+  streams.push(gulp.src('./assets/fonts/*')
+    .pipe(gulp.dest('./dist/fonts/')));
+
+  streams.push(gulp.src('./assets/i18n/*.json')
     .pipe(gulpif(config.production(), jsonminify()))
-    .pipe(gulp.dest('./dist/i18n/'));
+    .pipe(gulp.dest('./dist/i18n/')));
+
+  streams.push(gulp.src('./assets/icons/*.svg')
+    .pipe(gulp.dest('./dist/icons/')));
+
+  return merge(streams);
 });
 
 /**
@@ -221,6 +237,9 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
 
     streams.push(gulp.src(fontawesome.js)
       .pipe(gulp.dest('./src/welcome/dist/js/')));
+
+    streams.push(gulp.src(faviconArray)
+      .pipe(gulp.dest('./src/welcome/dist/')));
   }
 
   streams.push(gulp.src('./src/welcome/src/**/*.css')
@@ -317,6 +336,9 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
 
     streams.push(gulp.src(fontawesome.js)
       .pipe(gulp.dest('./src/minimal/dist/js/')));
+
+    streams.push(gulp.src(faviconArray)
+      .pipe(gulp.dest('./src/minimal/dist/')));
   }
 
   streams.push(gulp.src('./src/minimal/src/**/*.css')
@@ -329,7 +351,7 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
     .pipe(gulp.dest('./src/minimal/dist/')));
 
-  streams.push(gulp.src('./i18n/data.*.json')
+  streams.push(gulp.src('./assets/i18n/data.*.json')
     .pipe(gulpif(config.production(), jsonminify()))
     .pipe(gulp.dest('./src/minimal/dist/i18n/')));
 
@@ -340,7 +362,10 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
  * Packages the Minimal build
  */
 gulp.task('package:minimal', ['build:minimal'], function() {
-  del.sync('./src/minimal/dist/i18n');
+  del.sync([
+    './src/minimal/dist/i18n',
+    './src/minimal/dist/?(favicon.*|apple-touch-icon-precomposed.png)'
+  ]);
 
   return gulp.src('./src/minimal/dist/**/*')
     .pipe(gulp.dest('./dist/resumes/minimal/'));
@@ -373,8 +398,21 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
 });
 
 gulp.task('build:angular:deps', ['clean:angular'], function() {
-  return gulp.src('./i18n/data.*.json')
-    .pipe(gulp.dest('./src/angular/src/assets/i18n/'));
+  var streams = [];
+
+  streams.push(gulp.src('./assets/i18n/*')
+    .pipe(gulp.dest('./src/angular/src/assets/i18n/')));
+
+  streams.push(gulp.src('./assets/icons/favicon.ico')
+    .pipe(gulp.dest('./src/angular/src/assets/')));
+
+  streams.push(gulp.src('./assets/icons/*.svg')
+    .pipe(gulp.dest('./src/angular/src/assets/icons/')));
+
+  streams.push(gulp.src('./assets/fonts/*')
+    .pipe(gulp.dest('./src/angular/src/assets/fonts/')));
+
+  return merge(streams);
 });
 
 /**
@@ -382,7 +420,7 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  */
 gulp.task('package:angular', ['build:angular'], function() {
   if (config.production()) {
-    del.sync('./src/angular/dist/assets/i18n');
+    del.sync(['./src/angular/dist/assets/!(.gitkeep)']);
   }
 
   return gulp.src('./src/angular/dist/**/*')
@@ -393,7 +431,10 @@ gulp.task('package:angular', ['build:angular'], function() {
  * Cleans the Angular project
  */
 gulp.task('clean:angular', function() {
-  del.sync(['./src/angular/dist', './src/angular/src/assets/i18n']);
+  del.sync([
+    './src/angular/dist',
+    './src/angular/src/assets/*!(.gitkeep)'
+  ]);
 });
 
 /**

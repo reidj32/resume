@@ -6,6 +6,8 @@
 export const environment = {
   production: false,
   dataPath: 'assets/i18n/',
+  iconPath: 'assets/icons/',
+  faviconLink: 'assets/favicon.ico',
   materialIconFont: 'assets/fonts/material-icons.css',
   robotoIconFont: 'assets/fonts/roboto-latin.css'
 };
