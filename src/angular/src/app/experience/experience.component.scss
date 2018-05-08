@@ -1,7 +1,13 @@
+$position-margin: 0.5rem;
+
 .contact-info {
   margin: 1rem;
 }
 
 .positions {
-  margin: 1rem;
+  margin: $position-margin;
+}
+
+.is-mobile {
+  margin: 0 0 $position-margin 0 !important;
 }

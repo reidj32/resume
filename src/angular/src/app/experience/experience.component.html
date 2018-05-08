@@ -11,7 +11,7 @@
         <div class="contact-info">
           <jpr-contact [contact]="history.contact"></jpr-contact>
         </div>
-        <div class="positions" *ngFor="let position of history.positions">
+        <div class="positions" *ngFor="let position of history.positions" [class.is-mobile]="isMobileScreen()">
           <jpr-position [position]="position"></jpr-position>
         </div>
       </mat-tab>

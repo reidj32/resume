@@ -3,6 +3,7 @@ import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { constants } from './core/constants';
 import { Resume } from './core/models/resume';
 import { ResumeService } from './core/services/resume.service';
 
@@ -18,7 +19,9 @@ export class AppComponent implements OnInit {
   resume: Resume;
   loading = true;
 
-  private mobileQuery: MediaQueryList = matchMedia('(max-width: 600px)');
+  private mobileQuery: MediaQueryList = matchMedia(
+    `(max-width: ${constants.mobileWidth}px)`
+  );
 
   constructor(
     zone: NgZone,

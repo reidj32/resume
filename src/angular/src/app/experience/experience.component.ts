@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 
+import { constants } from '../core/constants';
 import { Experience } from '../core/models/experience';
 import { ResumeService } from '../core/services/resume.service';
 
@@ -10,7 +11,15 @@ import { ResumeService } from '../core/services/resume.service';
 export class ExperienceComponent implements OnInit {
   experience: Experience;
 
-  constructor(private resumeService: ResumeService) {}
+  private mobileQuery: MediaQueryList = matchMedia(
+    `(max-width: ${constants.mobileWidth}px)`
+  );
+
+  constructor(zone: NgZone, private resumeService: ResumeService) {
+    this.mobileQuery.addListener(mql =>
+      zone.run(() => (this.mobileQuery = mql))
+    );
+  }
 
   ngOnInit(): void {
     this.resumeService.getResume('en').subscribe(resume => {
@@ -20,5 +29,9 @@ export class ExperienceComponent implements OnInit {
         this.experience = resume.experience;
       }
     });
+  }
+
+  isMobileScreen(): boolean {
+    return this.mobileQuery.matches;
   }
 }
