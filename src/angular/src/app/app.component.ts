@@ -76,12 +76,12 @@ export class AppComponent implements OnInit {
   ): void {
     iconRegistry.addSvgIcon(
       'github',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/github.svg')
     );
 
     iconRegistry.addSvgIcon(
       'linkedin',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/linkedin.svg')
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/linkedin.svg')
     );
   }
 }
