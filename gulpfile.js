@@ -29,8 +29,7 @@ var config = {
 
 var webserverOpts = {
   open: true,
-  livereload: true,
-  fallback: 'index.html'
+  livereload: true
 };
 
 var htmlminOpts = {
@@ -382,7 +381,9 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  * Packages the Angular build
  */
 gulp.task('package:angular', ['build:angular'], function() {
-  del.sync('./src/angular/dist/assets/i18n');
+  if (config.production()) {
+    del.sync('./src/angular/dist/assets/i18n');
+  }
 
   return gulp.src('./src/angular/dist/**/*')
     .pipe(gulp.dest('./dist/resumes/angular/'));
@@ -399,6 +400,8 @@ gulp.task('clean:angular', function() {
  * Builds and runs all projects in a local webserver
  */
 gulp.task('run', ['package'], function() {
+  webserverOpts.fallback = 'resumes/angular/index.html';
+
   return gulp.src('./dist')
     .pipe(webserver(webserverOpts))
 });

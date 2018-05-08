@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  dataPath: '/assets/i18n/',
-  materialIconFont: '/assets/fonts/material-icons.css',
-  robotoIconFont: '/assets/fonts/roboto-latin.css'
+  dataPath: 'assets/i18n/',
+  materialIconFont: 'assets/fonts/material-icons.css',
+  robotoIconFont: 'assets/fonts/roboto-latin.css'
 };
