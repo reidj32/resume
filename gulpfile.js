@@ -164,12 +164,10 @@ gulp.task('package', sequence('clean', ['package:assets', 'package:welcome', 'pa
 gulp.task('package:assets', function() {
   var streams = [];
 
-  streams.push(gulp.src('./assets/fonts/*!(.css)')
-    .pipe(gulp.dest('./dist/fonts/')));
-
-  streams.push(gulp.src('./assets/fonts/*.css')
-    .pipe(gulpif(config.production(), minify()))
-    .pipe(gulp.dest('./dist/fonts/')));
+  if (config.development()) {
+    streams.push(gulp.src('./assets/fonts/*')
+      .pipe(gulp.dest('./dist/fonts/')));
+  }
 
   streams.push(gulp.src('./assets/i18n/*.json')
     .pipe(gulpif(config.production(), jsonminify()))
