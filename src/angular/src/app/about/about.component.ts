@@ -1,16 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { Component, NgZone, OnInit } from '@angular/core';
 
 import { About } from '../core/models/about';
+import { ResponsiveComponent } from '../core/responsive-component';
 import { ResumeService } from '../core/services/resume.service';
 
 @Component({
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent implements OnInit {
+export class AboutComponent extends ResponsiveComponent implements OnInit {
   about: About;
 
-  constructor(private resumeService: ResumeService) {}
+  constructor(
+    zone: NgZone,
+    mediaMatcher: MediaMatcher,
+    private resumeService: ResumeService
+  ) {
+    super(zone, mediaMatcher);
+  }
 
   ngOnInit(): void {
     this.resumeService.getResume('en').subscribe(resume => {

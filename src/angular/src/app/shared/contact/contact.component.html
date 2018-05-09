@@ -1,4 +1,18 @@
-<div>
+<div *ngIf="isPortraitPhoneScreen()">
+  <jpr-address [address]="contact.address"></jpr-address>
+  <p>{{contact.phone}}</p>
+  <p>
+    <a [href]="contact.website.link">{{contact.website.title}}</a>
+  </p>
+</div>
+<div *ngIf="isLandscapePhoneScreen() || isTabletScreen()">
+  <jpr-address [address]="contact.address"></jpr-address>
+  <p>
+    {{contact.phone}} |
+    <a [href]="contact.website.link">{{contact.website.title}}</a>
+  </p>
+</div>
+<div *ngIf="isDesktopOrLargerScreen()">
   <jpr-address [address]="contact.address"></jpr-address> | {{contact.phone}} |
   <a [href]="contact.website.link">{{contact.website.title}}</a>
 </div>

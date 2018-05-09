@@ -5,10 +5,19 @@
 }
 
 li {
-  font-size: 1.05rem;
   list-style: circle;
 }
 
 li:not(:last-child) {
-  margin-bottom: 0.3rem;
+  margin-bottom: 8px;
+}
+
+mat-card.is-mobile {
+  padding: 16px 8px;
+}
+
+.is-mobile ul {
+  -webkit-padding-start: 20px;
+  -moz-padding-start: 20px;
+  -o-padding-start: 20px;
 }

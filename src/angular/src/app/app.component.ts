@@ -2,7 +2,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterEvent } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 import { Resume } from './core/models/resume';
@@ -20,27 +21,35 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
 
   resume: Resume;
   loading = true;
+  aboutColor: string;
+  skillsColor: string;
+  experienceColor: string;
+  educationColor: string;
 
   constructor(
     zone: NgZone,
     mediaMatcher: MediaMatcher,
     sanitizer: DomSanitizer,
     iconRegistry: MatIconRegistry,
-    private router: Router,
+    router: Router,
     private resumeService: ResumeService
   ) {
     super(zone, mediaMatcher);
     this.registerMaterialIcons(iconRegistry, sanitizer);
+
+    router.events
+      .pipe(filter(e => e instanceof RouterEvent))
+      .subscribe((event: RouterEvent) => {
+        this.aboutColor = event.url.indexOf('/about') >= 0 ? 'primary' : '';
+        this.skillsColor = event.url.indexOf('/skills') >= 0 ? 'primary' : '';
+        this.experienceColor =
+          event.url.indexOf('/experience') >= 0 ? 'primary' : '';
+        this.educationColor =
+          event.url.indexOf('/education') >= 0 ? 'primary' : '';
+      });
   }
 
   ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      if (this.isMobileScreen() && this.sidenav) {
-        this.sidenav.close();
-        this.sidenavMenuButton._elementRef.nativeElement.blur();
-      }
-    });
-
     this.resumeService.getResume('en').subscribe(resume => {
       if (typeof resume === 'string') {
         console.log(resume);
@@ -49,6 +58,13 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  closeSidenavForSmallScreens(): void {
+    if (this.isPhoneScreen()) {
+      this.sidenav.close();
+      this.sidenavMenuButton._elementRef.nativeElement.blur();
+    }
   }
 
   navigateHome(): void {

@@ -1,62 +1,59 @@
 <div class="spinner" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
-<div class="container" [class.is-mobile]="isMobileScreen()" *ngIf="!loading">
+<div class="container" [class.is-mobile]="isPhoneScreen()" *ngIf="!loading">
   <mat-toolbar color="primary" class="toolbar">
     <button #sidenavMenuButton mat-icon-button (click)="sidenav.toggle()">
       <!-- menu -->
       <mat-icon>&#xE5D2;</mat-icon>
     </button>
-    <span *ngIf="!isMobileScreen()">{{resume.name}}&nbsp;|&nbsp;{{resume.title}}</span>
-    <button mat-button *ngIf="isMobileScreen()" (click)="navigateHome()">{{resume.name}}</button>
+
+    <button mat-button (click)="navigateHome()">{{resume.name}}</button>
+    <span class="mat-body-1" *ngIf="isTabletOrLargerScreen()">{{resume.title}}</span>
+
     <span class="spacer"></span>
 
-    <button mat-icon-button (click)="navigateHome()" *ngIf="!isMobileScreen()" matTooltip="Return to home page">
-      <!-- home -->
-      <mat-icon>&#xE88A;</mat-icon>
-    </button>
-
-    <!-- Standard Buttons -->
-    <button mat-button (click)="openGitHub()" *ngIf="!isMobileScreen()">
-      <mat-icon svgIcon="github" class="button-icon"></mat-icon> Github
-    </button>
-    <button mat-button (click)="openLinkedIn()" *ngIf="!isMobileScreen()">
-      <mat-icon svgIcon="linkedin" class="button-icon"></mat-icon> LinkedIn
-    </button>
-    <!-- Standard Buttons -->
-
     <!-- Mobile Buttons -->
-    <button mat-icon-button (click)="openGitHub()" *ngIf="isMobileScreen()">
+    <button mat-icon-button (click)="openGitHub()" *ngIf="isPortraitPhoneScreen()">
       <mat-icon svgIcon="github"></mat-icon>
     </button>
-    <button mat-icon-button (click)="openLinkedIn()" *ngIf="isMobileScreen()">
+    <button mat-icon-button (click)="openLinkedIn()" *ngIf="isPortraitPhoneScreen()">
       <mat-icon svgIcon="linkedin"></mat-icon>
     </button>
     <!-- Mobile Buttons -->
+
+    <!-- Standard Buttons -->
+    <button mat-button (click)="openGitHub()" *ngIf="isLandscapePhoneOrLargerScreen()">
+      <mat-icon svgIcon="github" class="button-icon"></mat-icon> Github
+    </button>
+    <button mat-button (click)="openLinkedIn()" *ngIf="isLandscapePhoneOrLargerScreen()">
+      <mat-icon svgIcon="linkedin" class="button-icon"></mat-icon> LinkedIn
+    </button>
+    <!-- Standard Buttons -->
   </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="isMobileScreen() ? 56 : 0">
-    <mat-sidenav #sidenav [mode]="isMobileScreen() ? 'over' : 'side'" [fixedInViewport]="isMobileScreen()"
-      fixedTopGap="56" [opened]="!isMobileScreen()" class="mat-elevation-z8">
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="isPhoneScreen() ? 56 : 0">
+    <mat-sidenav #sidenav [mode]="isPhoneScreen() ? 'over' : 'side'" [fixedInViewport]="isPhoneScreen()"
+      fixedTopGap="56" [opened]="isTabletOrLargerScreen()" class="mat-elevation-z8">
       <mat-nav-list>
-        <a mat-list-item routerLink="about">
+        <a mat-list-item [routerLink]="['/about']" (click)="closeSidenavForSmallScreens()">
           <!-- info_outline -->
-          <mat-icon mat-list-icon>&#xE88F;</mat-icon>
+          <mat-icon mat-list-icon [color]="aboutColor">&#xE88F;</mat-icon>
           <p>{{resume.about.title}}</p>
         </a>
-        <a mat-list-item routerLink="skills">
+        <a mat-list-item [routerLink]="['/skills']" (click)="closeSidenavForSmallScreens()">
           <!-- computer -->
-          <mat-icon mat-list-icon>&#xE30A;</mat-icon>
+          <mat-icon mat-list-icon [color]="skillsColor">&#xE30A;</mat-icon>
           <p>{{resume.skills.title}}</p>
         </a>
-        <a mat-list-item routerLink="experience">
+        <a mat-list-item [routerLink]="['/experience']" (click)="closeSidenavForSmallScreens()">
           <!-- group -->
-          <mat-icon mat-list-icon>&#xE7EF;</mat-icon>
+          <mat-icon mat-list-icon [color]="experienceColor">&#xE7EF;</mat-icon>
           <p>{{resume.experience.title}}</p>
         </a>
-        <a mat-list-item routerLink="education">
+        <a mat-list-item [routerLink]="['/education']" (click)="closeSidenavForSmallScreens()">
           <!-- school -->
-          <mat-icon mat-list-icon>&#xE80C;</mat-icon>
+          <mat-icon mat-list-icon [color]="educationColor">&#xE80C;</mat-icon>
           <p>{{resume.education.title}}</p>
         </a>
       </mat-nav-list>

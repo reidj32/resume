@@ -1,7 +1,7 @@
 <div class="spinner" *ngIf="!education">
   <mat-spinner></mat-spinner>
 </div>
-<mat-card *ngIf="education">
+<mat-card *ngIf="education" [class.mat-elevation-z0]="isPhoneScreen()">
   <mat-card-title>
     <h1 class="mat-headline">{{education.title}}</h1>
   </mat-card-title>
@@ -20,11 +20,11 @@
           <mat-card-content>
             <div class="flex-horizontal">
               <div class="flex-item degree">
-                <h3 class="mat-subheading-2">{{program.degree.title}}</h3>
+                <p class="mat-body-2">{{program.degree.title}}</p>
                 <p class="mat-body-1">{{program.degree.value}}</p>
               </div>
               <div class="flex-item major">
-                <h3 class="mat-subheading-2">{{program.major.title}}</h3>
+                <p class="mat-body-2">{{program.major.title}}</p>
                 <p class="mat-body-1">{{program.major.value}}</p>
               </div>
             </div>

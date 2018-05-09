@@ -1,13 +1,13 @@
 <div class="spinner" *ngIf="!skills">
   <mat-spinner></mat-spinner>
 </div>
-<mat-card *ngIf="skills">
+<mat-card *ngIf="skills" [class.mat-elevation-z0]="isPhoneScreen()">
   <mat-card-title>
     <h1 class="mat-headline">{{skills.title}}</h1>
   </mat-card-title>
-  <mat-card-content>
+  <mat-card-content [class.mobile-card-content]="isPhoneScreen()">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let section of skills.sections">
+      <mat-expansion-panel *ngFor="let section of skills.sections" [expanded]="section === skills.sections[0]">
         <mat-expansion-panel-header>
           <mat-panel-title>{{section.title}}</mat-panel-title>
         </mat-expansion-panel-header>

@@ -1,4 +1,5 @@
-<mat-card [class.mat-elevation-z6]="!isMobileScreen()">
+<mat-card [class.is-mobile]="isPhoneScreen()" [class.mat-elevation-z1]="isPhoneScreen()"
+  [class.mat-elevation-z6]="isTabletOrLargerScreen()">
   <mat-card-header>
     <div mat-card-avatar>
       <!-- person_pin -->
@@ -9,7 +10,7 @@
   </mat-card-header>
   <mat-card-content>
     <div *ngFor="let section of position.sections">
-      <h3 class="mat-subheading-2">{{section.title}}</h3>
+      <p class="mat-body-2">{{section.title}}</p>
       <ul>
         <li class="mat-body-1" *ngFor="let value of section.values">{{value}}</li>
       </ul>

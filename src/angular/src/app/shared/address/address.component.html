@@ -1,3 +1,7 @@
-<span>
+<span *ngIf="isPortraitPhoneScreen() || (isLandscapePhoneScreen() && address.street.length > 50)">
+  <p>{{address.street}}</p>
+  <p>{{address.city}}, {{address.state}} {{address.zip}}</p>
+</span>
+<span *ngIf="isLandscapePhoneOrLargerScreen()">
   {{address.street}} {{address.city}}, {{address.state}} {{address.zip}}
 </span>
