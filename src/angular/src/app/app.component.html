@@ -38,17 +38,17 @@
       </ng-template>
     </mat-menu>
 
-    <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+    <button #themeButton mat-icon-button [matMenuTriggerFor]="themeMenu">
       <!-- colorize -->
       <mat-icon>&#xE3B8;</mat-icon>
     </button>
 
     <!-- Mobile Buttons -->
     <button mat-icon-button (click)="openGitHub()" *ngIf="isPortraitPhoneScreen()">
-      <mat-icon svgIcon="github"></mat-icon>
+      <mat-icon svgIcon="github" class="button-icon"></mat-icon>
     </button>
     <button mat-icon-button (click)="openLinkedIn()" *ngIf="isPortraitPhoneScreen()">
-      <mat-icon svgIcon="linkedin"></mat-icon>
+      <mat-icon svgIcon="linkedin" class="button-icon"></mat-icon>
     </button>
     <!-- Mobile Buttons -->
 
@@ -66,22 +66,24 @@
     <mat-sidenav #sidenav [mode]="isPhoneScreen() ? 'over' : 'side'" [fixedInViewport]="isPhoneScreen()"
       fixedTopGap="56" [opened]="isTabletOrLargerScreen()" class="mat-elevation-z8">
       <mat-nav-list>
-        <a mat-list-item [routerLink]="['/about']" (click)="closeSidenavForSmallScreens()">
+        <!-- Empty button with 0 height as workaround for hover bug -->
+        <a mat-list-item href="#" [style.height.px]="0"></a>
+        <a mat-list-item [routerLink]="['/about']" (click)="closeOnMobile()">
           <!-- info_outline -->
           <mat-icon mat-list-icon [color]="aboutColor">&#xE88F;</mat-icon>
           <p>{{resume.about.title}}</p>
         </a>
-        <a mat-list-item [routerLink]="['/skills']" (click)="closeSidenavForSmallScreens()">
+        <a mat-list-item [routerLink]="['/skills']" (click)="closeOnMobile()">
           <!-- computer -->
           <mat-icon mat-list-icon [color]="skillsColor">&#xE30A;</mat-icon>
           <p>{{resume.skills.title}}</p>
         </a>
-        <a mat-list-item [routerLink]="['/experience']" (click)="closeSidenavForSmallScreens()">
+        <a mat-list-item [routerLink]="['/experience']" (click)="closeOnMobile()">
           <!-- group -->
           <mat-icon mat-list-icon [color]="experienceColor">&#xE7EF;</mat-icon>
           <p>{{resume.experience.title}}</p>
         </a>
-        <a mat-list-item [routerLink]="['/education']" (click)="closeSidenavForSmallScreens()">
+        <a mat-list-item [routerLink]="['/education']" (click)="closeOnMobile()">
           <!-- school -->
           <mat-icon mat-list-icon [color]="educationColor">&#xE80C;</mat-icon>
           <p>{{resume.education.title}}</p>

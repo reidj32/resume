@@ -19,6 +19,7 @@ import { ResumeService } from './core/services/resume.service';
 export class AppComponent extends ResponsiveComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav: MatSidenav;
   @ViewChild(MatButton) sidenavMenuButton: MatButton;
+  @ViewChild(MatButton) themeButton: MatButton;
 
   resume: Resume;
   loading = true;
@@ -38,18 +39,10 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
     private overlayContainer: OverlayContainer
   ) {
     super(zone, mediaMatcher);
-    this.registerMaterialIcons(iconRegistry, sanitizer);
 
-    router.events
-      .pipe(filter(e => e instanceof RouterEvent))
-      .subscribe((event: RouterEvent) => {
-        this.aboutColor = event.url.indexOf('/about') >= 0 ? 'primary' : '';
-        this.skillsColor = event.url.indexOf('/skills') >= 0 ? 'primary' : '';
-        this.experienceColor =
-          event.url.indexOf('/experience') >= 0 ? 'primary' : '';
-        this.educationColor =
-          event.url.indexOf('/education') >= 0 ? 'primary' : '';
-      });
+    this.aboutColor = 'primary';
+    this.registerMaterialIcons(iconRegistry, sanitizer);
+    this.observeActiveMenuSelection(router);
   }
 
   ngOnInit(): void {
@@ -63,7 +56,7 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
     });
   }
 
-  closeSidenavForSmallScreens(): void {
+  closeOnMobile(): void {
     if (this.isPhoneScreen()) {
       this.sidenav.close();
       this.sidenavMenuButton._elementRef.nativeElement.blur();
@@ -82,7 +75,12 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
     }
 
     this.activeTheme = theme;
-    element.classList.add(this.activeTheme);
+
+    if (this.activeTheme !== '') {
+      element.classList.add(this.activeTheme);
+    }
+
+    this.themeButton._elementRef.nativeElement.blur();
   }
 
   openGitHub(): void {
@@ -110,5 +108,18 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
         `${environment.iconPath}linkedin.svg`
       )
     );
+  }
+
+  private observeActiveMenuSelection(router: Router): void {
+    router.events
+      .pipe(filter(e => e instanceof RouterEvent))
+      .subscribe((event: RouterEvent) => {
+        this.aboutColor = event.url.indexOf('/about') >= 0 ? 'primary' : '';
+        this.skillsColor = event.url.indexOf('/skills') >= 0 ? 'primary' : '';
+        this.experienceColor =
+          event.url.indexOf('/experience') >= 0 ? 'primary' : '';
+        this.educationColor =
+          event.url.indexOf('/education') >= 0 ? 'primary' : '';
+      });
   }
 }
