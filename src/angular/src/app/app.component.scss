@@ -1,4 +1,4 @@
-@import '../styles.scss';
+@import '../scss/styles.scss';
 
 .container {
   display: flex;
@@ -37,4 +37,24 @@
 
 .button-icon {
   margin: 0 4px 3px 0;
+}
+
+.c-default {
+  color: $default-color !important;
+}
+
+.c-deep-purple {
+  color: $deep-purple-amber-color !important;
+}
+
+.c-indigo {
+  color: $indigo-pink-color !important;
+}
+
+.c-pink {
+  color: $pink-blue-grey-color !important;
+}
+
+.c-purple {
+  color: $purple-green-color !important;
 }

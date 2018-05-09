@@ -1,4 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatButton, MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,6 +22,7 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
 
   resume: Resume;
   loading = true;
+  activeTheme: string;
   aboutColor: string;
   skillsColor: string;
   experienceColor: string;
@@ -32,7 +34,8 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
     sanitizer: DomSanitizer,
     iconRegistry: MatIconRegistry,
     router: Router,
-    private resumeService: ResumeService
+    private resumeService: ResumeService,
+    private overlayContainer: OverlayContainer
   ) {
     super(zone, mediaMatcher);
     this.registerMaterialIcons(iconRegistry, sanitizer);
@@ -69,6 +72,17 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
 
   navigateHome(): void {
     window.location.href = '/';
+  }
+
+  updateTheme(theme: string) {
+    const element = this.overlayContainer.getContainerElement();
+
+    if (this.activeTheme !== '') {
+      element.classList.remove(this.activeTheme);
+    }
+
+    this.activeTheme = theme;
+    element.classList.add(this.activeTheme);
   }
 
   openGitHub(): void {

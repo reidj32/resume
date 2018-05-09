@@ -1,0 +1,86 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+/* Default theme */
+$default-color: map-get($mat-light-blue, 500);
+
+$default-primary: mat-palette($mat-light-blue, 500, 300, 700);
+$default-accent: mat-palette($mat-light-blue, 500, 300, 700);
+$default-warn: mat-palette($mat-red);
+
+$default-theme: mat-light-theme(
+  $default-primary,
+  $default-accent,
+  $default-warn
+);
+
+@include angular-material-theme($default-theme);
+
+/* Deep Purple-Amber theme */
+$deep-purple-amber-color: map-get($mat-deep-purple, 500);
+
+$deep-purple-amber-primary: mat-palette($mat-deep-purple, 500, 300, 700);
+$deep-purple-amber-accent: mat-palette($mat-amber, 500, 300, 700);
+$deep-purple-amber-warn: mat-palette($mat-red);
+
+$deep-purple-amber-theme: mat-light-theme(
+  $deep-purple-amber-primary,
+  $deep-purple-amber-accent,
+  $deep-purple-amber-warn
+);
+
+.deep-purple-amber-theme {
+  @include angular-material-theme($deep-purple-amber-theme);
+}
+
+/* Indigo-Pink theme */
+$indigo-pink-color: map-get($mat-indigo, 500);
+
+$indigo-pink-primary: mat-palette($mat-indigo, 500, 300, 700);
+$indigo-pink-accent: mat-palette($mat-pink, 500, 300, 700);
+$indigo-pink-warn: mat-palette($mat-red);
+
+$indigo-pink-theme: mat-light-theme(
+  $indigo-pink-primary,
+  $indigo-pink-accent,
+  $indigo-pink-warn
+);
+
+.indigo-pink-theme {
+  @include angular-material-theme($indigo-pink-theme);
+}
+
+/* Pink-Blue Grey theme */
+$pink-blue-grey-color: map-get($mat-pink, 500);
+
+$pink-blue-grey-primary: mat-palette($mat-pink, 500, 300, 700);
+$pink-blue-grey-accent: mat-palette($mat-blue-grey, 500, 300, 700);
+$pink-blue-grey-warn: mat-palette($mat-red);
+
+$pink-blue-grey-theme: mat-dark-theme(
+  $pink-blue-grey-primary,
+  $pink-blue-grey-accent,
+  $pink-blue-grey-warn
+);
+
+.pink-blue-grey-theme {
+  @include angular-material-theme($pink-blue-grey-theme);
+}
+
+/* Purple-Green theme */
+$purple-green-color: map-get($mat-purple, 500);
+
+$purple-green-primary: mat-palette($mat-purple, 500, 300, 700);
+$purple-green-accent: mat-palette($mat-green, 500, 300, 700);
+$purple-green-warn: mat-palette($mat-red);
+
+$purple-green-theme: mat-dark-theme(
+  $purple-green-primary,
+  $purple-green-accent,
+  $purple-green-warn
+);
+
+.purple-green-theme {
+  @include angular-material-theme($purple-green-theme);
+}

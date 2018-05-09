@@ -1,4 +1,4 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'theming';
 
 body {
   margin: 0;
@@ -9,13 +9,6 @@ body {
   left: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
-}
-
-@mixin md-icon-size($size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-  line-height: $size;
 }
 
 .flex-horizontal {

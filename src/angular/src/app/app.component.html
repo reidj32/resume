@@ -1,7 +1,7 @@
 <div class="spinner" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
-<div class="container" [class.is-mobile]="isPhoneScreen()" *ngIf="!loading">
+<div class="container" *ngIf="!loading" [class.is-mobile]="isPhoneScreen()" [ngClass]="activeTheme">
   <mat-toolbar color="primary" class="toolbar">
     <button #sidenavMenuButton mat-icon-button (click)="sidenav.toggle()">
       <!-- menu -->
@@ -12,6 +12,36 @@
     <span class="mat-body-1" *ngIf="isTabletOrLargerScreen()">{{resume.title}}</span>
 
     <span class="spacer"></span>
+
+    <mat-menu #themeMenu="matMenu">
+      <ng-template matMenuContent>
+        <button mat-menu-item (click)="updateTheme('')">
+          <!-- brightness_1 -->
+          <mat-icon class="c-default">&#xE3A6;</mat-icon> Default
+        </button>
+        <button mat-menu-item (click)="updateTheme('deep-purple-amber-theme')">
+          <!-- brightness_1 -->
+          <mat-icon class="c-deep-purple">&#xE3A6;</mat-icon> Deep Purple
+        </button>
+        <button mat-menu-item (click)="updateTheme('indigo-pink-theme')">
+          <!-- brightness_1 -->
+          <mat-icon class="c-indigo">&#xE3A6;</mat-icon> Indigo
+        </button>
+        <button mat-menu-item (click)="updateTheme('pink-blue-grey-theme')">
+          <!-- brightness_1 -->
+          <mat-icon class="c-pink">&#xE3A6;</mat-icon> Pink
+        </button>
+        <button mat-menu-item (click)="updateTheme('purple-green-theme')">
+          <!-- brightness_1 -->
+          <mat-icon class="c-purple">&#xE3A6;</mat-icon> Purple
+        </button>
+      </ng-template>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+      <!-- colorize -->
+      <mat-icon>&#xE3B8;</mat-icon>
+    </button>
 
     <!-- Mobile Buttons -->
     <button mat-icon-button (click)="openGitHub()" *ngIf="isPortraitPhoneScreen()">

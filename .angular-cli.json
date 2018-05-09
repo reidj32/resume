@@ -15,7 +15,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "jpr",
-      "styles": ["styles.scss"],
+      "styles": ["scss/styles.scss"],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
