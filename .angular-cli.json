@@ -5,8 +5,8 @@
   },
   "apps": [
     {
-      "root": "src/angular/src",
-      "outDir": "src/angular/build",
+      "root": "modules/angular/src",
+      "outDir": "modules/angular/build",
       "assets": ["assets"],
       "index": "index.html",
       "main": "main.ts",
@@ -26,26 +26,26 @@
   ],
   "e2e": {
     "protractor": {
-      "config": "./src/angular/src/protractor.conf.js"
+      "config": "./modules/angular/src/protractor.conf.js"
     }
   },
   "lint": [
     {
-      "project": "src/angular/src/tsconfig.app.json",
+      "project": "modules/angular/src/tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/angular/src/tsconfig.spec.json",
+      "project": "modules/angular/src/tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/angular/e2e/tsconfig.e2e.json",
+      "project": "modules/angular/e2e/tsconfig.e2e.json",
       "exclude": "**/node_modules/**"
     }
   ],
   "test": {
     "karma": {
-      "config": "./src/angular/karma.conf.js"
+      "config": "./modules/angular/karma.conf.js"
     }
   },
   "defaults": {

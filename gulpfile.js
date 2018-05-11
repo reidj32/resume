@@ -194,26 +194,26 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
   cdn = cdn.concat(bootstrap.cdn);
   cdn = cdn.concat(fontawesome.cdn);
 
-  return gulp.src('./src/welcome/src/**/*.html')
+  return gulp.src('./modules/welcome/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/welcome/build/**/jquery.min.js',
-        './src/welcome/build/**/popper.min.js',
-        './src/welcome/build/**/bootstrap.min.?(js|css)',
-        './src/welcome/build/**/fontawesome-all.min.js',
-        './src/welcome/build/**/site?(.min).?(js|css)'
+        './modules/welcome/build/**/jquery.min.js',
+        './modules/welcome/build/**/popper.min.js',
+        './modules/welcome/build/**/bootstrap.min.?(js|css)',
+        './modules/welcome/build/**/fontawesome-all.min.js',
+        './modules/welcome/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/welcome/build/**/jquery.js?(.map)',
-        './src/welcome/build/**/popper.js?(.map)',
-        './src/welcome/build/**/bootstrap.?(js|css)?(.map)',
-        './src/welcome/build/**/fontawesome-all.js',
-        './src/welcome/build/**/site?(.min).?(js|css)'
+        './modules/welcome/build/**/jquery.js?(.map)',
+        './modules/welcome/build/**/popper.js?(.map)',
+        './modules/welcome/build/**/bootstrap.?(js|css)?(.map)',
+        './modules/welcome/build/**/fontawesome-all.js',
+        './modules/welcome/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/welcome/build/'));
+    .pipe(gulp.dest('./modules/welcome/build/'));
 });
 
 /**
@@ -224,39 +224,39 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
 
   if (config.production()) {
     streams.push(gulp.src(bootstrap.min.js)
-      .pipe(gulp.dest('./src/welcome/build/js/')));
+      .pipe(gulp.dest('./modules/welcome/build/js/')));
 
     streams.push(gulp.src(bootstrap.min.css)
-      .pipe(gulp.dest('./src/welcome/build/css/')));
+      .pipe(gulp.dest('./modules/welcome/build/css/')));
 
     streams.push(gulp.src(fontawesome.min.js)
-      .pipe(gulp.dest('./src/welcome/build/js/')));
+      .pipe(gulp.dest('./modules/welcome/build/js/')));
   } else {
     streams.push(gulp.src(bootstrap.js)
-      .pipe(gulp.dest('./src/welcome/build/js/')));
+      .pipe(gulp.dest('./modules/welcome/build/js/')));
 
     streams.push(gulp.src(bootstrap.css)
-      .pipe(gulp.dest('./src/welcome/build/css/')));
+      .pipe(gulp.dest('./modules/welcome/build/css/')));
 
     streams.push(gulp.src(fontawesome.js)
-      .pipe(gulp.dest('./src/welcome/build/js/')));
+      .pipe(gulp.dest('./modules/welcome/build/js/')));
 
     streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./src/welcome/build/')));
+      .pipe(gulp.dest('./modules/welcome/build/')));
   }
 
-  streams.push(gulp.src('./src/welcome/src/**/*.css')
+  streams.push(gulp.src('./modules/welcome/src/**/*.css')
     .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/welcome/build/')));
+    .pipe(gulp.dest('./modules/welcome/build/')));
 
-  streams.push(gulp.src('./src/welcome/src/**/*.js')
+  streams.push(gulp.src('./modules/welcome/src/**/*.js')
     .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
-    .pipe(gulp.dest('./src/welcome/build/')));
+    .pipe(gulp.dest('./modules/welcome/build/')));
 
-  streams.push(gulp.src(['./src/welcome/src/**/*.?(png|jpg|ico)'])
-    .pipe(gulp.dest('./src/welcome/build/')));
+  streams.push(gulp.src(['./modules/welcome/src/**/*.?(png|jpg|ico)'])
+    .pipe(gulp.dest('./modules/welcome/build/')));
 
   return merge(streams);
 });
@@ -269,17 +269,17 @@ gulp.task('package:welcome', ['build:welcome'], function() {
 
   if (config.production()) {
     del.sync([
-      './src/welcome/build/css/!(site)*.min.css',
-      './src/welcome/build/js/!(site)*.min.js'
+      './modules/welcome/build/css/!(site)*.min.css',
+      './modules/welcome/build/js/!(site)*.min.js'
     ]);
 
-    delete_empty.sync('./src/welcome/build/');
+    delete_empty.sync('./modules/welcome/build/');
 
     streams.push(gulp.src(faviconArray)
       .pipe(gulp.dest('./dist/')));
   }
 
-  streams.push(gulp.src('./src/welcome/build/**/*')
+  streams.push(gulp.src('./modules/welcome/build/**/*')
     .pipe(gulp.dest('./dist/')));
 
   return merge(streams);
@@ -289,7 +289,7 @@ gulp.task('package:welcome', ['build:welcome'], function() {
  * Cleans the Welcome project
  */
 gulp.task('clean:welcome', function() {
-  del.sync(['./src/welcome/build']);
+  del.sync(['./modules/welcome/build']);
 });
 
 /**
@@ -301,28 +301,28 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
   cdn = cdn.concat(fontawesome.cdn);
   cdn = cdn.concat(anchor.cdn);
 
-  return gulp.src('./src/minimal/src/**/*.html')
+  return gulp.src('./modules/minimal/src/**/*.html')
     .pipe(gulpif(config.production(),
       inject(gulp.src([
-        './src/minimal/build/**/jquery.min.js',
-        './src/minimal/build/**/popper.min.js',
-        './src/minimal/build/**/bootstrap.min.?(js|css)',
-        './src/minimal/build/**/fontawesome-all.min.js',
-        './src/minimal/build/**/anchor.min.js',
-        './src/minimal/build/**/site?(.min).?(js|css)'
+        './modules/minimal/build/**/jquery.min.js',
+        './modules/minimal/build/**/popper.min.js',
+        './modules/minimal/build/**/bootstrap.min.?(js|css)',
+        './modules/minimal/build/**/fontawesome-all.min.js',
+        './modules/minimal/build/**/anchor.min.js',
+        './modules/minimal/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts),
       inject(gulp.src([
-        './src/minimal/build/**/jquery.js?(.map)',
-        './src/minimal/build/**/popper.js?(.map)',
-        './src/minimal/build/**/bootstrap.?(js|css)?(.map)',
-        './src/minimal/build/**/fontawesome-all.js',
-        './src/minimal/build/**/anchor.js?(.map)',
-        './src/minimal/build/**/site?(.min).?(js|css)'
+        './modules/minimal/build/**/jquery.js?(.map)',
+        './modules/minimal/build/**/popper.js?(.map)',
+        './modules/minimal/build/**/bootstrap.?(js|css)?(.map)',
+        './modules/minimal/build/**/fontawesome-all.js',
+        './modules/minimal/build/**/anchor.js?(.map)',
+        './modules/minimal/build/**/site?(.min).?(js|css)'
       ], { read: false }), injectOpts)
     ))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
-    .pipe(gulp.dest('./src/minimal/build/'));
+    .pipe(gulp.dest('./modules/minimal/build/'));
 });
 
 /**
@@ -333,46 +333,46 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
 
   if (config.production()){
     streams.push(gulp.src(bootstrap.min.js)
-      .pipe(gulp.dest('./src/minimal/build/js/')));
+      .pipe(gulp.dest('./modules/minimal/build/js/')));
 
     streams.push(gulp.src(bootstrap.min.css)
-      .pipe(gulp.dest('./src/minimal/build/css/')));
+      .pipe(gulp.dest('./modules/minimal/build/css/')));
 
     streams.push(gulp.src(anchor.min.js)
-      .pipe( gulp.dest('./src/minimal/build/js/')));
+      .pipe( gulp.dest('./modules/minimal/build/js/')));
 
     streams.push(gulp.src(fontawesome.min.js)
-      .pipe(gulp.dest('./src/minimal/build/js/')));
+      .pipe(gulp.dest('./modules/minimal/build/js/')));
   } else {
     streams.push(gulp.src(bootstrap.js)
-      .pipe(gulp.dest('./src/minimal/build/js/')));
+      .pipe(gulp.dest('./modules/minimal/build/js/')));
 
     streams.push(gulp.src(bootstrap.css)
-      .pipe(gulp.dest('./src/minimal/build/css/')));
+      .pipe(gulp.dest('./modules/minimal/build/css/')));
 
     streams.push(gulp.src(anchor.js)
-      .pipe(gulp.dest('./src/minimal/build/js/')));
+      .pipe(gulp.dest('./modules/minimal/build/js/')));
 
     streams.push(gulp.src(fontawesome.js)
-      .pipe(gulp.dest('./src/minimal/build/js/')));
+      .pipe(gulp.dest('./modules/minimal/build/js/')));
 
     streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./src/minimal/build/')));
+      .pipe(gulp.dest('./modules/minimal/build/')));
   }
 
-  streams.push(gulp.src('./src/minimal/src/**/*.css')
+  streams.push(gulp.src('./modules/minimal/src/**/*.css')
     .pipe(gulpif(config.production(), minify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
-    .pipe(gulp.dest('./src/minimal/build/')));
+    .pipe(gulp.dest('./modules/minimal/build/')));
 
-  streams.push(gulp.src('./src/minimal/src/**/*.js')
+  streams.push(gulp.src('./modules/minimal/src/**/*.js')
     .pipe(gulpif(config.production(), uglify()))
     .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
-    .pipe(gulp.dest('./src/minimal/build/')));
+    .pipe(gulp.dest('./modules/minimal/build/')));
 
   streams.push(gulp.src('./assets/i18n/data.*.json')
     .pipe(gulpif(config.production(), jsonminify()))
-    .pipe(gulp.dest('./src/minimal/build/i18n/')));
+    .pipe(gulp.dest('./modules/minimal/build/i18n/')));
 
   return merge(streams);
 });
@@ -384,23 +384,23 @@ gulp.task('package:minimal', ['build:minimal'], function() {
   var streams = [];
 
   del.sync([
-    './src/minimal/build/i18n',
-    './src/minimal/build/?(favicon.*|apple-touch-icon-precomposed.png)'
+    './modules/minimal/build/i18n',
+    './modules/minimal/build/?(favicon.*|apple-touch-icon-precomposed.png)'
   ]);
 
   if (config.production()) {
     del.sync([
-      './src/minimal/build/css/!(site)*.min.css',
-      './src/minimal/build/js/!(site)*.min.js'
+      './modules/minimal/build/css/!(site)*.min.css',
+      './modules/minimal/build/js/!(site)*.min.js'
     ]);
 
-    delete_empty.sync('./src/minimal/build/');
+    delete_empty.sync('./modules/minimal/build/');
 
     streams.push(gulp.src(faviconArray)
       .pipe(gulp.dest('./dist/')));
   }
 
-  streams.push(gulp.src('./src/minimal/build/**/*')
+  streams.push(gulp.src('./modules/minimal/build/**/*')
     .pipe(gulp.dest('./dist/resumes/minimal/')));
 
   return merge(streams);
@@ -410,7 +410,7 @@ gulp.task('package:minimal', ['build:minimal'], function() {
  * Cleans the Minimal project
  */
 gulp.task('clean:minimal', function() {
-  del.sync(['./src/minimal/build']);
+  del.sync(['./modules/minimal/build']);
 });
 
 /**
@@ -436,16 +436,16 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
   var streams = [];
 
   streams.push(gulp.src('./assets/i18n/*')
-    .pipe(gulp.dest('./src/angular/src/assets/i18n/')));
+    .pipe(gulp.dest('./modules/angular/src/assets/i18n/')));
 
   streams.push(gulp.src('./assets/icons/favicon.ico')
-    .pipe(gulp.dest('./src/angular/src/assets/')));
+    .pipe(gulp.dest('./modules/angular/src/assets/')));
 
   streams.push(gulp.src('./assets/icons/*.svg')
-    .pipe(gulp.dest('./src/angular/src/assets/icons/')));
+    .pipe(gulp.dest('./modules/angular/src/assets/icons/')));
 
   streams.push(gulp.src('./assets/fonts/*')
-    .pipe(gulp.dest('./src/angular/src/assets/fonts/')));
+    .pipe(gulp.dest('./modules/angular/src/assets/fonts/')));
 
   return merge(streams);
 });
@@ -455,10 +455,10 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  */
 gulp.task('package:angular', ['build:angular'], function() {
   if (config.production()) {
-    del.sync(['./src/angular/build/assets']);
+    del.sync(['./modules/angular/build/assets']);
   }
 
-  return gulp.src('./src/angular/build/**/*')
+  return gulp.src('./modules/angular/build/**/*')
     .pipe(gulp.dest('./dist/resumes/angular/'));
 });
 
@@ -467,8 +467,8 @@ gulp.task('package:angular', ['build:angular'], function() {
  */
 gulp.task('clean:angular', function() {
   del.sync([
-    './src/angular/build',
-    './src/angular/src/assets'
+    './modules/angular/build',
+    './modules/angular/src/assets'
   ]);
 });
 
@@ -486,8 +486,8 @@ gulp.task('run', ['package'], function() {
  * Runs the Welcome project in a local webserver
  */
 gulp.task('run:welcome', ['build:welcome'], function(done) {
-  gulp.src('./src/welcome/build').pipe(webserver(webserverOpts));
-  gulp.watch('./src/welcome/src/**/*', watchOpts, ['build:welcome']);
+  gulp.src('./modules/welcome/build').pipe(webserver(webserverOpts));
+  gulp.watch('./modules/welcome/src/**/*', watchOpts, ['build:welcome']);
   done();
 });
 
@@ -495,8 +495,8 @@ gulp.task('run:welcome', ['build:welcome'], function(done) {
  * Runs the Minimal project in a local webserver
  */
 gulp.task('run:minimal', ['build:minimal'], function(done) {
-  gulp.src('./src/minimal/build').pipe(webserver(webserverOpts));
-  gulp.watch('./src/minimal/src/**/*', watchOpts, ['build:minimal']);
+  gulp.src('./modules/minimal/build').pipe(webserver(webserverOpts));
+  gulp.watch('./modules/minimal/src/**/*', watchOpts, ['build:minimal']);
   done();
 });
 
