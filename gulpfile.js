@@ -7,7 +7,10 @@ var yargs = require('yargs');
 var merge = require('merge-stream');
 var child_process = require('child_process');
 var uglify = require('gulp-uglify');
-var minify = require('gulp-clean-css');
+var postcss = require('gulp-postcss');
+var cssnano = require('cssnano');
+var autoprefixer = require('autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
 var htmlmin = require('gulp-htmlmin');
 var jsonminify = require('gulp-jsonminify');
 var sequence = require('gulp-sequence');
@@ -246,7 +249,12 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
   }
 
   streams.push(gulp.src('./modules/welcome/src/**/*.css')
-    .pipe(gulpif(config.production(), minify()))
+    .pipe(gulpif(config.development(), sourcemaps.init()))
+    .pipe(gulpif(config.production(),
+      postcss([autoprefixer(), cssnano()]),
+      postcss([autoprefixer()])
+    ))
+    .pipe(gulpif(config.development(), sourcemaps.write('.')))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./modules/welcome/build/')));
 
@@ -361,7 +369,12 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
   }
 
   streams.push(gulp.src('./modules/minimal/src/**/*.css')
-    .pipe(gulpif(config.production(), minify()))
+    .pipe(gulpif(config.development(), sourcemaps.init()))
+    .pipe(gulpif(config.production(),
+      postcss([autoprefixer(), cssnano()]),
+      postcss([autoprefixer()])
+    ))
+    .pipe(gulpif(config.development(), sourcemaps.write('.')))
     .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./modules/minimal/build/')));
 
