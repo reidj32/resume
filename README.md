@@ -6,7 +6,7 @@ Welcome to my resume. When figuring out a good way to describe the technologies 
 
 * Minimal
   * Built with simple HTML5, Javascript, and CSS3
-  * CSS library used is [Bootstrap 4](https://getbootstrap.com/)
+  * CSS library used is [Bootstrap](https://getbootstrap.com/)
   * Javascript library used is [jQuery](https://jquery.com/)
 * [Angular](https://angular.io/)
   * Built with Angular 5.2.x
