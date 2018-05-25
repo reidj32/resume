@@ -511,13 +511,13 @@ gulp.task('clean:angular', function() {
  */
 gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
   if (config.production()) {
-    child_process.execSync('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
+    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
     });
   } else {
-    child_process.execSync('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
+    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
@@ -559,13 +559,13 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
  */
 gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
   if (config.production()) {
-    child_process.execSync('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore --configuration Release', function(err, stdout, stderr) {
+    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore --configuration Release', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
     });
   } else {
-    child_process.execSync('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore', function(err, stdout, stderr) {
+    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
@@ -578,14 +578,14 @@ gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
  */
 gulp.task('clean:dotnetcore', function(done) {
   if (config.production()) {
-    child_process.execSync('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
+    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
       del.sync(['./modules/dotnetcore/?(bin|obj)']);
       console.log(stdout);
       console.log(stderr);
       done(err);
     });
   } else {
-    child_process.execSync('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
+    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
       del.sync(['./modules/dotnetcore/?(bin|obj)']);
       console.log(stdout);
       console.log(stderr);
@@ -627,12 +627,12 @@ gulp.task('run:minimal', ['build:minimal'], function(done) {
  */
 gulp.task('run:angular', ['build:angular:deps'], function() {
   if (config.development()) {
-      child_process.execSync('ng serve --open', function(err, stdout, stderr) {
+      child_process.exec('ng serve --open', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
     });
   } else if (config.production()) {
-    child_process.execSync('ng serve --open --prod', function(err, stdout, stderr) {
+    child_process.exec('ng serve --open --prod', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
     });
