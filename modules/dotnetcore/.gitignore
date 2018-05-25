@@ -1,0 +1,12 @@
+bin
+obj
+wwwroot/i18n
+wwwroot/js/jquery*
+wwwroot/js/bootstrap*
+wwwroot/js/popper*
+wwwroot/js/anchor*
+wwwroot/js/fontawesome*
+wwwroot/css/bootstrap*
+wwwroot/apple-touch-icon-precomposed.png
+wwwroot/favicon.ico
+wwwroot/favicon.png

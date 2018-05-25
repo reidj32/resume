@@ -5,6 +5,37 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      // "preLaunchTask": "build",
+      "program":
+        "${workspaceRoot}/modules/dotnetcore/bin/Debug/netcoreapp2.0/Resume.dll",
+      "args": [],
+      "cwd": "${workspaceRoot}/modules/dotnetcore",
+      "stopAtEntry": false,
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start ${auto-detect-url}"
+        },
+        "osx": {
+          "command": "open"
+        },
+        "linux": {
+          "command": "xdg-open"
+        }
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceRoot}/modules/dotnetcore/Views"
+      }
+    },
+    {
       "type": "chrome",
       "request": "attach",
       "name": "Attach to Chrome",
