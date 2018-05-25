@@ -114,7 +114,10 @@ export class AppComponent extends ResponsiveComponent implements OnInit {
     router.events
       .pipe(filter(e => e instanceof RouterEvent))
       .subscribe((event: RouterEvent) => {
-        this.aboutColor = event.url.indexOf('/about') >= 0 ? 'primary' : '';
+        this.aboutColor =
+          event.url.indexOf('/about') >= 0 || event.url === '/'
+            ? 'primary'
+            : '';
         this.skillsColor = event.url.indexOf('/skills') >= 0 ? 'primary' : '';
         this.experienceColor =
           event.url.indexOf('/experience') >= 0 ? 'primary' : '';

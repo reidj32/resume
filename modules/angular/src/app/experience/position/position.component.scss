@@ -4,10 +4,6 @@
   @include md-icon-size(36px);
 }
 
-li {
-  list-style: circle;
-}
-
 li:not(:last-child) {
   margin-bottom: 8px;
 }

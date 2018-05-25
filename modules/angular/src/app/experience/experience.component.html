@@ -8,6 +8,9 @@
   <mat-card-content>
     <mat-tab-group>
       <mat-tab *ngFor="let history of experience.history" label="{{history.company}}">
+        <div class="description">
+          <p>{{history.description}}</p>
+        </div>
         <div class="contact-info">
           <jpr-contact [contact]="history.contact"></jpr-contact>
         </div>

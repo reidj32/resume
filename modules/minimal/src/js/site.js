@@ -25,13 +25,17 @@ jQuery.noConflict();
 (function($) {
   'use strict';
 
+  function makeIdString(str) {
+    return str.toLowerCase().replace(/ /g, '-');
+  }
+
   function populateTitle(e) {
     $('[id^=name]').text(e.name);
     $('[id^=title]').text(e.title);
   }
 
   function populateAbout(about) {
-    $('#about').text(about.title);
+    $('#about').append(about.title);
 
     about.paragraphs.forEach(function(paragraph) {
       $('#about\\.paragraphs').append('<p>' + paragraph + '</p>');
@@ -39,7 +43,7 @@ jQuery.noConflict();
   }
 
   function populateSkills(skills) {
-    $('#skills').text(skills.title);
+    $('#skills').append(skills.title);
 
     skills.sections.forEach(function(section) {
       var $sections = $('#skills\\.content');
@@ -96,67 +100,66 @@ jQuery.noConflict();
       .append(content);
   }
 
+  function populateHistoryCompanyDescription(description, $page) {
+    $page.append(
+      $('<div>')
+        .addClass('col-12')
+        .append(
+          $('<p>')
+            .addClass('text-muted')
+            .text(description)
+        )
+    );
+  }
+
   function populateHistoryCompanyContact(contact, $page) {
     $page.append(
       $('<div>')
         .addClass('col-12')
-        .text(
-          contact.address.street +
-            ' ' +
-            contact.address.city +
-            ', ' +
-            contact.address.state +
-            ' ' +
-            contact.address.zip +
-            ' | ' +
-            contact.phone +
-            ' | '
-        )
         .append(
-          $('<a>')
-            .attr('href', contact.website.link)
-            .text(contact.website.title)
+          $('<small>')
+            .text(
+              contact.address.street +
+                ' ' +
+                contact.address.city +
+                ', ' +
+                contact.address.state +
+                ' ' +
+                contact.address.zip +
+                ' | ' +
+                contact.phone +
+                ' | '
+            )
+            .append(
+              $('<a>')
+                .attr('href', contact.website.link)
+                .text(contact.website.title)
+            )
         )
         .append($('<hr>'))
     );
   }
 
-  function populatePositionSections(sections, $page) {
-    var first = true;
+  function populatePositionAccomplishments(accomplishments, $page) {
+    var $statements = $('<ul>');
 
-    var $wrapper = $('<div>').addClass('');
-
-    sections.forEach(function(section) {
-      var $section = $('<p>').text(section.title);
-
-      if (!first) {
-        $section.addClass('mt-3');
+    accomplishments.forEach(function(accomplishment) {
+      if (accomplishment.statement) {
+        $statements.append($('<li>').text(accomplishment.statement));
       }
-
-      if (section.values) {
-        var $values = $('<ul>');
-
-        section.values.forEach(function(value) {
-          $values.append($('<li>').text(value));
-        });
-
-        $section.append($values);
-      }
-
-      $wrapper.append($section);
-      first = false;
     });
 
     $page.append(
       $('<div>')
         .addClass('col-12')
-        .append($wrapper)
+        .append($statements)
     );
   }
 
   function populateHistoryContent(history) {
     var $page = $('<div>').addClass('row');
 
+    populateHistoryCompanyDescription(history.description, $page);
     populateHistoryCompanyContact(history.contact, $page);
 
     history.positions.forEach(function(position) {
@@ -171,8 +174,8 @@ jQuery.noConflict();
           )
       );
 
-      if (position.sections) {
-        populatePositionSections(position.sections, $page);
+      if (position.accomplishments) {
+        populatePositionAccomplishments(position.accomplishments, $page);
       }
     });
 
@@ -180,17 +183,21 @@ jQuery.noConflict();
   }
 
   function populateExperience(experience) {
-    $('#experience').text(experience.title);
+    $('#experience').append(experience.title);
 
     var first = true;
     experience.history.forEach(function(history) {
       $('#experience\\.tabs').append(
-        buildNavigationTab(history.id, history.company, first)
+        buildNavigationTab(
+          makeIdString(history.company),
+          history.company,
+          first
+        )
       );
 
       $('#experience\\.content').append(
         buildNavigationContent(
-          history.id,
+          makeIdString(history.company),
           first,
           populateHistoryContent(history)
         )
@@ -204,7 +211,11 @@ jQuery.noConflict();
 
   function populateUndergraduate(undergraduate) {
     $('#education\\.tabs').append(
-      buildNavigationTab(undergraduate.id, undergraduate.title, true)
+      buildNavigationTab(
+        makeIdString(undergraduate.title),
+        undergraduate.title,
+        true
+      )
     );
 
     var $page = $('<div>').addClass('row justify-content-start');
@@ -269,13 +280,17 @@ jQuery.noConflict();
     });
 
     $('#education\\.content').append(
-      buildNavigationContent(undergraduate.id, true, $page)
+      buildNavigationContent(makeIdString(undergraduate.title), true, $page)
     );
   }
 
   function populatePluralsight(pluralsight) {
     $('#education\\.tabs').append(
-      buildNavigationTab(pluralsight.id, pluralsight.title, false)
+      buildNavigationTab(
+        makeIdString(pluralsight.title),
+        pluralsight.title,
+        false
+      )
     );
 
     var $page = $('<div>').addClass('row');
@@ -311,12 +326,12 @@ jQuery.noConflict();
     });
 
     $('#education\\.content').append(
-      buildNavigationContent(pluralsight.id, false, $page)
+      buildNavigationContent(makeIdString(pluralsight.title), false, $page)
     );
   }
 
   function populateEducation(education) {
-    $('#education').text(education.title);
+    $('#education').append(education.title);
 
     if (education.undergraduate) {
       populateUndergraduate(education.undergraduate);

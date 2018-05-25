@@ -509,7 +509,7 @@ gulp.task('run:welcome', ['build:welcome'], function(done) {
  */
 gulp.task('run:minimal', ['build:minimal'], function(done) {
   gulp.src('./modules/minimal/build').pipe(webserver(webserverOpts));
-  gulp.watch('./modules/minimal/src/**/*', watchOpts, ['build:minimal']);
+  gulp.watch(['./modules/minimal/src/**/*', './assets/i18n/*.json'], watchOpts, ['build:minimal']);
   done();
 });
 
