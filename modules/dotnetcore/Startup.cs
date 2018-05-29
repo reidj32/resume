@@ -19,11 +19,11 @@ namespace Resume
         // on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var rootPath = Configuration.GetValue<string>("RootPath");
+            var baseAddress = Configuration.GetValue<string>("BaseAddress");
 
             services.AddMvc();
 
-            services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(rootPath));
+            services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(baseAddress));
 
             //services.AddScoped<IUrlHelper, UrlHelper>(factory =>
             //    new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));

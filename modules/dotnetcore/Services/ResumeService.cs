@@ -13,11 +13,11 @@ namespace Resume.Services
 
         private ResumeModel _model;
 
-        public ResumeService(string rootPath)
+        public ResumeService(string baseAddress)
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri(rootPath)
+                BaseAddress = new Uri(baseAddress)
             };
         }
 

@@ -20,6 +20,7 @@ var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
 var rename = require('gulp-rename');
 var cdnizer = require('gulp-cdnizer');
+var mkdirp = require('mkdirp');
 
 var config = {
   environment: yargs.argv.env || 'development',
@@ -551,17 +552,31 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/i18n/')));
   }
 
-  return merge(streams);
+  return streams.length > 0 ? merge(streams) : null;
 });
 
 /**
  * Packages the .NET Core build
  */
 gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  mkdirp.sync('./dist/resumes/dotnetcore');
+
   if (config.production()) {
+    del.sync([
+      './modules/dotnetcore/wwwroot/favicon.ico',
+      './modules/dotnetcore/wwwroot/favicon.png',
+      './modules/dotnetcore/wwwroot/apple-touch-icon-precomposed.png',
+      './modules/dotnetcore/wwwroot/css/**/!(site)*.css?(.map)',
+      './modules/dotnetcore/wwwroot/js',
+      './modules/dotnetcore/wwwroot/i18n'
+    ]);
+
     child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore --configuration Release', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
+
+      del.sync(['./dist/resumes/dotnetcore/*.pdb']);
+
       done(err);
     });
   } else {
