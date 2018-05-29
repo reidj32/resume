@@ -1,0 +1,47 @@
+@model Resume.Models.ResumeModel
+
+@section navbar {
+   @Html.Partial("_Navbar", Model)
+}
+
+<h1>
+   <i class="fas fa-puzzle-piece"></i> @Model.Skills.Title
+</h1>
+
+<div class="row">
+   @foreach (var sect in Model.Skills.Sections)
+   {
+      <div class="col-12 col-sm-6 col-md-3">
+         <h5 class="text-center">@sect.Title</h5>
+
+         @{
+            var id = $"skills-carousel-{Model.Skills.Sections.IndexOf(sect)}";
+         }
+
+         <div id="@id" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+               @for (var i = 0; i < sect.Values.Count; i++)
+               {
+                  <li data-target="#@id" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+               }
+            </ol>
+            <div class="carousel-inner">
+               @foreach (var value in sect.Values)
+               {
+                  <div class="carousel-item text-center p-4 @(sect.Values.IndexOf(value) == 0 ? "active" : "")">
+                     <p>@value</p>
+                  </div>
+               }
+            </div>
+            <a class="carousel-control-prev" href="#@id" role="button" data-slide="prev">
+               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#@id" role="button" data-slide="next">
+               <span class="carousel-control-next-icon" aria-hidden="true"></span>
+               <span class="sr-only">Next</span>
+            </a>
+         </div>
+      </div>
+   }
+</div>

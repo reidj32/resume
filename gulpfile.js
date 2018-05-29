@@ -154,12 +154,23 @@ gulp.task('bundle', ['package'], function() {
 /**
  * Builds all projects
  */
-gulp.task('build', sequence('clean', ['build:welcome', 'build:minimal', 'build:angular']));
+gulp.task('build', sequence('clean', [
+  'build:welcome',
+  'build:minimal',
+  'build:angular',
+  'build:dotnetcore'
+]));
 
 /**
  * Packages all files and place them in the ./dist/ directory
  */
-gulp.task('package', sequence('clean', ['package:assets', 'package:welcome', 'package:minimal', 'package:angular']));
+gulp.task('package', sequence('clean', [
+  'package:assets',
+  'package:welcome',
+  'package:minimal',
+  'package:angular',
+  'package:dotnetcore'
+]));
 
 /**
  * Package the asset files in the ./dist/ directory
@@ -185,9 +196,16 @@ gulp.task('package:assets', function() {
 /**
 * Cleans the project output files
 */
-gulp.task('clean', ['clean:welcome', 'clean:minimal', 'clean:angular'], function() {
-   del.sync(['./dist']);
-});
+gulp.task('clean', [
+    'clean:welcome',
+    'clean:minimal',
+    'clean:angular',
+    'clean:dotnetcore'
+  ],
+  function() {
+    del.sync(['./dist']);
+  }
+);
 
 /**
  * Builds the Welcome project
@@ -445,6 +463,9 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
   }
 });
 
+/**
+ * Copies the Angular dependencies to the assets folder for the CLI to pick up.
+ */
 gulp.task('build:angular:deps', ['clean:angular'], function() {
   var streams = [];
 
@@ -486,6 +507,94 @@ gulp.task('clean:angular', function() {
 });
 
 /**
+ * Builds the .NET Core project
+ */
+gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  if (config.production()) {
+    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  } else {
+    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  }
+});
+
+/**
+ * Copies the .NET Core dependencies to the build folder.
+ */
+gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
+  var streams = [];
+
+  if (config.development()) {
+    streams.push(gulp.src(faviconArray)
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/')));
+
+    streams.push(gulp.src(bootstrap.js)
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
+
+    streams.push(gulp.src(bootstrap.css)
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/css/')));
+
+    streams.push(gulp.src(anchor.js)
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
+
+    streams.push(gulp.src(fontawesome.js)
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
+
+    streams.push(gulp.src('./assets/i18n/*')
+      .pipe(gulp.dest('./modules/dotnetcore/wwwroot/i18n/')));
+  }
+
+  return merge(streams);
+});
+
+/**
+ * Packages the .NET Core build
+ */
+gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  if (config.production()) {
+    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore --configuration Release', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  } else {
+    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity normal --output ../../dist/resumes/dotnetcore', function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  }
+});
+
+/**
+ * Cleans the .NET Core project
+ */
+gulp.task('clean:dotnetcore', function(done) {
+  if (config.production()) {
+    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal --configuration Release', function(err, stdout, stderr) {
+      del.sync(['./modules/dotnetcore/?(bin|obj)']);
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  } else {
+    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity normal', function(err, stdout, stderr) {
+      del.sync(['./modules/dotnetcore/?(bin|obj)']);
+      console.log(stdout);
+      console.log(stderr);
+      done(err);
+    });
+  }
+});
+
+/**
  * Builds and runs all projects in a local webserver
  */
 gulp.task('run', ['package'], function() {
@@ -523,6 +632,29 @@ gulp.task('run:angular', ['build:angular:deps'], function() {
     app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open', '--prod'])
   } else {
     app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open'])
+  }
+
+  if (app) {
+    app.stdout.on('data', function(data) {
+      console.log(data.toString());
+    });
+
+    app.stderr.on('data', function(data) {
+      console.log(data.toString());
+    });
+  }
+});
+
+/**
+ * Runs the .NET Core project in a local webserver
+ */
+gulp.task('run:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  var app = null;
+
+  if (config.production()) {
+    app = child_process.spawn('dotnet', ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'normal', '--configuration', 'Release']);
+  } else {
+    app = child_process.spawn('dotnet', ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'normal']);
   }
 
   if (app) {
