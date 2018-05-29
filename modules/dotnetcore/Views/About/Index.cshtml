@@ -1,1 +1,14 @@
-<p>Hello World!</p>
+@model Resume.Models.ResumeModel
+
+@section navbar {
+   @Html.Partial("_Navbar", Model)
+}
+
+<h1>
+   <i class="fas fa-info-circle"></i> @Model.About.Title
+</h1>
+
+@foreach (var paragraph in Model.About.Paragraphs)
+{
+   <p>@paragraph</p>
+}

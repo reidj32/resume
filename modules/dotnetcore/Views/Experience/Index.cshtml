@@ -1,1 +1,44 @@
-<p>Hello World!</p>
+@model Resume.Models.ResumeModel
+
+@section navbar {
+   @Html.Partial("_Navbar", Model)
+}
+
+<h1>
+   <i class="fas fa-briefcase"></i> @Model.Experience.Title
+</h1>
+
+<div id="experience-carousel" class="carousel slide" data-ride="carousel">
+   <ol class="carousel-indicators">
+      @for (var i = 0; i < Model.Experience.History.Count; i++)
+      {
+         <li data-target="#experience-carousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+      }
+   </ol>
+   <div class="carousel-inner">
+      @foreach (var history in Model.Experience.History)
+      {
+         <div class="carousel-item @(Model.Experience.History.IndexOf(history) == 0 ? "active" : "")">
+
+            <h4>@history.Company <small>@history.Contact.Address.City, @history.Contact.Address.State</small></h4>
+            <h6 class="text-muted">@history.Description</h6>
+
+            @foreach (var position in history.Positions)
+            {
+               <div class="card @(history.Positions.IndexOf(position) == history.Positions.Count - 1 ? "mb-5" : "")">
+                  <div class="card-body">
+                     <h5 class="card-title">@position.Title</h5>
+                     <h6 class="card-subtitle mb-2 text-muted">@position.Duration</h6>
+                     <ul>
+                        @foreach (var accomplishment in position.Accomplishments)
+                        {
+                           <li>@accomplishment.Statement</li>
+                        }
+                     </ul>
+                  </div>
+               </div>
+            }
+         </div>
+      }
+   </div>
+</div>

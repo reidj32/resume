@@ -1,0 +1,43 @@
+@model Resume.Models.ResumeModel
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+   <div class="container">
+      <a class="navbar-brand" href="/">@Model.Name</a>
+      <span class="navbar-text">@Model.Title</span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+              aria-expanded="false" aria-label="Toggle Navigation Bar">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="sections-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-sitemap"></i> Sections
+               </a>
+               <div class="dropdown-menu" aria-labelledby="sections-link">
+                  <a class="dropdown-item" href="@Url.Action("Index", "About")">
+                     <i class="fas fa-info-circle"></i> @Model.About.Title
+                  </a>
+                  <a class="dropdown-item" href="@Url.Action("Index", "Skills")">
+                     <i class="fas fa-puzzle-piece"></i> @Model.Skills.Title
+                  </a>
+                  <a class="dropdown-item" href="@Url.Action("Index", "Experience")">
+                     <i class="fas fa-briefcase"></i> @Model.Experience.Title
+                  </a>
+                  <a class="dropdown-item" href="@Url.Action("Index", "Education")">
+                     <i class="fas fa-graduation-cap"></i> @Model.Education.Title
+                  </a>
+               </div>
+            </li>
+         </ul>
+         <form class="form-inline my-2 my-lg-0">
+            <a class="btn btn-outline-light my-2 my-sm-0 mx-1" href="@Model.GitHub" target="_blank">
+               <i class="fab fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-outline-light my-2 my-sm-0 mx-1" href="@Model.LinkedIn" target="_blank">
+               <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+         </form>
+      </div>
+   </div>
+</nav>
