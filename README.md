@@ -6,13 +6,14 @@ Welcome to my resume. When figuring out a good way to describe the technologies 
 
 * Minimal
   * Built with simple HTML5, Javascript, and CSS3
-  * CSS library used is [Bootstrap](https://getbootstrap.com/)
-  * Javascript library used is [jQuery](https://jquery.com/)
+  * Styled using [Bootstrap](https://getbootstrap.com/)
+  * Client side logic achieved with [jQuery](https://jquery.com/)
 * [Angular](https://angular.io/)
   * Built with Angular 5.2.x
   * Styled using [Angular Material 5.2.x](https://v5.material.angular.io/)
-* [ASP.NET Core 2](https://docs.microsoft.com/en-us/aspnet/core/aspnetcore-2.0?view=aspnetcore-2.1)
-  * **Not completed**
+* [.NET Core](https://docs.microsoft.com/en-us/aspnet/core/aspnetcore-2.0?view=aspnetcore-2.1)
+  * Build with ASP.NET Core 2 MVC
+  * Styled using [Bootstrap](https://getbootstrap.com/)
 * [ReactJS](https://reactjs.org/)
   * **Not completed**
 * [VueJS](https://vuejs.org/)
