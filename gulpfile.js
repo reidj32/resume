@@ -448,14 +448,14 @@ gulp.task('clean:minimal', function() {
  * Builds the Angular project
  */
 gulp.task('build:angular', ['build:angular:deps'], function(done) {
-  if (config.development()) {
-    child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
+  if (config.production()) {
+    child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/ --prod', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
     });
-  } else if (config.production()) {
-    child_process.exec('ng build --prod --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
+  } else {
+    child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
       console.log(stdout);
       console.log(stderr);
       done(err);
@@ -626,15 +626,21 @@ gulp.task('run:minimal', ['build:minimal'], function(done) {
  * Runs the Angular project in a local webserver
  */
 gulp.task('run:angular', ['build:angular:deps'], function() {
-  if (config.development()) {
-      child_process.exec('ng serve --open', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+  var app = null;
+
+  if (config.production()) {
+    app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open', '--prod'])
+  } else {
+    app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open'])
+  }
+
+  if (app) {
+    app.stdout.on('data', function(data) {
+      console.log(data.toString());
     });
-  } else if (config.production()) {
-    child_process.exec('ng serve --open --prod', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+
+    app.stderr.on('data', function(data) {
+      console.log(data.toString());
     });
   }
 });
