@@ -21,10 +21,11 @@ namespace Resume
         public void ConfigureServices(IServiceCollection services)
         {
             var baseAddress = Configuration.GetValue<string>("BaseAddress");
+            var dataPath = Configuration.GetValue<string>("DataPath");
 
             services.AddMvc();
 
-            services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(baseAddress));
+            services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(baseAddress, dataPath));
 
             //services.AddScoped<IUrlHelper, UrlHelper>(factory =>
             //    new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));

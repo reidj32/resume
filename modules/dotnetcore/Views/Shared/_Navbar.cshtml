@@ -15,16 +15,16 @@
                   <i class="fas fa-sitemap"></i> Sections
                </a>
                <div class="dropdown-menu" aria-labelledby="sections-link">
-                  <a class="dropdown-item" href="@Url.Action("Index", "About")">
+                  <a class="dropdown-item" href="@ViewData["BaseHref"]about">
                      <i class="fas fa-info-circle"></i> @Model.About.Title
                   </a>
-                  <a class="dropdown-item" href="@Url.Action("Index", "Skills")">
+                  <a class="dropdown-item" href="@ViewData["BaseHref"]skills">
                      <i class="fas fa-puzzle-piece"></i> @Model.Skills.Title
                   </a>
-                  <a class="dropdown-item" href="@Url.Action("Index", "Experience")">
+                  <a class="dropdown-item" href="@ViewData["BaseHref"]experience">
                      <i class="fas fa-briefcase"></i> @Model.Experience.Title
                   </a>
-                  <a class="dropdown-item" href="@Url.Action("Index", "Education")">
+                  <a class="dropdown-item" href="@ViewData["BaseHref"]education">
                      <i class="fas fa-graduation-cap"></i> @Model.Education.Title
                   </a>
                </div>

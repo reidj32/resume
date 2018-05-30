@@ -10,11 +10,13 @@ namespace Resume.Services
     {
         private bool _disposed;
         private readonly HttpClient _client;
+        private readonly string _dataPath;
 
         private ResumeModel _model;
 
-        public ResumeService(string baseAddress)
+        public ResumeService(string baseAddress, string dataPath)
         {
+            _dataPath = dataPath;
             _client = new HttpClient
             {
                 BaseAddress = new Uri(baseAddress)
@@ -34,7 +36,7 @@ namespace Resume.Services
         {
             if (_model == null)
             {
-                var data = await _client.GetStringAsync($"/i18n/data.{lang}.json");
+                var data = await _client.GetStringAsync($"{_dataPath}data.{lang}.json");
 
                 _model = JsonConvert.DeserializeObject<ResumeModel>(data);
             }

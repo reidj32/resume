@@ -20,10 +20,13 @@ var gulpif = require('gulp-if');
 var inject = require('gulp-inject');
 var rename = require('gulp-rename');
 var cdnizer = require('gulp-cdnizer');
+var concat = require('gulp-concat');
+var replace = require('gulp-replace');
 var mkdirp = require('mkdirp');
 
 var config = {
   environment: yargs.argv.env || 'development',
+  runtime: yargs.argv.rid,
   development() {
     return this.environment === 'development' || this.environment === 'dev';
   },
@@ -32,9 +35,7 @@ var config = {
   }
 };
 
-var faviconArray = [
-  './assets/icons/apple-touch-icon-precomposed.png',
-  './assets/icons/favicon.png',
+var favicons = [
   './assets/icons/favicon.ico'
 ];
 
@@ -138,18 +139,31 @@ var anchor = {
   ]
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   _____ _      ____  ____          _
+//  / ____| |    / __ \|  _ \   /\   | |
+// | |  __| |   | |  | | |_) | /  \  | |
+// | | |_ | |   | |  | |  _ < / /\ \ | |
+// | |__| | |___| |__| | |_) / ____ \| |____
+//  \_____|______\____/|____/_/    \_\______|
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Cleans and builds the entire project
  */
 gulp.task('default', ['build']);
 
 /**
- * After building all projects, zips up the dist/ folder for deployment
- */
-gulp.task('bundle', ['package'], function() {
-  return gulp.src('./dist/**/*')
-    .pipe(zip('bundle.zip'))
-    .pipe(gulp.dest('./dist/'));
+* Cleans the project output files
+*/
+gulp.task('clean', [
+  'clean:welcome',
+  'clean:minimal',
+  'clean:angular',
+  'clean:dotnetcore'
+], function() {
+  del.sync(['./dist']);
 });
 
 /**
@@ -181,60 +195,95 @@ gulp.task('package:assets', function() {
 
   if (config.development()) {
     streams.push(gulp.src('./assets/fonts/*')
-      .pipe(gulp.dest('./dist/fonts/')));
+      .pipe(gulp.dest('./dist/assets/fonts/')));
   }
 
   streams.push(gulp.src('./assets/i18n/*.json')
     .pipe(gulpif(config.production(), jsonminify()))
-    .pipe(gulp.dest('./dist/i18n/')));
+    .pipe(gulp.dest('./dist/assets/i18n/')));
 
   streams.push(gulp.src('./assets/icons/*.svg')
-    .pipe(gulp.dest('./dist/icons/')));
+    .pipe(gulp.dest('./dist/assets/icons/')));
 
   return merge(streams);
 });
 
 /**
-* Cleans the project output files
-*/
-gulp.task('clean', [
-    'clean:welcome',
-    'clean:minimal',
-    'clean:angular',
-    'clean:dotnetcore'
-  ],
-  function() {
-    del.sync(['./dist']);
+ * Builds and runs all projects in a local webserver
+ */
+gulp.task('run', ['package'], function() {
+  var kestrelServerArgs = ['Resume.dll'];
+  var kestrelServerOpts = {
+    cwd: './dist/resumes/dotnetcore',
+      env: {
+        ASPNETCORE_ENVIRONMENT: 'Production',
+        DOTNET_PRINT_TELEMETRY_MESSAGE: false
+      }
+  };
+  var kestrelServer = child_process.spawn('dotnet', kestrelServerArgs, kestrelServerOpts);
+
+  if (kestrelServer) {
+    kestrelServer.stdout.on('data', function(data) {
+      console.log(data.toString());
+    });
+
+    kestrelServer.stderr.on('data', function(data) {
+      console.log(data.toString());
+    });
   }
-);
+
+  webserverOpts.fallback = 'resumes/angular/index.html';
+  webserverOpts.proxies = [
+    { source: '/resumes/dotnetcore', target: 'http://localhost:5000' },
+  ];
+
+  return gulp.src('./dist')
+    .pipe(webserver(webserverOpts));
+});
+
+/**
+ * After building all projects, zips up the dist/ folder for deployment
+ */
+gulp.task('bundle', ['package'], function() {
+  return gulp.src('./dist/**/*')
+    .pipe(zip('bundle.zip'))
+    .pipe(gulp.dest('./dist/'));
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// __          ________ _      _____ ____  __  __ ______
+// \ \        / /  ____| |    / ____/ __ \|  \/  |  ____|
+//  \ \  /\  / /| |__  | |   | |   | |  | | \  / | |__
+//   \ \/  \/ / |  __| | |   | |   | |  | | |\/| |  __|
+//    \  /\  /  | |____| |___| |___| |__| | |  | | |____
+//     \/  \/   |______|______\_____\____/|_|  |_|______|
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Cleans the Welcome project
+ */
+gulp.task('clean:welcome', function() {
+  del.sync(['./modules/welcome/build']);
+});
 
 /**
  * Builds the Welcome project
  */
 gulp.task('build:welcome', ['build:welcome:deps'], function() {
-  var cdn = [];
-  cdn = cdn.concat(bootstrap.cdn);
-  cdn = cdn.concat(fontawesome.cdn);
+  var cdnOpts = [].concat(bootstrap.cdn).concat(fontawesome.cdn);
 
-  return gulp.src('./modules/welcome/src/**/*.html')
-    .pipe(gulpif(config.production(),
-      inject(gulp.src([
-        './modules/welcome/build/**/jquery.min.js',
-        './modules/welcome/build/**/popper.min.js',
-        './modules/welcome/build/**/bootstrap.min.?(js|css)',
-        './modules/welcome/build/**/fontawesome-all.min.js',
-        './modules/welcome/build/**/site?(.min).?(js|css)'
-      ], { read: false }), injectOpts),
-      inject(gulp.src([
-        './modules/welcome/build/**/jquery.js?(.map)',
-        './modules/welcome/build/**/popper.js?(.map)',
-        './modules/welcome/build/**/bootstrap.?(js|css)?(.map)',
-        './modules/welcome/build/**/fontawesome-all.js',
-        './modules/welcome/build/**/site?(.min).?(js|css)'
+  return gulp.src(['./modules/welcome/src/**/*.html'])
+    .pipe(inject(gulp.src([
+        './modules/welcome/build/**/jquery?(.min).js',
+        './modules/welcome/build/**/popper?(.min).js',
+        './modules/welcome/build/**/bootstrap?(.min).?(js|css)',
+        './modules/welcome/build/**/fontawesome-all?(.min).js',
+        './modules/welcome/build/**/?(site|styles)?(.min).css',
+        './modules/welcome/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), injectOpts)
-    ))
-    .pipe(gulpif(config.production(), cdnizer(cdn)))
-    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
+    )
+    .pipe(gulpif(config.production(), cdnizer(cdnOpts)))
     .pipe(gulp.dest('./modules/welcome/build/'));
 });
 
@@ -262,27 +311,30 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
 
     streams.push(gulp.src(fontawesome.js)
       .pipe(gulp.dest('./modules/welcome/build/js/')));
-
-    streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./modules/welcome/build/')));
   }
 
-  streams.push(gulp.src('./modules/welcome/src/**/*.css')
+  streams.push(gulp.src(favicons)
+    .pipe(gulp.dest('./modules/welcome/build/')));
+
+  streams.push(gulp.src(['./modules/welcome/src/img/*.?(png|jpg|ico)'])
+    .pipe(gulp.dest('./modules/welcome/build/img/')));
+
+  streams.push(gulp.src(['./modules/welcome/src/css/*.css'])
     .pipe(gulpif(config.development(), sourcemaps.init()))
     .pipe(gulpif(config.production(),
       postcss([autoprefixer(), cssnano()]),
       postcss([autoprefixer()])
     ))
+    .pipe(gulpif(config.production(), concat('styles.min.css')))
     .pipe(gulpif(config.development(), sourcemaps.write('.')))
-    .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
+    .pipe(replace(/url\('?.+\/(.+?)'?\)/g, 'url(\'img/$1\')'))
     .pipe(gulp.dest('./modules/welcome/build/')));
 
-  streams.push(gulp.src('./modules/welcome/src/**/*.js')
+  streams.push(gulp.src(['./modules/welcome/src/js/*.js'])
+    .pipe(gulpif(config.development(), sourcemaps.init()))
     .pipe(gulpif(config.production(), uglify()))
-    .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
-    .pipe(gulp.dest('./modules/welcome/build/')));
-
-  streams.push(gulp.src(['./modules/welcome/src/**/*.?(png|jpg|ico)'])
+    .pipe(gulpif(config.production(), concat('scripts.min.js')))
+    .pipe(gulpif(config.development(), sourcemaps.write('.')))
     .pipe(gulp.dest('./modules/welcome/build/')));
 
   return merge(streams);
@@ -296,59 +348,74 @@ gulp.task('package:welcome', ['build:welcome'], function() {
 
   if (config.production()) {
     del.sync([
-      './modules/welcome/build/css/!(site)*.min.css',
-      './modules/welcome/build/js/!(site)*.min.js'
+      './modules/welcome/build/css/!(site|styles)*.min.css',
+      './modules/welcome/build/js/!(site|scripts)*.min.js'
     ]);
 
     delete_empty.sync('./modules/welcome/build/');
 
-    streams.push(gulp.src(faviconArray)
+    streams.push(gulp.src(favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
-  streams.push(gulp.src('./modules/welcome/build/**/*')
+  streams.push(gulp.src('./modules/welcome/build/img/*')
+    .pipe(gulp.dest('./dist/assets/images/')));
+
+  streams.push(gulp.src('./modules/welcome/build/**/*.?(css|js)?(.map)')
+    .pipe(replace(/url\('?.+\/(.+?)'?\)/g, 'url(\'assets/images/$1\')'))
+    .pipe(gulp.dest('./dist/')));
+
+  streams.push(gulp.src('./modules/welcome/build/**/*.html')
+    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./dist/')));
 
   return merge(streams);
 });
 
 /**
- * Cleans the Welcome project
+ * Runs the Welcome project in a local webserver
  */
-gulp.task('clean:welcome', function() {
-  del.sync(['./modules/welcome/build']);
+gulp.task('run:welcome', ['build:welcome'], function(done) {
+  gulp.src('./modules/welcome/build').pipe(webserver(webserverOpts));
+  gulp.watch('./modules/welcome/src/**/*', watchOpts, ['build:welcome']);
+  done();
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// __  __ _____ _   _ _____ __  __          _
+// |  \/  |_   _| \ | |_   _|  \/  |   /\   | |
+// | \  / | | | |  \| | | | | \  / |  /  \  | |
+// | |\/| | | | | . ` | | | | |\/| | / /\ \ | |
+// | |  | |_| |_| |\  |_| |_| |  | |/ ____ \| |____
+// |_|  |_|_____|_| \_|_____|_|  |_/_/    \_\______|
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Cleans the Minimal project
+ */
+gulp.task('clean:minimal', function() {
+  del.sync(['./modules/minimal/build']);
 });
 
 /**
  * Builds the Minimal project
  */
 gulp.task('build:minimal', ['build:minimal:deps'], function() {
-  var cdn = [];
-  cdn = cdn.concat(bootstrap.cdn);
-  cdn = cdn.concat(fontawesome.cdn);
-  cdn = cdn.concat(anchor.cdn);
+  var cdn = [].concat(bootstrap.cdn).concat(fontawesome.cdn).concat(anchor.cdn);
 
   return gulp.src('./modules/minimal/src/**/*.html')
-    .pipe(gulpif(config.production(),
-      inject(gulp.src([
-        './modules/minimal/build/**/jquery.min.js',
-        './modules/minimal/build/**/popper.min.js',
-        './modules/minimal/build/**/bootstrap.min.?(js|css)',
-        './modules/minimal/build/**/fontawesome-all.min.js',
-        './modules/minimal/build/**/anchor.min.js',
-        './modules/minimal/build/**/site?(.min).?(js|css)'
-      ], { read: false }), injectOpts),
-      inject(gulp.src([
-        './modules/minimal/build/**/jquery.js?(.map)',
-        './modules/minimal/build/**/popper.js?(.map)',
-        './modules/minimal/build/**/bootstrap.?(js|css)?(.map)',
-        './modules/minimal/build/**/fontawesome-all.js',
-        './modules/minimal/build/**/anchor.js?(.map)',
-        './modules/minimal/build/**/site?(.min).?(js|css)'
+    .pipe(inject(gulp.src([
+        './modules/minimal/build/**/jquery?(.min).js',
+        './modules/minimal/build/**/popper?(.min).js',
+        './modules/minimal/build/**/bootstrap?(.min).?(js|css)',
+        './modules/minimal/build/**/fontawesome-all?(.min).js',
+        './modules/minimal/build/**/anchor?(.min).js',
+        './modules/minimal/build/**/?(site|styles)?(.min).css',
+        './modules/minimal/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), injectOpts)
-    ))
+    )
     .pipe(gulpif(config.production(), cdnizer(cdn)))
-    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./modules/minimal/build/'));
 });
 
@@ -382,29 +449,31 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
 
     streams.push(gulp.src(fontawesome.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
-
-    streams.push(gulp.src(faviconArray)
-      .pipe(gulp.dest('./modules/minimal/build/')));
   }
 
-  streams.push(gulp.src('./modules/minimal/src/**/*.css')
+  streams.push(gulp.src(favicons)
+      .pipe(gulp.dest('./modules/minimal/build/')));
+
+  streams.push(gulp.src('./assets/i18n/data.*.json')
+    .pipe(gulpif(config.production(), jsonminify()))
+    .pipe(gulp.dest('./modules/minimal/build/i18n/')));
+
+  streams.push(gulp.src('./modules/minimal/src/css/*.css')
     .pipe(gulpif(config.development(), sourcemaps.init()))
     .pipe(gulpif(config.production(),
       postcss([autoprefixer(), cssnano()]),
       postcss([autoprefixer()])
     ))
+    .pipe(gulpif(config.production(), concat('styles.min.css')))
     .pipe(gulpif(config.development(), sourcemaps.write('.')))
-    .pipe(gulpif(config.production(), rename({ extname: '.min.css' })))
     .pipe(gulp.dest('./modules/minimal/build/')));
 
-  streams.push(gulp.src('./modules/minimal/src/**/*.js')
+  streams.push(gulp.src('./modules/minimal/src/js/*.js')
+    .pipe(gulpif(config.development(), sourcemaps.init()))
     .pipe(gulpif(config.production(), uglify()))
-    .pipe(gulpif(config.production(), rename({ extname: '.min.js' })))
+    .pipe(gulpif(config.production(), concat('scripts.min.js')))
+    .pipe(gulpif(config.development(), sourcemaps.write('.')))
     .pipe(gulp.dest('./modules/minimal/build/')));
-
-  streams.push(gulp.src('./assets/i18n/data.*.json')
-    .pipe(gulpif(config.production(), jsonminify()))
-    .pipe(gulp.dest('./modules/minimal/build/i18n/')));
 
   return merge(streams);
 });
@@ -415,53 +484,75 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
 gulp.task('package:minimal', ['build:minimal'], function() {
   var streams = [];
 
-  del.sync([
-    './modules/minimal/build/i18n',
-    './modules/minimal/build/?(favicon.*|apple-touch-icon-precomposed.png)'
-  ]);
-
   if (config.production()) {
     del.sync([
-      './modules/minimal/build/css/!(site)*.min.css',
-      './modules/minimal/build/js/!(site)*.min.js'
+      './modules/minimal/build/i18n',
+      './modules/minimal/build/favicon.ico',
+      './modules/minimal/build/css/!(site|styles)*.min.css',
+      './modules/minimal/build/js/!(site|scripts)*.min.js'
     ]);
 
     delete_empty.sync('./modules/minimal/build/');
 
-    streams.push(gulp.src(faviconArray)
+    streams.push(gulp.src(favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
-  streams.push(gulp.src('./modules/minimal/build/**/*')
+  streams.push(gulp.src('./modules/minimal/build/**/*.?(css|js)?(.map)')
+    .pipe(replace('/i18n/', '/assets/i18n/'))
+    .pipe(gulp.dest('./dist/resumes/minimal/')));
+
+  streams.push(gulp.src('./modules/minimal/build/**/*.html')
+    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
     .pipe(gulp.dest('./dist/resumes/minimal/')));
 
   return merge(streams);
 });
 
 /**
- * Cleans the Minimal project
+ * Runs the Minimal project in a local webserver
  */
-gulp.task('clean:minimal', function() {
-  del.sync(['./modules/minimal/build']);
+gulp.task('run:minimal', ['build:minimal'], function(done) {
+  gulp.src('./modules/minimal/build').pipe(webserver(webserverOpts));
+  gulp.watch(['./modules/minimal/src/**/*', './assets/i18n/*.json'], watchOpts, ['build:minimal']);
+  done();
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//           _   _  _____ _    _ _               _____
+//     /\   | \ | |/ ____| |  | | |        /\   |  __ \
+//    /  \  |  \| | |  __| |  | | |       /  \  | |__) |
+//   / /\ \ | . ` | | |_ | |  | | |      / /\ \ |  _  /
+//  / ____ \| |\  | |__| | |__| | |____ / ____ \| | \ \
+// /_/    \_\_| \_|\_____|\____/|______/_/    \_\_|  \_\
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Cleans the Angular project
+ */
+gulp.task('clean:angular', function() {
+  del.sync([
+    './modules/angular/build',
+    './modules/angular/src/assets'
+  ]);
 });
 
 /**
  * Builds the Angular project
  */
 gulp.task('build:angular', ['build:angular:deps'], function(done) {
+  var command = 'ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/';
+
   if (config.production()) {
-    child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/ --prod', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
-  } else {
-    child_process.exec('ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
+    command += ' --prod';
   }
+
+  child_process.exec(command, function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    done(err);
+  });
 });
 
 /**
@@ -498,32 +589,73 @@ gulp.task('package:angular', ['build:angular'], function() {
 });
 
 /**
- * Cleans the Angular project
+ * Runs the Angular project in a local webserver
  */
-gulp.task('clean:angular', function() {
-  del.sync([
-    './modules/angular/build',
-    './modules/angular/src/assets'
-  ]);
+gulp.task('run:angular', ['build:angular:deps'], function() {
+  var args = ['./node_modules/@angular/cli/bin/ng', 'serve', '--open'];
+
+  if (config.production()) {
+    args.push('--prod');
+  }
+
+  var nodeApp = child_process.spawn('node', args);
+
+  if (nodeApp) {
+    nodeApp.stdout.on('data', function(data) {
+      console.log(data.toString());
+    });
+
+    nodeApp.stderr.on('data', function(data) {
+      console.log(data.toString());
+    });
+  }
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//     _   _ ______ _______    _____ ____  _____  ______
+//    | \ | |  ____|__   __|  / ____/ __ \|  __ \|  ____|
+//    |  \| | |__     | |    | |   | |  | | |__) | |__
+//    | . ` |  __|    | |    | |   | |  | |  _  /|  __|
+//  _ | |\  | |____   | |    | |___| |__| | | \ \| |____
+// (_)|_| \_|______|  |_|     \_____\____/|_|  \_\______|
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Cleans the .NET Core project
+ */
+gulp.task('clean:dotnetcore', function(done) {
+  var command = 'dotnet clean modules/dotnetcore/Resume.csproj --verbosity quiet';
+
+  if (config.production()) {
+    command += ' --configuration Release';
+  }
+
+  child_process.exec(command, function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+
+    del.sync(['./modules/dotnetcore/?(bin|obj)']);
+
+    done(err);
+  });
 });
 
 /**
  * Builds the .NET Core project
  */
 gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  var command = 'dotnet build modules/dotnetcore/Resume.csproj --verbosity quiet';
+
   if (config.production()) {
-    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity quiet --configuration Release', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
-  } else {
-    child_process.exec('dotnet build modules/dotnetcore/Resume.csproj --verbosity quiet', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
+    command += ' --configuration Release';
   }
+
+  child_process.exec(command, function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    done(err);
+  });
 });
 
 /**
@@ -533,7 +665,7 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
   var streams = [];
 
   if (config.development()) {
-    streams.push(gulp.src(faviconArray)
+    streams.push(gulp.src(favicons)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/')));
 
     streams.push(gulp.src(bootstrap.js)
@@ -561,127 +693,59 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
 gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
   mkdirp.sync('./dist/resumes/dotnetcore');
 
+  var command = 'dotnet publish modules/dotnetcore/Resume.csproj --verbosity quiet --output ../../dist/resumes/dotnetcore';
+
+  if (config.runtime) {
+    command += (' --runtime ' + config.runtime);
+  }
+
   if (config.production()) {
     del.sync([
       './modules/dotnetcore/wwwroot/favicon.ico',
-      './modules/dotnetcore/wwwroot/favicon.png',
-      './modules/dotnetcore/wwwroot/apple-touch-icon-precomposed.png',
       './modules/dotnetcore/wwwroot/css/**/!(site)*.css?(.map)',
       './modules/dotnetcore/wwwroot/js',
       './modules/dotnetcore/wwwroot/i18n'
     ]);
 
-    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity quiet --output ../../dist/resumes/dotnetcore --runtime linux-x64 --configuration Release', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
+    command += ' --configuration Release';
+  }
 
+  child_process.exec(command, function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+
+    if (config.production()) {
       del.sync([
         './dist/resumes/dotnetcore/*.pdb',
         './dist/resumes/dotnetcore/appsettings.Development.json'
       ]);
+    }
 
-      done(err);
-    });
-  } else {
-    child_process.exec('dotnet publish modules/dotnetcore/Resume.csproj --verbosity quiet --output ../../dist/resumes/dotnetcore --runtime linux-x64', function(err, stdout, stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
-  }
-});
-
-/**
- * Cleans the .NET Core project
- */
-gulp.task('clean:dotnetcore', function(done) {
-  if (config.production()) {
-    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity quiet --configuration Release', function(err, stdout, stderr) {
-      del.sync(['./modules/dotnetcore/?(bin|obj)']);
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
-  } else {
-    child_process.exec('dotnet clean modules/dotnetcore/Resume.csproj --verbosity quiet', function(err, stdout, stderr) {
-      del.sync(['./modules/dotnetcore/?(bin|obj)']);
-      console.log(stdout);
-      console.log(stderr);
-      done(err);
-    });
-  }
-});
-
-/**
- * Builds and runs all projects in a local webserver
- */
-gulp.task('run', ['package'], function() {
-  webserverOpts.fallback = 'resumes/angular/index.html';
-
-  return gulp.src('./dist')
-    .pipe(webserver(webserverOpts))
-});
-
-/**
- * Runs the Welcome project in a local webserver
- */
-gulp.task('run:welcome', ['build:welcome'], function(done) {
-  gulp.src('./modules/welcome/build').pipe(webserver(webserverOpts));
-  gulp.watch('./modules/welcome/src/**/*', watchOpts, ['build:welcome']);
-  done();
-});
-
-/**
- * Runs the Minimal project in a local webserver
- */
-gulp.task('run:minimal', ['build:minimal'], function(done) {
-  gulp.src('./modules/minimal/build').pipe(webserver(webserverOpts));
-  gulp.watch(['./modules/minimal/src/**/*', './assets/i18n/*.json'], watchOpts, ['build:minimal']);
-  done();
-});
-
-/**
- * Runs the Angular project in a local webserver
- */
-gulp.task('run:angular', ['build:angular:deps'], function() {
-  var app = null;
-
-  if (config.production()) {
-    app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open', '--prod'])
-  } else {
-    app = child_process.spawn('node', ['./node_modules/@angular/cli/bin/ng', 'serve', '--open'])
-  }
-
-  if (app) {
-    app.stdout.on('data', function(data) {
-      console.log(data.toString());
-    });
-
-    app.stderr.on('data', function(data) {
-      console.log(data.toString());
-    });
-  }
+    done(err);
+  });
 });
 
 /**
  * Runs the .NET Core project in a local webserver
  */
 gulp.task('run:dotnetcore', ['build:dotnetcore:deps'], function(done) {
-  var app = null;
+  var args = ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'quiet'];
 
   if (config.production()) {
-    app = child_process.spawn('dotnet', ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'quiet', '--configuration', 'Release']);
-  } else {
-    app = child_process.spawn('dotnet', ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'quiet']);
+    args.concat(['--configuration', 'Release']);
   }
 
-  if (app) {
-    app.stdout.on('data', function(data) {
+  var dotnetApp = child_process.spawn('dotnet', args);
+
+  if (dotnetApp) {
+    dotnetApp.stdout.on('data', function(data) {
       console.log(data.toString());
     });
 
-    app.stderr.on('data', function(data) {
+    dotnetApp.stderr.on('data', function(data) {
       console.log(data.toString());
     });
   }
+
+  done();
 });

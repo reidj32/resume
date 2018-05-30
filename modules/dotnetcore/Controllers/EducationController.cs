@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Resume.Filters;
 using Resume.Services;
 using System.Threading.Tasks;
 
 namespace Resume.Controllers
 {
+    [ConfigureBaseHref]
     public class EducationController : Controller
     {
         private readonly IResumeService _resumeService;
