@@ -575,7 +575,10 @@ gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
       console.log(stdout);
       console.log(stderr);
 
-      del.sync(['./dist/resumes/dotnetcore/*.pdb']);
+      del.sync([
+        './dist/resumes/dotnetcore/*.pdb',
+        './dist/resumes/dotnetcore/appsettings.Development.json'
+      ]);
 
       done(err);
     });
