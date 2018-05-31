@@ -271,7 +271,7 @@ gulp.task('run', ['package'], function() {
 gulp.task('bundle', ['package'], function() {
   return gulp.src('./dist/**/*')
     .pipe(zip('bundle.zip'))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('.'));
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
