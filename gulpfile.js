@@ -27,12 +27,32 @@ var mkdirp = require('mkdirp');
 var config = {
   environment: yargs.argv.env || 'development',
   runtime: yargs.argv.rid,
+  skip: yargs.argv.skip,
   development() {
     return this.environment === 'development' || this.environment === 'dev';
   },
   production() {
     return this.environment === 'production' || this.environment === 'prod';
-  }
+  },
+  skipProject(project) {
+    if (!this.skip || typeof this.skip != 'string') {
+      return false;
+    }
+    var projectsToSkip = this.skip.split(",");
+    if (projectsToSkip.includes(project)) {
+      return true;
+    }
+    return false;
+  },
+  skipMinimal() {
+    return this.skipProject('minimal');
+  },
+  skipAngular() {
+    return this.skipProject('angular');
+  },
+  skipDotNetCore() {
+    return this.skipProject('dotnetcore');
+  },
 };
 
 var favicons = [
@@ -395,13 +415,19 @@ gulp.task('run:welcome', ['build:welcome'], function(done) {
  * Cleans the Minimal project
  */
 gulp.task('clean:minimal', function() {
-  del.sync(['./modules/minimal/build']);
+  if (!config.skipMinimal()) {
+    del.sync(['./modules/minimal/build']);
+  }
 });
 
 /**
  * Builds the Minimal project
  */
 gulp.task('build:minimal', ['build:minimal:deps'], function() {
+  if (config.skipMinimal()) {
+    return;
+  }
+
   var cdn = [].concat(bootstrap.cdn).concat(fontawesome.cdn).concat(anchor.cdn);
 
   return gulp.src('./modules/minimal/src/**/*.html')
@@ -423,6 +449,10 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
  * Copies the Minimal project dependencies to the output folder
  */
 gulp.task('build:minimal:deps', ['clean:minimal'], function() {
+  if (config.skipMinimal()) {
+    return;
+  }
+
   var streams = [];
 
   if (config.production()){
@@ -482,6 +512,10 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
  * Packages the Minimal build
  */
 gulp.task('package:minimal', ['build:minimal'], function() {
+  if (config.skipMinimal()) {
+    return;
+  }
+
   var streams = [];
 
   if (config.production()) {
@@ -532,16 +566,23 @@ gulp.task('run:minimal', ['build:minimal'], function(done) {
  * Cleans the Angular project
  */
 gulp.task('clean:angular', function() {
-  del.sync([
-    './modules/angular/build',
-    './modules/angular/src/assets'
-  ]);
+  if (!config.skipAngular()) {
+    del.sync([
+      './modules/angular/build',
+      './modules/angular/src/assets'
+    ]);
+  }
 });
 
 /**
  * Builds the Angular project
  */
 gulp.task('build:angular', ['build:angular:deps'], function(done) {
+  if (config.skipAngular()) {
+    done();
+    return;
+  }
+
   var command = 'ng build --base-href /resumes/angular/ --deploy-url /resumes/angular/';
 
   if (config.production()) {
@@ -559,6 +600,10 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
  * Copies the Angular dependencies to the assets folder for the CLI to pick up.
  */
 gulp.task('build:angular:deps', ['clean:angular'], function() {
+  if (config.skipAngular()) {
+    return;
+  }
+
   var streams = [];
 
   streams.push(gulp.src('./assets/i18n/*')
@@ -580,6 +625,10 @@ gulp.task('build:angular:deps', ['clean:angular'], function() {
  * Packages the Angular build
  */
 gulp.task('package:angular', ['build:angular'], function() {
+  if (config.skipAngular()) {
+    return;
+  }
+
   if (config.production()) {
     del.sync(['./modules/angular/build/assets']);
   }
@@ -625,6 +674,11 @@ gulp.task('run:angular', ['build:angular:deps'], function() {
  * Cleans the .NET Core project
  */
 gulp.task('clean:dotnetcore', function(done) {
+  if (config.skipDotNetCore()) {
+    done();
+    return;
+  }
+
   var command = 'dotnet clean modules/dotnetcore/Resume.csproj --verbosity quiet';
 
   if (config.production()) {
@@ -645,6 +699,11 @@ gulp.task('clean:dotnetcore', function(done) {
  * Builds the .NET Core project
  */
 gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  if (config.skipDotNetCore()) {
+    done();
+    return;
+  }
+
   var command = 'dotnet build modules/dotnetcore/Resume.csproj --verbosity quiet';
 
   if (config.production()) {
@@ -662,6 +721,10 @@ gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
  * Copies the .NET Core dependencies to the build folder.
  */
 gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
+  if (config.skipDotNetCore()) {
+    return;
+  }
+
   var streams = [];
 
   if (config.development()) {
@@ -691,6 +754,11 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
  * Packages the .NET Core build
  */
 gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
+  if (config.skipDotNetCore()) {
+    done();
+    return;
+  }
+
   mkdirp.sync('./dist/resumes/dotnetcore');
 
   var command = 'dotnet publish modules/dotnetcore/Resume.csproj --verbosity quiet --output ../../dist/resumes/dotnetcore';
