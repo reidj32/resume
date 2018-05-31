@@ -1,4 +1,4 @@
-@model Resume.Models.ResumeModel
+@model ResumeModel
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
    <div class="container">
@@ -15,16 +15,16 @@
                   <i class="fas fa-sitemap"></i> Sections
                </a>
                <div class="dropdown-menu" aria-labelledby="sections-link">
-                  <a class="dropdown-item" href="@ViewData["BaseHref"]about">
+                  <a class="dropdown-item" href="@Url.Action("Index", "About")">
                      <i class="fas fa-info-circle"></i> @Model.About.Title
                   </a>
-                  <a class="dropdown-item" href="@ViewData["BaseHref"]skills">
+                  <a class="dropdown-item" href="@Url.Action("Index", "Skills")">
                      <i class="fas fa-puzzle-piece"></i> @Model.Skills.Title
                   </a>
-                  <a class="dropdown-item" href="@ViewData["BaseHref"]experience">
+                  <a class="dropdown-item" href="@Url.Action("Index", "Experience")">
                      <i class="fas fa-briefcase"></i> @Model.Experience.Title
                   </a>
-                  <a class="dropdown-item" href="@ViewData["BaseHref"]education">
+                  <a class="dropdown-item" href="@Url.Action("Index", "Education")">
                      <i class="fas fa-graduation-cap"></i> @Model.Education.Title
                   </a>
                </div>

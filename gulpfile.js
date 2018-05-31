@@ -233,12 +233,16 @@ gulp.task('package:assets', function() {
  */
 gulp.task('run', ['package'], function() {
   var kestrelServerArgs = ['Resume.dll'];
+  var kestrelServerEnv = config.production() ? 'Production' : 'Development';
   var kestrelServerOpts = {
     cwd: './dist/resumes/dotnetcore',
-      env: {
-        ASPNETCORE_ENVIRONMENT: 'Production',
-        DOTNET_PRINT_TELEMETRY_MESSAGE: false
-      }
+    env: {
+      ASPNETCORE_ENVIRONMENT: kestrelServerEnv,
+      ASPNETCORE_BASEADDRESS: 'http://localhost:8000/',
+      ASPNETCORE_DATAPATH: '/assets/i18n/',
+      ASPNETCORE_BASEHREF: '/resumes/dotnetcore/',
+      DOTNET_PRINT_TELEMETRY_MESSAGE: false
+    }
   };
   var kestrelServer = child_process.spawn('dotnet', kestrelServerArgs, kestrelServerOpts);
 
@@ -254,7 +258,7 @@ gulp.task('run', ['package'], function() {
 
   webserverOpts.fallback = 'resumes/angular/index.html';
   webserverOpts.proxies = [
-    { source: '/resumes/dotnetcore', target: 'http://localhost:5000' },
+    { source: '/resumes/dotnetcore/', target: 'http://localhost:5000' },
   ];
 
   return gulp.src('./dist')
@@ -797,13 +801,19 @@ gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
  * Runs the .NET Core project in a local webserver
  */
 gulp.task('run:dotnetcore', ['build:dotnetcore:deps'], function(done) {
-  var args = ['run', '--project', 'modules/dotnetcore/Resume.csproj', '--verbosity', 'quiet'];
+  var env = 'Development';
+  var args = ['run', '--project', 'Resume.csproj', '--verbosity', 'quiet'];
 
   if (config.production()) {
+    env = 'Production';
     args.concat(['--configuration', 'Release']);
   }
 
-  var dotnetApp = child_process.spawn('dotnet', args);
+  var opts = {
+    cwd: './modules/dotnetcore'
+  };
+
+  var dotnetApp = child_process.spawn('dotnet', args, opts);
 
   if (dotnetApp) {
     dotnetApp.stdout.on('data', function(data) {

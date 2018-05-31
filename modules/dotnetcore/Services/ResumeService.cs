@@ -16,6 +16,15 @@ namespace Resume.Services
 
         public ResumeService(string baseAddress, string dataPath)
         {
+            if (string.IsNullOrWhiteSpace(baseAddress))
+            {
+                baseAddress = "http://localhost:5000/";
+            }
+            if (string.IsNullOrWhiteSpace(dataPath))
+            {
+                dataPath = "/";
+            }
+
             _dataPath = dataPath;
             _client = new HttpClient
             {

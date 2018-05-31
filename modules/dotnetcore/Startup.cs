@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -20,32 +21,42 @@ namespace Resume
         // on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var baseAddress = Configuration.GetValue<string>("BaseAddress");
-            var dataPath = Configuration.GetValue<string>("DataPath");
+            var baseAddress = Environment.GetEnvironmentVariable("ASPNETCORE_BASEADDRESS");
+            var dataPath = Environment.GetEnvironmentVariable("ASPNETCORE_DATAPATH");
 
             services.AddMvc();
 
             services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(baseAddress, dataPath));
-
-            //services.AddScoped<IUrlHelper, UrlHelper>(factory =>
-            //    new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
-
-            //services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            var baseHref = Environment.GetEnvironmentVariable("ASPNETCORE_BASEHREF");
+
+            if (!string.IsNullOrWhiteSpace(baseHref))
             {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                app.Use(async (context, next) =>
+                {
+                    context.Request.PathBase = baseHref;
+                    await next.Invoke();
+                });
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
             app.UseStaticFiles();
 
