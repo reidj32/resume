@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Resume.Models;
 using System;
@@ -11,10 +12,11 @@ namespace Resume.Services
         private bool _disposed;
         private readonly HttpClient _client;
         private readonly string _dataPath;
+        private readonly ILogger _logger;
 
         private ResumeModel _model;
 
-        public ResumeService(string baseAddress, string dataPath)
+        public ResumeService(ILogger<ResumeService> logger, string baseAddress, string dataPath)
         {
             if (string.IsNullOrWhiteSpace(baseAddress))
             {
@@ -25,6 +27,7 @@ namespace Resume.Services
                 dataPath = "/";
             }
 
+            _logger = logger;
             _dataPath = dataPath;
             _client = new HttpClient
             {
@@ -45,9 +48,27 @@ namespace Resume.Services
         {
             if (_model == null)
             {
-                var data = await _client.GetStringAsync($"{_dataPath}data.{lang}.json");
+                var requestUri = $"{_dataPath}data.{lang}.json";
 
-                _model = JsonConvert.DeserializeObject<ResumeModel>(data);
+                try
+                {
+                    _logger.LogInformation($"Request starting GET: {requestUri}");
+
+                    var started = DateTime.Now;
+
+                    var data = await _client.GetStringAsync($"{_dataPath}data.{lang}.json");
+
+                    _model = JsonConvert.DeserializeObject<ResumeModel>(data);
+
+                    var finished = DateTime.Now;
+                    var elapsed = finished - started;
+
+                    _logger.LogInformation($"Request finished GET: {requestUri} {elapsed.Milliseconds}ms");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex, $"Request failed GET: {requestUri}");
+                }
             }
             return _model;
         }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Resume.Services;
 
 namespace Resume
@@ -26,7 +28,8 @@ namespace Resume
 
             services.AddMvc();
 
-            services.AddScoped<IResumeService, ResumeService>(factory => new ResumeService(baseAddress, dataPath));
+            services.AddScoped<IResumeService, ResumeService>(factory =>
+                new ResumeService(factory.GetService<ILogger<ResumeService>>(), baseAddress, dataPath));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
