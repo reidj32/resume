@@ -6,6 +6,22 @@ import { environment } from './environments/environment';
 
 import 'hammerjs';
 
+if (environment.production) {
+  const gtagScript = document.createElement('script');
+  gtagScript.async = true;
+  gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=UA-120214520-1';
+
+  const gtagScriptInit = document.createElement('script');
+  gtagScriptInit.innerHTML =
+    'window.dataLayer=window.dataLayer||[];' +
+    'function gtag(){dataLayer.push(arguments);}' +
+    'gtag("js",new Date());' +
+    'gtag("config","UA-120214520-1");';
+
+  document.head.appendChild(gtagScript);
+  document.head.appendChild(gtagScriptInit);
+}
+
 const faviconLink = document.createElement('link');
 faviconLink.rel = 'icon';
 faviconLink.type = 'image/x-icon';

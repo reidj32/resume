@@ -159,6 +159,18 @@ var anchor = {
   ]
 };
 
+var analyticsTag = '<!-- tag:gtag.js -->';
+
+var analyticsCode = [
+  '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120214520-1"></script>',
+  '<script>',
+    'window.dataLayer=window.dataLayer || [];',
+    'function gtag(){dataLayer.push(arguments);}',
+    'gtag("js",new Date());',
+    'gtag("config","UA-120214520-1");',
+  '</script>'
+];
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____ _      ____  ____          _
 //  / ____| |    / __ \|  _ \   /\   | |
@@ -307,6 +319,7 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
         './modules/welcome/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), injectOpts)
     )
+    .pipe(gulpif(config.production(), replace(analyticsTag, analyticsCode.join(' '))))
     .pipe(gulpif(config.production(), cdnizer(cdnOpts)))
     .pipe(gulp.dest('./modules/welcome/build/'));
 });
@@ -445,6 +458,7 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
         './modules/minimal/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), injectOpts)
     )
+    .pipe(gulpif(config.production(), replace(analyticsTag, analyticsCode.join(' '))))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulp.dest('./modules/minimal/build/'));
 });
