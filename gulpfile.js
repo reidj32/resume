@@ -329,6 +329,8 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
         './modules/welcome/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), config.opts.inject)
     )
+    .pipe(replace('${version}', config.version))
+    .pipe(replace('${license}', config.license))
     .pipe(gulpif(config.production(), replace(config.analytics.tag, config.analytics.code.join(' '))))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulp.dest('./modules/welcome/build/'));
