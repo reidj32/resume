@@ -195,7 +195,7 @@ gulp.task('clean', [
   'clean:angular',
   'clean:dotnetcore'
 ], function() {
-  del.sync(['./dist']);
+  del.sync(['./dist', './bundle.zip']);
 });
 
 /**
@@ -707,7 +707,11 @@ gulp.task('clean:dotnetcore', function(done) {
     console.log(stdout);
     console.log(stderr);
 
-    del.sync(['./modules/dotnetcore/?(bin|obj)']);
+    del.sync([
+      './modules/dotnetcore/?(bin|obj)',
+      './modules/dotnetcore/wwwroot/css/!(site)*?(.min).css?(.map)',
+      './modules/dotnetcore/wwwroot/js/!(site)*?(.min).js?(.map)'
+    ]);
 
     done(err);
   });

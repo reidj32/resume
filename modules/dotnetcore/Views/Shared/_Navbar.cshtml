@@ -10,11 +10,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar">
          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" href="#" id="sections-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown"></li>
+         </ul>
+         <form class="form-inline my-2 my-lg-0">
+            <div class="btn-group" role="group">
+               <button id="sections-btn" type="button" class="btn btn-outline-light dropdown-toggle my-2 my-sm-0 mx-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-sitemap"></i> Sections
-               </a>
-               <div class="dropdown-menu" aria-labelledby="sections-link">
+               </button>
+               <div class="dropdown-menu" aria-labelledby="sections-btn">
                   <a class="dropdown-item" href="@Url.Action("Index", "About")">
                      <i class="fas fa-info-circle"></i> @Model.About.Title
                   </a>
@@ -28,9 +31,7 @@
                      <i class="fas fa-graduation-cap"></i> @Model.Education.Title
                   </a>
                </div>
-            </li>
-         </ul>
-         <form class="form-inline my-2 my-lg-0">
+            </div>
             <a class="btn btn-outline-light my-2 my-sm-0 mx-1" href="@Model.GitHub" target="_blank">
                <i class="fab fa-github"></i> GitHub
             </a>
