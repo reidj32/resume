@@ -403,7 +403,7 @@ gulp.task('package:welcome', ['build:welcome'], function() {
 
     delete_empty.sync('./modules/welcome/build/');
 
-    streams.push(gulp.src(favicons)
+    streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
@@ -561,7 +561,7 @@ gulp.task('package:minimal', ['build:minimal'], function() {
 
     delete_empty.sync('./modules/minimal/build/');
 
-    streams.push(gulp.src(favicons)
+    streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
