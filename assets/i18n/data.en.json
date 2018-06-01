@@ -17,6 +17,7 @@
         "title": "Attributes",
         "values": [
           "Fast learner",
+          "Hard working",
           "Organized",
           "Good communicator",
           "Adaptable",
@@ -141,7 +142,7 @@
               },
               {
                 "statement":
-                  "Developed and integrated a robust, user-friendly rules engine for our primary products. This allowed business users to control and configure, business, technical, legal, regulatory, and compliance requirements directly without the new to start a new project with development team.",
+                  "Developed and integrated a robust, user-friendly rules engine used by several of our largest custom applications. This allowed business users to control and configure business, technical, legal, regulatory, and compliance requirements directly without the new to start a new project with development team.",
                 "story": {
                   "situation": "",
                   "obstacle": "",
@@ -151,7 +152,7 @@
               },
               {
                 "statement":
-                  "Architected a brand new, full-stack custom solution to extract and bundle sensitive customer information from vendor systems with the intent of selling debt to 3rd party buyers driving roughly $200,000 in revenue annually. Designed to be extremely durable, highly configurable, and scalable based on business needs. Because of the system's re-usability, it was used to organize, bundle, and ship millions of customer records, saving approximately $300,000 in costs during an operational conversion.",
+                  "Architected a brand new, full-stack custom solution to extract and bundle sensitive customer information from vendor systems with the intent of selling debt to 3rd party buyers. This product drove roughly $200,000 in revenue annually. Designed the system to be extremely durable, highly configurable, and scalable based on business needs. Because of the system's re-usability, it was used to organize, bundle, and ship millions of customer records, saving approximately $300,000 in costs during an operational conversion.",
                 "story": {
                   "situation": "",
                   "obstacle": "",
@@ -161,7 +162,7 @@
               },
               {
                 "statement":
-                  "Architected a brand new, full-stack custom solution to electronically gather customer signatures for required documents utilizing DocuSign. This scalable system initially saved 1-2 full time employees, with the potential to save 8-10. Provided a user editable rules engine and a set of checks and balances to prevent fraud saving the company thousands of dollars each month.",
+                  "Architected a brand new, full-stack custom solution to electronically gather customer signatures for required documents utilizing DocuSign. This scalable system initially saved 1-2 full time employees, with the potential to save 8-10.",
                 "story": {
                   "situation": "",
                   "obstacle": "",
@@ -171,7 +172,7 @@
               },
               {
                 "statement":
-                  "Expanded and maintained the company's main data warehouse. Processed daily, monthly, and yearly aggregating mission-critical data utilized by over a dozen internal systems and departments.",
+                  "Expanded and maintained the company's main data warehouse. Processed daily, monthly, and yearly aggregations utilized by over a dozen internal systems and departments.",
                 "story": {
                   "situation": "",
                   "obstacle": "",
@@ -222,6 +223,75 @@
               {
                 "statement":
                   "Gathered requirements directly from business users, positioning the development team for a successful project without the need to redo large portions because of a communication breakdown between departments.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Selected by management to direct project architecture as a future Software Architect.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Contributed to a Kanban board providing transparency to end users of current project progress.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Introduced new technology and tools streamlining the development process and keeping products up to date with the latest available features.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement": "Participated in design and code reviews.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Defined test plans in collaboration with business testers ensuring a high level of software quality and reliability.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Contributed to the software development lifecycle (SDLC) followed by the development team.",
+                "story": {
+                  "situation": "",
+                  "obstacle": "",
+                  "action": "",
+                  "result": ""
+                }
+              },
+              {
+                "statement":
+                  "Created several reusable libraries solving frequently discovered code duplications across many internal custom applications.",
                 "story": {
                   "situation": "",
                   "obstacle": "",

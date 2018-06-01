@@ -1,163 +1,185 @@
 'use strict';
 
-var gulp = require('gulp');
-var del = require('del');
-var delete_empty = require('delete-empty');
-var yargs = require('yargs');
-var merge = require('merge-stream');
-var child_process = require('child_process');
-var uglify = require('gulp-uglify');
-var postcss = require('gulp-postcss');
-var cssnano = require('cssnano');
-var autoprefixer = require('autoprefixer');
-var sourcemaps = require('gulp-sourcemaps');
-var htmlmin = require('gulp-htmlmin');
-var jsonminify = require('gulp-jsonminify');
-var sequence = require('gulp-sequence');
-var zip = require('gulp-zip');
-var webserver = require('gulp-webserver');
-var gulpif = require('gulp-if');
-var inject = require('gulp-inject');
-var rename = require('gulp-rename');
-var cdnizer = require('gulp-cdnizer');
-var concat = require('gulp-concat');
-var replace = require('gulp-replace');
-var mkdirp = require('mkdirp');
+var gulp = require('gulp'),
+    del = require('del'),
+    fs = require('fs'),
+    delete_empty = require('delete-empty'),
+    yargs = require('yargs'),
+    merge = require('merge-stream'),
+    child_process = require('child_process'),
+    uglify = require('gulp-uglify'),
+    postcss = require('gulp-postcss'),
+    cssnano = require('cssnano'),
+    autoprefixer = require('autoprefixer'),
+    sourcemaps = require('gulp-sourcemaps'),
+    htmlmin = require('gulp-htmlmin'),
+    jsonminify = require('gulp-jsonminify'),
+    sequence = require('gulp-sequence'),
+    zip = require('gulp-zip'),
+    webserver = require('gulp-webserver'),
+    gulpif = require('gulp-if'),
+    inject = require('gulp-inject'),
+    rename = require('gulp-rename'),
+    cdnizer = require('gulp-cdnizer'),
+    concat = require('gulp-concat'),
+    replace = require('gulp-replace'),
+    mkdirp = require('mkdirp');
 
 var config = {
-  environment: yargs.argv.env || 'development',
-  runtime: yargs.argv.rid,
-  skip: yargs.argv.skip,
-  development() {
-    return this.environment === 'development' || this.environment === 'dev';
+  args: {
+    skip: yargs.argv.skip,
+    runtime: yargs.argv.rid,
+    environment: yargs.argv.env || 'development'
   },
-  production() {
-    return this.environment === 'production' || this.environment === 'prod';
+  opts: {
+    webserver: {
+      open: true,
+      livereload: true
+    },
+    htmlmin: {
+      collapseWhitespace: true,
+      removeComments: true
+    },
+    watch: {
+      delay: 10
+    },
+    inject: {
+      relative: true,
+      ignorePath: ['../build/']
+    }
   },
-  skipProject(project) {
-    if (!this.skip || typeof this.skip != 'string') {
+  favicons: [
+    './assets/icons/favicon.ico'
+  ],
+  vendor: {
+    bootstrap: {
+      css: [
+        './node_modules/bootstrap/dist/css/bootstrap.css',
+        './node_modules/bootstrap/dist/css/bootstrap.css.map'
+      ],
+      js: [
+        './node_modules/jquery/dist/jquery.js',
+        './node_modules/popper.js/dist/popper.js',
+        './node_modules/popper.js/dist/popper.js.map',
+        './node_modules/bootstrap/dist/js/bootstrap.js',
+        './node_modules/bootstrap/dist/js/bootstrap.js.map'
+      ],
+      min: {
+        css: [
+          './node_modules/bootstrap/dist/css/bootstrap.min.css'
+        ],
+        js: [
+          './node_modules/jquery/dist/jquery.min.js',
+          './node_modules/popper.js/dist/popper.min.js',
+          './node_modules/bootstrap/dist/js/bootstrap.min.js',
+        ]
+      },
+      cdn: [
+        {
+          file: 'css/bootstrap?(.min).css',
+          package: 'bootstrap',
+          cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/css/bootstrap.min.css'
+        },
+        {
+          file: 'js/jquery?(.min).js',
+          package: 'jquery',
+          cdn: 'https://code.jquery.com/jquery-${version}.min.js'
+        },
+        {
+          file: 'js/popper?(.min).js',
+          package: 'popper.js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/${version}/umd/popper.min.js'
+        },
+        {
+          file: 'js/bootstrap?(.min).js',
+          package: 'bootstrap',
+          cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/js/bootstrap.min.js'
+        }
+      ]
+    },
+    fontawesome: {
+      js: [
+        './lib/fontawesome/fontawesome-all.js'
+      ],
+      min: {
+        js: [
+          './lib/fontawesome/fontawesome-all.min.js'
+        ]
+      },
+      cdn: [
+        {
+          file: 'js/fontawesome-all?(.min).js',
+          cdn: 'https://use.fontawesome.com/releases/v5.0.10/js/all.js'
+        }
+      ]
+    },
+    anchor: {
+      js: [
+        './node_modules/anchor-js/anchor.js'
+      ],
+      min: {
+        js: [
+          './node_modules/anchor-js/anchor.min.js'
+        ]
+      },
+      cdn: [
+        {
+          file: 'js/anchor?(.min).js',
+          package: 'anchor-js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/anchor-js/${version}/anchor.min.js'
+        }
+      ]
+    }
+  },
+  analytics: {
+    tag: '<!-- tag:gtag.js -->',
+    code: [
+      '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120214520-1"></script>',
+      '<script>',
+        'window.dataLayer=window.dataLayer || [];',
+        'function gtag(){dataLayer.push(arguments);}',
+        'gtag("js",new Date());',
+        'gtag("config","UA-120214520-1");',
+      '</script>'
+    ]
+  },
+  development: function() {
+    return this.args.environment === 'development' || this.args.environment === 'dev';
+  },
+  production: function() {
+    return this.args.environment === 'production' || this.args.environment === 'prod';
+  },
+  skipMinimal: function() {
+    return this.skipProject('minimal');
+  },
+  skipAngular: function() {
+    return this.skipProject('angular');
+  },
+  skipDotNetCore: function() {
+    return this.skipProject('dotnetcore');
+  },
+  skipProject: function(project) {
+    if (!this.args.skip || typeof this.args.skip != 'string') {
       return false;
     }
-    var projectsToSkip = this.skip.split(",");
+    var projectsToSkip = this.args.skip.split(",");
     if (projectsToSkip.includes(project)) {
       return true;
     }
     return false;
-  },
-  skipMinimal() {
-    return this.skipProject('minimal');
-  },
-  skipAngular() {
-    return this.skipProject('angular');
-  },
-  skipDotNetCore() {
-    return this.skipProject('dotnetcore');
-  },
+  }
 };
+var packageJSON = null;
 
-var favicons = [
-  './assets/icons/favicon.ico'
-];
+function readPackageJSON() {
+  if (!packageJSON) {
+    packageJSON = JSON.parse(fs.readFileSync('./package.json'))
+  }
+  return packageJSON;
+}
 
-var webserverOpts = {
-  open: true,
-  livereload: true
-};
-
-var htmlminOpts = {
-  collapseWhitespace: true,
-  removeComments: true
-};
-
-var watchOpts = {
-  delay: 10
-};
-
-var injectOpts = {
-  relative: true,
-  ignorePath: ['../build/']
-};
-
-var bootstrap = {
-  css: [
-    './node_modules/bootstrap/dist/css/bootstrap.css',
-    './node_modules/bootstrap/dist/css/bootstrap.css.map'
-  ],
-  js: [
-    './node_modules/jquery/dist/jquery.js',
-    './node_modules/popper.js/dist/popper.js',
-    './node_modules/popper.js/dist/popper.js.map',
-    './node_modules/bootstrap/dist/js/bootstrap.js',
-    './node_modules/bootstrap/dist/js/bootstrap.js.map'
-  ],
-  min: {
-    css: [
-      './node_modules/bootstrap/dist/css/bootstrap.min.css'
-    ],
-    js: [
-      './node_modules/jquery/dist/jquery.min.js',
-      './node_modules/popper.js/dist/popper.min.js',
-      './node_modules/bootstrap/dist/js/bootstrap.min.js',
-    ]
-  },
-  cdn: [
-    {
-      file: 'css/bootstrap?(.min).css',
-      package: 'bootstrap',
-      cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/css/bootstrap.min.css'
-    },
-    {
-      file: 'js/jquery?(.min).js',
-      package: 'jquery',
-      cdn: 'https://code.jquery.com/jquery-${version}.min.js'
-    },
-    {
-      file: 'js/popper?(.min).js',
-      package: 'popper.js',
-      cdn: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/${version}/umd/popper.min.js'
-    },
-    {
-      file: 'js/bootstrap?(.min).js',
-      package: 'bootstrap',
-      cdn: 'https://stackpath.bootstrapcdn.com/bootstrap/${version}/js/bootstrap.min.js'
-    }
-  ]
-};
-
-var fontawesome = {
-  js: [
-    './lib/fontawesome/fontawesome-all.js'
-  ],
-  min: {
-    js: [
-      './lib/fontawesome/fontawesome-all.min.js'
-    ]
-  },
-  cdn: [
-    {
-      file: 'js/fontawesome-all?(.min).js',
-      cdn: 'https://use.fontawesome.com/releases/v5.0.10/js/all.js'
-    }
-  ]
-};
-
-var anchor = {
-  js: [
-    './node_modules/anchor-js/anchor.js'
-  ],
-  min: {
-    js: [
-      './node_modules/anchor-js/anchor.min.js'
-    ]
-  },
-  cdn: [
-    {
-      file: 'js/anchor?(.min).js',
-      package: 'anchor-js',
-      cdn: 'https://cdnjs.cloudflare.com/ajax/libs/anchor-js/${version}/anchor.min.js'
-    }
-  ]
-};
+config.version = readPackageJSON().version;
+config.license = readPackageJSON().license;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____ _      ____  ____          _
@@ -183,7 +205,7 @@ gulp.task('clean', [
   'clean:angular',
   'clean:dotnetcore'
 ], function() {
-  del.sync(['./dist']);
+  del.sync(['./dist', './bundle.zip']);
 });
 
 /**
@@ -256,13 +278,13 @@ gulp.task('run', ['package'], function() {
     });
   }
 
-  webserverOpts.fallback = 'resumes/angular/index.html';
-  webserverOpts.proxies = [
+  config.opts.webserver.fallback = 'resumes/angular/index.html';
+  config.opts.webserver.proxies = [
     { source: '/resumes/dotnetcore/', target: 'http://localhost:5000' },
   ];
 
   return gulp.src('./dist')
-    .pipe(webserver(webserverOpts));
+    .pipe(webserver(config.opts.webserver));
 });
 
 /**
@@ -295,7 +317,7 @@ gulp.task('clean:welcome', function() {
  * Builds the Welcome project
  */
 gulp.task('build:welcome', ['build:welcome:deps'], function() {
-  var cdnOpts = [].concat(bootstrap.cdn).concat(fontawesome.cdn);
+  var cdn = [].concat(config.vendor.bootstrap.cdn).concat(config.vendor.fontawesome.cdn);
 
   return gulp.src(['./modules/welcome/src/**/*.html'])
     .pipe(inject(gulp.src([
@@ -305,9 +327,12 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
         './modules/welcome/build/**/fontawesome-all?(.min).js',
         './modules/welcome/build/**/?(site|styles)?(.min).css',
         './modules/welcome/build/**/?(site|scripts)?(.min).js'
-      ], { read: false }), injectOpts)
+      ], { read: false }), config.opts.inject)
     )
-    .pipe(gulpif(config.production(), cdnizer(cdnOpts)))
+    .pipe(replace('${version}', config.version))
+    .pipe(replace('${license}', config.license))
+    .pipe(gulpif(config.production(), replace(config.analytics.tag, config.analytics.code.join(' '))))
+    .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulp.dest('./modules/welcome/build/'));
 });
 
@@ -318,26 +343,26 @@ gulp.task('build:welcome:deps', ['clean:welcome'], function() {
   var streams = [];
 
   if (config.production()) {
-    streams.push(gulp.src(bootstrap.min.js)
+    streams.push(gulp.src(config.vendor.bootstrap.min.js)
       .pipe(gulp.dest('./modules/welcome/build/js/')));
 
-    streams.push(gulp.src(bootstrap.min.css)
+    streams.push(gulp.src(config.vendor.bootstrap.min.css)
       .pipe(gulp.dest('./modules/welcome/build/css/')));
 
-    streams.push(gulp.src(fontawesome.min.js)
+    streams.push(gulp.src(config.vendor.fontawesome.min.js)
       .pipe(gulp.dest('./modules/welcome/build/js/')));
   } else {
-    streams.push(gulp.src(bootstrap.js)
+    streams.push(gulp.src(config.vendor.bootstrap.js)
       .pipe(gulp.dest('./modules/welcome/build/js/')));
 
-    streams.push(gulp.src(bootstrap.css)
+    streams.push(gulp.src(config.vendor.bootstrap.css)
       .pipe(gulp.dest('./modules/welcome/build/css/')));
 
-    streams.push(gulp.src(fontawesome.js)
+    streams.push(gulp.src(config.vendor.fontawesome.js)
       .pipe(gulp.dest('./modules/welcome/build/js/')));
   }
 
-  streams.push(gulp.src(favicons)
+  streams.push(gulp.src(config.favicons)
     .pipe(gulp.dest('./modules/welcome/build/')));
 
   streams.push(gulp.src(['./modules/welcome/src/img/*.?(png|jpg|ico)'])
@@ -378,7 +403,7 @@ gulp.task('package:welcome', ['build:welcome'], function() {
 
     delete_empty.sync('./modules/welcome/build/');
 
-    streams.push(gulp.src(favicons)
+    streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
@@ -390,7 +415,7 @@ gulp.task('package:welcome', ['build:welcome'], function() {
     .pipe(gulp.dest('./dist/')));
 
   streams.push(gulp.src('./modules/welcome/build/**/*.html')
-    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
+    .pipe(gulpif(config.production(), htmlmin(config.opts.htmlmin)))
     .pipe(gulp.dest('./dist/')));
 
   return merge(streams);
@@ -400,8 +425,8 @@ gulp.task('package:welcome', ['build:welcome'], function() {
  * Runs the Welcome project in a local webserver
  */
 gulp.task('run:welcome', ['build:welcome'], function(done) {
-  gulp.src('./modules/welcome/build').pipe(webserver(webserverOpts));
-  gulp.watch('./modules/welcome/src/**/*', watchOpts, ['build:welcome']);
+  gulp.src('./modules/welcome/build').pipe(webserver(config.opts.webserver));
+  gulp.watch('./modules/welcome/src/**/*', config.opts.watch, ['build:welcome']);
   done();
 });
 
@@ -432,7 +457,10 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
     return;
   }
 
-  var cdn = [].concat(bootstrap.cdn).concat(fontawesome.cdn).concat(anchor.cdn);
+  var cdn = []
+    .concat(config.vendor.bootstrap.cdn)
+    .concat(config.vendor.fontawesome.cdn)
+    .concat(config.vendor.anchor.cdn);
 
   return gulp.src('./modules/minimal/src/**/*.html')
     .pipe(inject(gulp.src([
@@ -443,8 +471,9 @@ gulp.task('build:minimal', ['build:minimal:deps'], function() {
         './modules/minimal/build/**/anchor?(.min).js',
         './modules/minimal/build/**/?(site|styles)?(.min).css',
         './modules/minimal/build/**/?(site|scripts)?(.min).js'
-      ], { read: false }), injectOpts)
+      ], { read: false }), config.opts.inject)
     )
+    .pipe(gulpif(config.production(), replace(config.analytics.tag, config.analytics.code.join(' '))))
     .pipe(gulpif(config.production(), cdnizer(cdn)))
     .pipe(gulp.dest('./modules/minimal/build/'));
 });
@@ -460,32 +489,32 @@ gulp.task('build:minimal:deps', ['clean:minimal'], function() {
   var streams = [];
 
   if (config.production()){
-    streams.push(gulp.src(bootstrap.min.js)
+    streams.push(gulp.src(config.vendor.bootstrap.min.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
 
-    streams.push(gulp.src(bootstrap.min.css)
+    streams.push(gulp.src(config.vendor.bootstrap.min.css)
       .pipe(gulp.dest('./modules/minimal/build/css/')));
 
-    streams.push(gulp.src(anchor.min.js)
+    streams.push(gulp.src(config.vendor.anchor.min.js)
       .pipe( gulp.dest('./modules/minimal/build/js/')));
 
-    streams.push(gulp.src(fontawesome.min.js)
+    streams.push(gulp.src(config.vendor.fontawesome.min.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
   } else {
-    streams.push(gulp.src(bootstrap.js)
+    streams.push(gulp.src(config.vendor.bootstrap.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
 
-    streams.push(gulp.src(bootstrap.css)
+    streams.push(gulp.src(config.vendor.bootstrap.css)
       .pipe(gulp.dest('./modules/minimal/build/css/')));
 
-    streams.push(gulp.src(anchor.js)
+    streams.push(gulp.src(config.vendor.anchor.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
 
-    streams.push(gulp.src(fontawesome.js)
+    streams.push(gulp.src(config.vendor.fontawesome.js)
       .pipe(gulp.dest('./modules/minimal/build/js/')));
   }
 
-  streams.push(gulp.src(favicons)
+  streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./modules/minimal/build/')));
 
   streams.push(gulp.src('./assets/i18n/data.*.json')
@@ -532,7 +561,7 @@ gulp.task('package:minimal', ['build:minimal'], function() {
 
     delete_empty.sync('./modules/minimal/build/');
 
-    streams.push(gulp.src(favicons)
+    streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./dist/')));
   }
 
@@ -541,7 +570,7 @@ gulp.task('package:minimal', ['build:minimal'], function() {
     .pipe(gulp.dest('./dist/resumes/minimal/')));
 
   streams.push(gulp.src('./modules/minimal/build/**/*.html')
-    .pipe(gulpif(config.production(), htmlmin(htmlminOpts)))
+    .pipe(gulpif(config.production(), htmlmin(config.opts.htmlmin)))
     .pipe(gulp.dest('./dist/resumes/minimal/')));
 
   return merge(streams);
@@ -551,8 +580,8 @@ gulp.task('package:minimal', ['build:minimal'], function() {
  * Runs the Minimal project in a local webserver
  */
 gulp.task('run:minimal', ['build:minimal'], function(done) {
-  gulp.src('./modules/minimal/build').pipe(webserver(webserverOpts));
-  gulp.watch(['./modules/minimal/src/**/*', './assets/i18n/*.json'], watchOpts, ['build:minimal']);
+  gulp.src('./modules/minimal/build').pipe(webserver(config.opts.webserver));
+  gulp.watch(['./modules/minimal/src/**/*', './assets/i18n/*.json'], config.opts.watch, ['build:minimal']);
   done();
 });
 
@@ -693,7 +722,11 @@ gulp.task('clean:dotnetcore', function(done) {
     console.log(stdout);
     console.log(stderr);
 
-    del.sync(['./modules/dotnetcore/?(bin|obj)']);
+    del.sync([
+      './modules/dotnetcore/?(bin|obj)',
+      './modules/dotnetcore/wwwroot/css/!(site)*?(.min).css?(.map)',
+      './modules/dotnetcore/wwwroot/js/!(site)*?(.min).js?(.map)'
+    ]);
 
     done(err);
   });
@@ -732,19 +765,19 @@ gulp.task('build:dotnetcore:deps', ['clean:dotnetcore'], function() {
   var streams = [];
 
   if (config.development()) {
-    streams.push(gulp.src(favicons)
+    streams.push(gulp.src(config.favicons)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/')));
 
-    streams.push(gulp.src(bootstrap.js)
+    streams.push(gulp.src(config.vendor.bootstrap.js)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
 
-    streams.push(gulp.src(bootstrap.css)
+    streams.push(gulp.src(config.vendor.bootstrap.css)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/css/')));
 
-    streams.push(gulp.src(anchor.js)
+    streams.push(gulp.src(config.vendor.anchor.js)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
 
-    streams.push(gulp.src(fontawesome.js)
+    streams.push(gulp.src(config.vendor.fontawesome.js)
       .pipe(gulp.dest('./modules/dotnetcore/wwwroot/js/')));
 
     streams.push(gulp.src('./assets/i18n/*')
