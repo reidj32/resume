@@ -329,6 +329,18 @@ gulp.task('build:welcome', ['build:welcome:deps'], function() {
         './modules/welcome/build/**/?(site|scripts)?(.min).js'
       ], { read: false }), config.opts.inject)
     )
+    .pipe(inject(gulp.src(['./modules/welcome/src/about/privacy.html']), {
+      starttag: '<!-- inject:about:privacy -->',
+      transform: function(filePath, file) {
+        return file.contents.toString('utf8');
+      }
+    }))
+    .pipe(inject(gulp.src(['./modules/welcome/src/about/terms-of-use.html']), {
+      starttag: '<!-- inject:about:terms-of-use -->',
+      transform: function(filePath, file) {
+        return file.contents.toString('utf8');
+      }
+    }))
     .pipe(replace('${version}', config.version))
     .pipe(replace('${license}', config.license))
     .pipe(gulpif(config.production(), replace(config.analytics.tag, config.analytics.code.join(' '))))

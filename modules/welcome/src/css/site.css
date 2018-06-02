@@ -59,3 +59,22 @@
   opacity: 1;
   text-decoration: none;
 }
+
+.modal-header p,
+.modal-header h1,
+.modal-header h2,
+.modal-header h3,
+.modal-header h4,
+.modal-header h5,
+.modal-header h6,
+.modal-header strong,
+.modal-body p,
+.modal-body h1,
+.modal-body h2,
+.modal-body h3,
+.modal-body h4,
+.modal-body h5,
+.modal-body h6,
+.modal-body strong {
+  color: black;
+}

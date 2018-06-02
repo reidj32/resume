@@ -19,6 +19,43 @@
 </head>
 
 <body class="bg">
+  <div id="privacy-modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Privacy Policy</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- inject:about:privacy -->
+          <!-- contents of /about/privacy.html -->
+          <!-- endinject -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="terms-of-use-modal" class="modal fade bd-example-modal-lg" tabindex="-1"
+    role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Terms of Use</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- inject:about:terms-of-use -->
+          <!-- contents of /about/terms-of-use.html -->
+          <!-- endinject -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="pt-4"></div>
   <div class="container">
     <div class="jumbotron">
@@ -116,7 +153,8 @@
           </a>
         </div>
         <div class="col-4 text-right">
-          <a href="/privacy.html" class="link">Privacy Policy</a>
+          <a href="#" class="link" data-toggle="modal" data-target="#terms-of-use-modal">Terms of Use</a>
+          <a href="#" class="link" data-toggle="modal" data-target="#privacy-modal">Privacy Policy</a>
         </div>
         <!--div class="col"-->
       </div>
