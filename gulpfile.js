@@ -181,6 +181,8 @@ function readPackageJSON() {
 config.version = readPackageJSON().version;
 config.license = readPackageJSON().license;
 
+var childProcessBuffer = 1024*1000;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____ _      ____  ____          _
 //  / ____| |    / __ \|  _ \   /\   | |
@@ -634,7 +636,7 @@ gulp.task('build:angular', ['build:angular:deps'], function(done) {
     command += ' --prod';
   }
 
-  child_process.exec(command, function(err, stdout, stderr) {
+  child_process.exec(command, { maxBuffer: childProcessBuffer }, function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     done(err);
@@ -730,7 +732,7 @@ gulp.task('clean:dotnetcore', function(done) {
     command += ' --configuration Release';
   }
 
-  child_process.exec(command, function(err, stdout, stderr) {
+  child_process.exec(command, { maxBuffer: childProcessBuffer }, function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
 
@@ -759,7 +761,7 @@ gulp.task('build:dotnetcore', ['build:dotnetcore:deps'], function(done) {
     command += ' --configuration Release';
   }
 
-  child_process.exec(command, function(err, stdout, stderr) {
+  child_process.exec(command, { maxBuffer: childProcessBuffer }, function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     done(err);
@@ -827,7 +829,7 @@ gulp.task('package:dotnetcore', ['build:dotnetcore:deps'], function(done) {
     command += ' --configuration Release';
   }
 
-  child_process.exec(command, function(err, stdout, stderr) {
+  child_process.exec(command, { maxBuffer: childProcessBuffer }, function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
 

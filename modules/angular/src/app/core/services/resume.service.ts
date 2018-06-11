@@ -1,10 +1,7 @@
-import 'rxjs/add/observable/of';
-
-import { PlatformLocation, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
@@ -25,7 +22,7 @@ export class ResumeService {
     lang = lang || 'en';
 
     if (this.resume && this.resume.lang === lang) {
-      return Observable.of(this.resume.value);
+      return of(this.resume.value);
     }
 
     let path = `${environment.dataPath}data.${lang}.json`;
@@ -43,8 +40,8 @@ export class ResumeService {
     );
   }
 
-  private handleHttpError(error: HttpErrorResponse): Observable<string> {
+  private handleHttpError(error: HttpErrorResponse) {
     console.log(`Unable to get resume content. Details: ${error.statusText}`);
-    return ErrorObservable.create('Unable to access the resume content.');
+    return throwError('Unable to access the resume content.');
   }
 }
