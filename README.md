@@ -4,17 +4,17 @@ Welcome to my resume. When figuring out a good way to describe the technologies 
 
 ## Technologies Used
 
-* Minimal
-  * Built with simple HTML5, Javascript, and CSS3
-  * Styled using [Bootstrap](https://getbootstrap.com/)
-  * Client side logic achieved with [jQuery](https://jquery.com/)
-* [Angular](https://angular.io/)
-  * Built with Angular 5.2.x
-  * Styled using [Angular Material 5.2.x](https://v5.material.angular.io/)
-* [.NET Core](https://docs.microsoft.com/en-us/aspnet/core/aspnetcore-2.0?view=aspnetcore-2.1)
-  * Build with ASP.NET Core 2 MVC
-  * Styled using [Bootstrap](https://getbootstrap.com/)
-* [ReactJS](https://reactjs.org/)
-  * **Not completed**
-* [VueJS](https://vuejs.org/)
-  * **Not completed**
+- Minimal
+  - Built with simple HTML5, Javascript, and CSS3
+  - Styled using [Bootstrap](https://getbootstrap.com/)
+  - Client side logic achieved with [jQuery](https://jquery.com/)
+- [Angular](https://angular.io/)
+  - Built with Angular 6.x
+  - Styled using [Angular Material 6.x](https://material.angular.io/)
+- [.NET Core](https://docs.microsoft.com/en-us/aspnet/core/aspnetcore-2.0?view=aspnetcore-2.1)
+  - Build with ASP.NET Core 2 MVC
+  - Styled using [Bootstrap](https://getbootstrap.com/)
+- [ReactJS](https://reactjs.org/)
+  - **Not completed**
+- [VueJS](https://vuejs.org/)
+  - **Not completed**
