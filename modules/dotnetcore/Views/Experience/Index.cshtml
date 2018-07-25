@@ -1,7 +1,7 @@
 @model ResumeModel
 
 @section navbar {
-   @Html.Partial("_Navbar", Model)
+   @await Html.PartialAsync("_Navbar", Model)
 }
 
 <h1>
